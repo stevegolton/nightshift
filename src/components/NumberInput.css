@@ -1,0 +1,48 @@
+/* Number Input (Blender-style with drag) */
+.bl-number-input {
+  display: inline-flex;
+  align-items: center;
+  height: var(--bl-input-height);
+  background-color: var(--bl-surface-1);
+  border: 1px solid var(--bl-border-dark);
+  border-radius: var(--bl-radius-md);
+  overflow: hidden;
+}
+
+.bl-number-input:focus-within {
+  border-color: var(--bl-accent);
+}
+
+.bl-number-input input {
+  width: 60px;
+  height: 100%;
+  padding: 0 var(--bl-spacing-sm);
+  font-family: var(--bl-font-mono);
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  text-align: right;
+}
+
+.bl-number-input .bl-number-label {
+  padding: 0 var(--bl-spacing-md);
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-secondary);
+  background-color: var(--bl-surface-3);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  cursor: ew-resize;
+  user-select: none;
+}
+
+.bl-number-input-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.bl-number-input-disabled .bl-number-label {
+  cursor: not-allowed;
+}

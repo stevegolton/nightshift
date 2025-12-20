@@ -1,5 +1,41 @@
 import m from 'mithril';
+import './WidgetsPage.css';
 import { State } from '../state';
+import Button from '../components/Button';
+import ButtonGroup from '../components/ButtonGroup';
+import { SegmentedButtonGroup, SegmentedButton } from '../components/SegmentedButton';
+import { Tabs } from '../components/Tabs';
+import { SplitPanel } from '../components/SplitPanel';
+import Input from '../components/Input';
+import Select from '../components/Select';
+import Checkbox from '../components/Checkbox';
+import Radio from '../components/Radio';
+import Slider from '../components/Slider';
+import ProgressBar from '../components/ProgressBar';
+import Table from '../components/Table';
+import Anchor from '../components/Anchor';
+import NumberInput from '../components/NumberInput';
+
+// Create SplitPanel instances once to maintain state
+const HorizontalSplit = SplitPanel();
+const VerticalSplit = SplitPanel();
+
+// Create Table instance
+interface ObjectData {
+  id: string;
+  name: string;
+  type: string;
+  vertices: number;
+  status: 'active' | 'hidden' | 'modified';
+}
+
+const ObjectTable = Table<ObjectData>();
+
+const tableData: ObjectData[] = [
+  { id: 'cube', name: 'Cube', type: 'Mesh', vertices: 8, status: 'active' },
+  { id: 'suzanne', name: 'Suzanne', type: 'Mesh', vertices: 507, status: 'hidden' },
+  { id: 'sphere', name: 'Sphere', type: 'Mesh', vertices: 482, status: 'modified' },
+];
 
 const WidgetsPage: m.Component = {
   view(): m.Vnode {
@@ -11,116 +47,11 @@ const WidgetsPage: m.Component = {
           m('.bl-header-menu-item', 'Edit'),
           m('.bl-header-menu-item', 'View'),
           m('.bl-header-menu-item', 'Object'),
-          m('.bl-header-menu-item', 'Help')
-        ])
+          m('.bl-header-menu-item', 'Help'),
+        ]),
       ]),
 
       m('.demo-main', [
-        // Sidebar with Panels
-        m('aside.demo-sidebar', [
-          // Transform Panel
-          m('.bl-panel', [
-            m('.bl-panel-header', { onclick: (e: Event) => { (e.target as HTMLElement).closest('.bl-panel')?.classList.toggle('collapsed'); } }, [
-              m('.bl-panel-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
-              m('span.bl-panel-title', 'Transform')
-            ]),
-            m('.bl-panel-content', [
-              m('.bl-form-row', [
-                m('label.bl-form-label', 'Location'),
-                m('.bl-flex.bl-gap-xs', [
-                  m('.bl-number-input', [
-                    m('span.bl-number-label', 'X'),
-                    m('input[type=text]', { value: '0.000' })
-                  ])
-                ])
-              ]),
-              m('.bl-form-row', [
-                m('label.bl-form-label'),
-                m('.bl-flex.bl-gap-xs', [
-                  m('.bl-number-input', [
-                    m('span.bl-number-label', 'Y'),
-                    m('input[type=text]', { value: '0.000' })
-                  ])
-                ])
-              ]),
-              m('.bl-form-row', [
-                m('label.bl-form-label'),
-                m('.bl-flex.bl-gap-xs', [
-                  m('.bl-number-input', [
-                    m('span.bl-number-label', 'Z'),
-                    m('input[type=text]', { value: '0.000' })
-                  ])
-                ])
-              ])
-            ])
-          ]),
-
-          // Material Panel
-          m('.bl-panel', [
-            m('.bl-panel-header', { onclick: (e: Event) => { (e.target as HTMLElement).closest('.bl-panel')?.classList.toggle('collapsed'); } }, [
-              m('.bl-panel-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
-              m('span.bl-panel-title', 'Material')
-            ]),
-            m('.bl-panel-content', [
-              m('.bl-form-row', [
-                m('label.bl-form-label', 'Base Color'),
-                m('.bl-color-swatch', [
-                  m('.bl-color-preview', { style: { backgroundColor: '#e87d0d' } }),
-                  m('span.bl-color-value', '#E87D0D')
-                ])
-              ]),
-              m('.bl-form-row', [
-                m('label.bl-form-label', 'Metallic'),
-                m('.bl-slider', [
-                  m('input[type=range]', { min: 0, max: 100, value: 0 }),
-                  m('span.bl-slider-value', '0.00')
-                ])
-              ]),
-              m('.bl-form-row', [
-                m('label.bl-form-label', 'Roughness'),
-                m('.bl-slider', [
-                  m('input[type=range]', { min: 0, max: 100, value: 50 }),
-                  m('span.bl-slider-value', '0.50')
-                ])
-              ])
-            ])
-          ]),
-
-          // Tree View Panel
-          m('.bl-panel', [
-            m('.bl-panel-header', { onclick: (e: Event) => { (e.target as HTMLElement).closest('.bl-panel')?.classList.toggle('collapsed'); } }, [
-              m('.bl-panel-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
-              m('span.bl-panel-title', 'Scene Collection')
-            ]),
-            m('.bl-panel-content', [
-              m('.bl-tree', [
-                m('.bl-tree-item', { onclick: (e: Event) => { (e.target as HTMLElement).closest('.bl-tree-item')?.classList.toggle('collapsed'); } }, [
-                  m('.bl-tree-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
-                  m('.bl-tree-icon', m('.icon-placeholder')),
-                  m('span', 'Collection')
-                ]),
-                m('.bl-tree-children', [
-                  m('.bl-tree-item.active', [
-                    m('.bl-tree-toggle'),
-                    m('.bl-tree-icon', m('.icon-placeholder')),
-                    m('span', 'Cube')
-                  ]),
-                  m('.bl-tree-item', [
-                    m('.bl-tree-toggle'),
-                    m('.bl-tree-icon', m('.icon-placeholder')),
-                    m('span', 'Camera')
-                  ]),
-                  m('.bl-tree-item', [
-                    m('.bl-tree-toggle'),
-                    m('.bl-tree-icon', m('.icon-placeholder')),
-                    m('span', 'Light')
-                  ])
-                ])
-              ])
-            ])
-          ])
-        ]),
-
         // Main Content Area
         m('.demo-content', [
           // Buttons Section
@@ -128,54 +59,90 @@ const WidgetsPage: m.Component = {
             m('h2.demo-section-title', 'Buttons'),
             m('.demo-label', 'Standard Buttons'),
             m('.demo-row', [
-              m('button.bl-btn', 'Default'),
-              m('button.bl-btn.bl-btn-primary', 'Primary'),
-              m('button.bl-btn', { disabled: true }, 'Disabled')
+              m(Button, 'Default'),
+              m(Button, { variant: 'primary' }, 'Primary'),
+              m(Button, { disabled: true }, 'Disabled'),
             ]),
             m('.demo-label', 'Icon Buttons'),
             m('.demo-row', [
-              m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Move' }, m('.icon-placeholder')),
-              m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Rotate' }, m('.icon-placeholder')),
-              m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Scale' }, m('.icon-placeholder'))
+              m(Button, { icon: 'open_with', tooltip: 'Move' }, null),
+              m(Button, { icon: 'rotate_right', tooltip: 'Rotate' }, null),
+              m(Button, { icon: 'zoom_out_map', tooltip: 'Scale' }, null),
             ]),
+            m('.demo-label', 'Icon + Text Buttons'),
+            m('.demo-row', [
+              m(Button, { icon: 'save' }, 'Save'),
+              m(Button, { icon: 'folder_open' }, 'Open'),
+              m(Button, { icon: 'delete', variant: 'primary' }, 'Delete'),
+            ]),
+            m('.demo-label', 'Ghost Buttons'),
+            m(
+              '.demo-row',
+              {
+                style: {
+                  backgroundColor: 'var(--bl-surface-2)',
+                  padding: 'var(--bl-spacing-sm)',
+                  borderRadius: 'var(--bl-radius-md)',
+                },
+              },
+              [
+                m(Button, { variant: 'ghost', icon: 'push_pin' }),
+                m(Button, { variant: 'ghost', icon: 'more_vert' }),
+                m(Button, { variant: 'ghost', icon: 'settings' }),
+                m(Button, { variant: 'ghost' }, 'Ghost Text'),
+              ]
+            ),
             m('.demo-label', 'Button Group'),
             m('.demo-row', [
-              m('.bl-btn-group', [
-                m('button.bl-btn.bl-btn-toggle.active', 'Object'),
-                m('button.bl-btn.bl-btn-toggle', 'Edit'),
-                m('button.bl-btn.bl-btn-toggle', 'Sculpt')
-              ])
+              m(ButtonGroup, [
+                m(Button, { variant: 'toggle', active: true }, 'Object'),
+                m(Button, { variant: 'toggle' }, 'Edit'),
+                m(Button, { variant: 'toggle' }, 'Sculpt'),
+              ]),
             ]),
             m('.demo-label', 'Segmented Buttons'),
             m('.demo-row', [
-              m('.bl-segmented', [
-                m('button.bl-segmented-btn.active', 'Vertex'),
-                m('button.bl-segmented-btn', 'Edge'),
-                m('button.bl-segmented-btn', 'Face')
+              m(SegmentedButtonGroup, [
+                m(SegmentedButton, { active: true }, 'Vertex'),
+                m(SegmentedButton, null, 'Edge'),
+                m(SegmentedButton, null, 'Face'),
               ]),
-              m('.bl-segmented', [
-                m('button.bl-segmented-btn.icon-only.active', { title: 'Grid' }, m.trust('<svg viewBox="0 0 16 16"><path d="M1 1h6v6H1V1zm8 0h6v6H9V1zM1 9h6v6H1V9zm8 0h6v6H9V9z"/></svg>')),
-                m('button.bl-segmented-btn.icon-only', { title: 'List' }, m.trust('<svg viewBox="0 0 16 16"><path d="M1 2h14v2H1V2zm0 5h14v2H1V7zm0 5h14v2H1v-2z"/></svg>')),
-                m('button.bl-segmented-btn.icon-only', { title: 'Details' }, m.trust('<svg viewBox="0 0 16 16"><path d="M1 1h4v4H1V1zm6 1h8v2H7V2zM1 6h4v4H1V6zm6 1h8v2H7V7zM1 11h4v4H1v-4zm6 1h8v2H7v-2z"/></svg>'))
-              ])
+              m(SegmentedButtonGroup, [
+                m(
+                  SegmentedButton,
+                  { active: true, title: 'Grid' },
+                  m('span.material-icons', 'grid_view')
+                ),
+                m(SegmentedButton, { title: 'List' }, m('span.material-icons', 'view_list')),
+                m(SegmentedButton, { title: 'Details' }, m('span.material-icons', 'view_module')),
+              ]),
             ]),
             m('.demo-row', [
-              m('.bl-segmented', [
-                m('button.bl-segmented-btn.icon-only', { title: 'Align Left' }, m.trust('<svg viewBox="0 0 16 16"><path d="M1 2h10v2H1V2zm0 4h14v2H1V6zm0 4h8v2H1v-2zm0 4h12v2H1v-2z"/></svg>')),
-                m('button.bl-segmented-btn.icon-only.active', { title: 'Align Center' }, m.trust('<svg viewBox="0 0 16 16"><path d="M3 2h10v2H3V2zm1 4h8v2H4V6zm2 4h4v2H6v-2zm1 4h2v2H7v-2z"/></svg>')),
-                m('button.bl-segmented-btn.icon-only', { title: 'Align Right' }, m.trust('<svg viewBox="0 0 16 16"><path d="M5 2h10v2H5V2zm1 4h9v2H6V6zm2 4h7v2H8v-2zm1 4h6v2H9v-2z"/></svg>'))
+              m(SegmentedButtonGroup, [
+                m(
+                  SegmentedButton,
+                  { title: 'Align Left' },
+                  m('span.material-icons', 'format_align_left')
+                ),
+                m(
+                  SegmentedButton,
+                  { active: true, title: 'Align Center' },
+                  m('span.material-icons', 'format_align_center')
+                ),
+                m(
+                  SegmentedButton,
+                  { title: 'Align Right' },
+                  m('span.material-icons', 'format_align_right')
+                ),
               ]),
-              m('.bl-segmented', [
-                m('button.bl-segmented-btn', [
-                  m.trust('<svg viewBox="0 0 16 16"><path d="M8 1l7 14H1L8 1z"/></svg>'),
-                  ' Solid'
+              m(SegmentedButtonGroup, [
+                m(SegmentedButton, null, [m('span.material-icons', 'change_history'), ' Solid']),
+                m(SegmentedButton, { active: true }, [
+                  m('span.material-icons', 'change_history_outlined'),
+                  ' Wire',
                 ]),
-                m('button.bl-segmented-btn.active', [
-                  m.trust('<svg viewBox="0 0 16 16"><path d="M8 1l7 14H1L8 1z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>'),
-                  ' Wire'
-                ])
-              ])
-            ])
+              ]),
+            ]),
           ]),
 
           // Text Inputs Section
@@ -183,33 +150,95 @@ const WidgetsPage: m.Component = {
             m('h2.demo-section-title', 'Text Inputs'),
             m('.demo-label', 'Standard Input'),
             m('.demo-row', [
-              m('input.bl-input[type=text]', { placeholder: 'Enter text...' }),
-              m('input.bl-input[type=text]', { value: 'With value' }),
-              m('input.bl-input[type=text]', { disabled: true, value: 'Disabled' })
+              m(Input, { placeholder: 'Enter text...' }),
+              m(Input, { value: 'With value' }),
+              m(Input, { disabled: true, value: 'Disabled' }),
+            ]),
+            m('.demo-label', 'Input with Icon'),
+            m('.demo-row', [
+              m(Input, { icon: 'search', placeholder: 'Search...' }),
+              m(Input, { icon: 'person', placeholder: 'Username' }),
+              m(Input, { icon: 'lock', type: 'password', placeholder: 'Password' }),
+            ]),
+            m('.demo-label', 'Icon on Right'),
+            m('.demo-row', [
+              m(Input, {
+                icon: 'visibility',
+                iconPosition: 'right',
+                type: 'password',
+                placeholder: 'Password',
+              }),
+              m(Input, { icon: 'clear', iconPosition: 'right', placeholder: 'Clearable input' }),
             ]),
             m('.demo-label', 'Number Inputs'),
             m('.demo-row', [
-              m('.bl-number-input', [m('span.bl-number-label', 'X'), m('input[type=text]', { value: '0.000' })]),
-              m('.bl-number-input', [m('span.bl-number-label', 'Y'), m('input[type=text]', { value: '0.000' })]),
-              m('.bl-number-input', [m('span.bl-number-label', 'Z'), m('input[type=text]', { value: '0.000' })])
-            ])
+              m(NumberInput(), {
+                label: 'X',
+                value: State.numberX ?? 0,
+                oninput: (v: number) => {
+                  State.numberX = v;
+                },
+              }),
+              m(NumberInput(), {
+                label: 'Y',
+                value: State.numberY ?? 0,
+                oninput: (v: number) => {
+                  State.numberY = v;
+                },
+              }),
+              m(NumberInput(), {
+                label: 'Z',
+                value: State.numberZ ?? 0,
+                oninput: (v: number) => {
+                  State.numberZ = v;
+                },
+              }),
+            ]),
           ]),
 
           // Selects Section
           m('section.demo-section', [
             m('h2.demo-section-title', 'Select Inputs'),
             m('.demo-row', [
-              m('.bl-select', m('select', [
-                m('option', 'Object Mode'),
-                m('option', 'Edit Mode'),
-                m('option', 'Sculpt Mode')
-              ])),
-              m('.bl-select', m('select', [
-                m('option', 'Solid'),
-                m('option', 'Wireframe'),
-                m('option', 'Material Preview')
-              ]))
-            ])
+              m(Select, {
+                value: State.selectMode || 'object',
+                options: [
+                  { value: 'object', label: 'Object Mode' },
+                  { value: 'edit', label: 'Edit Mode' },
+                  { value: 'sculpt', label: 'Sculpt Mode' },
+                ],
+                onchange: (val: string) => {
+                  State.selectMode = val;
+                },
+              }),
+              m(Select, {
+                value: State.selectView || 'solid',
+                options: [
+                  { value: 'solid', label: 'Solid' },
+                  { value: 'wireframe', label: 'Wireframe' },
+                  { value: 'material', label: 'Material Preview' },
+                ],
+                onchange: (val: string) => {
+                  State.selectView = val;
+                },
+              }),
+            ]),
+            m('.demo-label', 'With Placeholder'),
+            m('.demo-row', [
+              m(Select, {
+                placeholder: 'Choose an option...',
+                options: [
+                  { value: 'a', label: 'Option A' },
+                  { value: 'b', label: 'Option B' },
+                  { value: 'c', label: 'Option C' },
+                ],
+              }),
+              m(Select, {
+                disabled: true,
+                value: 'disabled',
+                options: [{ value: 'disabled', label: 'Disabled Select' }],
+              }),
+            ]),
           ]),
 
           // Checkboxes & Radio Section
@@ -217,26 +246,94 @@ const WidgetsPage: m.Component = {
             m('h2.demo-section-title', 'Checkboxes & Radio Buttons'),
             m('.demo-label', 'Checkboxes'),
             m('.demo-row', [
-              m('label.bl-checkbox', [m('input[type=checkbox]', { checked: true }), ' Show Overlays']),
-              m('label.bl-checkbox', [m('input[type=checkbox]', { checked: true }), ' Show Floor']),
-              m('label.bl-checkbox', [m('input[type=checkbox]'), ' Show Axes'])
+              m(
+                Checkbox,
+                {
+                  checked: State.checkOverlays,
+                  onchange: (v: boolean) => {
+                    State.checkOverlays = v;
+                  },
+                },
+                'Show Overlays'
+              ),
+              m(
+                Checkbox,
+                {
+                  checked: State.checkFloor,
+                  onchange: (v: boolean) => {
+                    State.checkFloor = v;
+                  },
+                },
+                'Show Floor'
+              ),
+              m(
+                Checkbox,
+                {
+                  checked: State.checkAxes,
+                  onchange: (v: boolean) => {
+                    State.checkAxes = v;
+                  },
+                },
+                'Show Axes'
+              ),
             ]),
             m('.demo-label', 'Disabled Checkboxes'),
             m('.demo-row', [
-              m('label.bl-checkbox', [m('input[type=checkbox]', { checked: true, disabled: true }), ' Checked Disabled']),
-              m('label.bl-checkbox', [m('input[type=checkbox]', { disabled: true }), ' Unchecked Disabled'])
+              m(Checkbox, { checked: true, disabled: true }, 'Checked Disabled'),
+              m(Checkbox, { checked: false, disabled: true }, 'Unchecked Disabled'),
             ]),
             m('.demo-label', 'Radio Buttons'),
             m('.demo-row', [
-              m('label.bl-radio', [m('input[type=radio]', { name: 'pivot', checked: true }), ' Median Point']),
-              m('label.bl-radio', [m('input[type=radio]', { name: 'pivot' }), ' 3D Cursor']),
-              m('label.bl-radio', [m('input[type=radio]', { name: 'pivot' }), ' Active Element'])
+              m(
+                Radio,
+                {
+                  name: 'pivot',
+                  value: 'median',
+                  checked: State.radioPivot === 'median',
+                  onchange: (v: string) => {
+                    State.radioPivot = v;
+                  },
+                },
+                'Median Point'
+              ),
+              m(
+                Radio,
+                {
+                  name: 'pivot',
+                  value: 'cursor',
+                  checked: State.radioPivot === 'cursor',
+                  onchange: (v: string) => {
+                    State.radioPivot = v;
+                  },
+                },
+                '3D Cursor'
+              ),
+              m(
+                Radio,
+                {
+                  name: 'pivot',
+                  value: 'active',
+                  checked: State.radioPivot === 'active',
+                  onchange: (v: string) => {
+                    State.radioPivot = v;
+                  },
+                },
+                'Active Element'
+              ),
             ]),
             m('.demo-label', 'Disabled Radio Buttons'),
             m('.demo-row', [
-              m('label.bl-radio', [m('input[type=radio]', { name: 'disabled-radio', checked: true, disabled: true }), ' Selected Disabled']),
-              m('label.bl-radio', [m('input[type=radio]', { name: 'disabled-radio', disabled: true }), ' Unselected Disabled'])
-            ])
+              m(
+                Radio,
+                { name: 'disabled-radio', value: 'selected', checked: true, disabled: true },
+                'Selected Disabled'
+              ),
+              m(
+                Radio,
+                { name: 'disabled-radio', value: 'unselected', disabled: true },
+                'Unselected Disabled'
+              ),
+            ]),
           ]),
 
           // Sliders Section
@@ -244,65 +341,161 @@ const WidgetsPage: m.Component = {
             m('h2.demo-section-title', 'Sliders & Progress'),
             m('.demo-label', 'Sliders'),
             m('.demo-grid', [
-              m('.bl-slider', [
-                m('input[type=range]', { min: 0, max: 100, value: 75, oninput: (e: Event) => { const target = e.target as HTMLInputElement; (target.nextElementSibling as HTMLElement).textContent = (parseInt(target.value) / 100).toFixed(2); } }),
-                m('span.bl-slider-value', '0.75')
-              ]),
-              m('.bl-slider', [
-                m('input[type=range]', { min: 0, max: 100, value: 25, oninput: (e: Event) => { const target = e.target as HTMLInputElement; (target.nextElementSibling as HTMLElement).textContent = (parseInt(target.value) / 100).toFixed(2); } }),
-                m('span.bl-slider-value', '0.25')
-              ])
+              m(Slider, {
+                value: State.slider1,
+                oninput: (v: number) => {
+                  State.slider1 = v;
+                },
+              }),
+              m(Slider, {
+                value: State.slider2,
+                oninput: (v: number) => {
+                  State.slider2 = v;
+                },
+              }),
+            ]),
+            m('.demo-label.bl-mt-md', 'Slider Variants'),
+            m('.demo-grid', [
+              m(Slider, {
+                value: 50,
+                showValue: false,
+              }),
+              m(Slider, {
+                value: 75,
+                disabled: true,
+              }),
             ]),
             m('.demo-label.bl-mt-md', 'Progress Bars'),
             m('div', { style: { maxWidth: '400px' } }, [
-              m('.bl-progress.bl-mb-md', m('.bl-progress-bar', { style: { width: '75%' } })),
-              m('.bl-progress', m('.bl-progress-bar', { style: { width: '45%' } }))
-            ])
+              m(ProgressBar, { value: 75, class: 'bl-mb-md' }),
+              m(ProgressBar, { value: 45 }),
+            ]),
+            m('.demo-label.bl-mt-md', 'Progress Bar Variants'),
+            m('div', { style: { maxWidth: '400px' } }, [
+              m(ProgressBar, { value: 90, variant: 'success', class: 'bl-mb-sm' }),
+              m(ProgressBar, { value: 60, variant: 'warning', class: 'bl-mb-sm' }),
+              m(ProgressBar, { value: 30, variant: 'error' }),
+            ]),
           ]),
 
           // Tabs Section
           m('section.demo-section', [
             m('h2.demo-section-title', 'Tabs'),
-            m('.bl-tabs', [
-              m('button.bl-tab', { class: State.activeTab === 'Scene' ? 'active' : '', onclick: () => { State.activeTab = 'Scene'; } }, 'Scene'),
-              m('button.bl-tab', { class: State.activeTab === 'World' ? 'active' : '', onclick: () => { State.activeTab = 'World'; } }, 'World'),
-              m('button.bl-tab', { class: State.activeTab === 'Object' ? 'active' : '', onclick: () => { State.activeTab = 'Object'; } }, 'Object'),
-              m('button.bl-tab', { class: State.activeTab === 'Modifiers' ? 'active' : '', onclick: () => { State.activeTab = 'Modifiers'; } }, 'Modifiers')
-            ]),
-            m('.bl-tab-content', m('p', { style: { color: 'var(--bl-text-secondary)', margin: 0 } }, 'Tab content area'))
+            m('.demo-label', 'Primary Tabs (Browser Style)'),
+            m(Tabs, {
+              variant: 'primary',
+              tabs: [
+                {
+                  id: 'scene',
+                  label: 'Scene',
+                  icon: 'landscape',
+                  content: m(
+                    'p',
+                    { style: { color: 'var(--bl-text-secondary)', margin: 0 } },
+                    'Scene settings and configuration options.'
+                  ),
+                },
+                {
+                  id: 'world',
+                  label: 'World',
+                  icon: 'public',
+                  content: m(
+                    'p',
+                    { style: { color: 'var(--bl-text-secondary)', margin: 0 } },
+                    'World environment and lighting settings.'
+                  ),
+                },
+                {
+                  id: 'object',
+                  label: 'Object',
+                  icon: 'category',
+                  content: m(
+                    'p',
+                    { style: { color: 'var(--bl-text-secondary)', margin: 0 } },
+                    'Selected object properties and transforms.'
+                  ),
+                },
+                {
+                  id: 'modifiers',
+                  label: 'Modifiers',
+                  icon: 'tune',
+                  content: m(
+                    'p',
+                    { style: { color: 'var(--bl-text-secondary)', margin: 0 } },
+                    'Object modifiers and effects stack.'
+                  ),
+                },
+              ],
+              activeTab: State.activeTab,
+              onTabChange: (tabId: string) => {
+                State.activeTab = tabId;
+              },
+            }),
+            m('.demo-label.bl-mt-md', 'Inline Tabs (Pill Style)'),
+            m(Tabs, {
+              variant: 'inline',
+              tabs: [
+                {
+                  id: 'summary',
+                  label: 'Summary',
+                  content: m(
+                    'p',
+                    { style: { color: 'var(--bl-text-secondary)', margin: 0 } },
+                    'Summary content panel.'
+                  ),
+                },
+                {
+                  id: 'details',
+                  label: 'Details',
+                  content: m(
+                    'p',
+                    { style: { color: 'var(--bl-text-secondary)', margin: 0 } },
+                    'Detailed information panel.'
+                  ),
+                },
+                {
+                  id: 'history',
+                  label: 'History',
+                  content: m(
+                    'p',
+                    { style: { color: 'var(--bl-text-secondary)', margin: 0 } },
+                    'History and changelog.'
+                  ),
+                },
+              ],
+              activeTab: State.activeSecondaryTab || 'summary',
+              onTabChange: (tabId: string) => {
+                State.activeSecondaryTab = tabId;
+              },
+            }),
           ]),
 
           // Table Section
           m('section.demo-section', [
             m('h2.demo-section-title', 'Table'),
-            m('table.bl-table', [
-              m('thead', m('tr', [
-                m('th', 'Name'),
-                m('th', 'Type'),
-                m('th', 'Vertices'),
-                m('th', 'Status')
-              ])),
-              m('tbody', [
-                m('tr.selected', [
-                  m('td', 'Cube'),
-                  m('td', 'Mesh'),
-                  m('td', '8'),
-                  m('td', m('span.bl-badge.bl-badge-success', 'Active'))
-                ]),
-                m('tr', [
-                  m('td', 'Suzanne'),
-                  m('td', 'Mesh'),
-                  m('td', '507'),
-                  m('td', m('span.bl-badge', 'Hidden'))
-                ]),
-                m('tr', [
-                  m('td', 'Sphere'),
-                  m('td', 'Mesh'),
-                  m('td', '482'),
-                  m('td', m('span.bl-badge.bl-badge-warning', 'Modified'))
-                ])
-              ])
-            ])
+            m(ObjectTable, {
+              columns: [
+                { header: 'Name', key: 'name' },
+                { header: 'Type', key: 'type' },
+                { header: 'Vertices', key: 'vertices' },
+                {
+                  header: 'Status',
+                  render: (row) => {
+                    const badgeClass =
+                      row.status === 'active'
+                        ? 'bl-badge-success'
+                        : row.status === 'modified'
+                          ? 'bl-badge-warning'
+                          : '';
+                    const label = row.status.charAt(0).toUpperCase() + row.status.slice(1);
+                    return m('span', { class: `bl-badge ${badgeClass}` }, label);
+                  },
+                },
+              ],
+              data: tableData,
+              rowKey: (row) => row.id,
+              selectedKey: 'cube',
+            }),
           ]),
 
           // Badges Section
@@ -312,8 +505,24 @@ const WidgetsPage: m.Component = {
               m('span.bl-badge', 'Default'),
               m('span.bl-badge.bl-badge-success', 'Success'),
               m('span.bl-badge.bl-badge-warning', 'Warning'),
-              m('span.bl-badge.bl-badge-error', 'Error')
-            ])
+              m('span.bl-badge.bl-badge-error', 'Error'),
+            ]),
+          ]),
+
+          // Anchors Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Anchors'),
+            m('.demo-row', [
+              m(Anchor, { href: '#' }, 'Default Link'),
+              m(Anchor, { href: 'https://blender.org', external: true }, 'External Link'),
+              m(Anchor, { href: '#', disabled: true }, 'Disabled Link'),
+            ]),
+            m('.demo-label', 'With Icons'),
+            m('.demo-row', [
+              m(Anchor, { href: '#', icon: 'link' }, 'With Icon'),
+              m(Anchor, { href: '#', icon: 'open_in_new', iconPosition: 'right' }, 'Icon Right'),
+              m(Anchor, { href: '#', icon: 'download' }, 'Download'),
+            ]),
           ]),
 
           // Menu Section
@@ -322,14 +531,72 @@ const WidgetsPage: m.Component = {
             m('.demo-row', [
               m('.bl-menu', { style: { display: 'inline-block' } }, [
                 m('.bl-menu-item', [m('span', 'New'), m('span.bl-menu-item-shortcut', 'Ctrl+N')]),
-                m('.bl-menu-item', [m('span', 'Open...'), m('span.bl-menu-item-shortcut', 'Ctrl+O')]),
+                m('.bl-menu-item', [
+                  m('span', 'Open...'),
+                  m('span.bl-menu-item-shortcut', 'Ctrl+O'),
+                ]),
                 m('.bl-menu-item', [m('span', 'Save'), m('span.bl-menu-item-shortcut', 'Ctrl+S')]),
                 m('.bl-menu-separator'),
-                m('.bl-menu-item.disabled', m('span', 'Recover Last Session'))
-              ])
-            ])
-          ])
-        ])
+                m('.bl-menu-item.disabled', m('span', 'Recover Last Session')),
+              ]),
+            ]),
+          ]),
+
+          // Split Panel Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Split Panel'),
+            m('.demo-label', 'Horizontal Split'),
+            m(
+              '.split-demo',
+              {
+                style: {
+                  height: '150px',
+                  border: '1px solid var(--bl-border-dark)',
+                  borderRadius: 'var(--bl-radius-md)',
+                },
+              },
+              [
+                m(HorizontalSplit, {
+                  direction: 'horizontal',
+                  initialSplit: 40,
+                  firstPanel: m('.split-panel-content', [
+                    m('h4', 'Left Panel'),
+                    m('p', 'Drag the handle to resize'),
+                  ]),
+                  secondPanel: m('.split-panel-content', [
+                    m('h4', 'Right Panel'),
+                    m('p', 'Content adjusts automatically'),
+                  ]),
+                }),
+              ]
+            ),
+            m('.demo-label.bl-mt-md', 'Vertical Split'),
+            m(
+              '.split-demo',
+              {
+                style: {
+                  height: '200px',
+                  border: '1px solid var(--bl-border-dark)',
+                  borderRadius: 'var(--bl-radius-md)',
+                },
+              },
+              [
+                m(VerticalSplit, {
+                  direction: 'vertical',
+                  initialSplit: 50,
+                  firstPanel: m('.split-panel-content', [
+                    m('h4', 'Top Panel'),
+                    m('p', 'Vertical split with top/bottom layout'),
+                  ]),
+                  secondPanel: m('.split-panel-content', [
+                    m('h4', 'Bottom Panel'),
+                    m('p', 'Useful for editors and consoles'),
+                  ]),
+                }),
+              ]
+            ),
+          ]),
+        ]),
       ]),
 
       // Status Bar
@@ -337,10 +604,14 @@ const WidgetsPage: m.Component = {
         m('span.bl-statusbar-item', 'Verts: 8'),
         m('span.bl-statusbar-item', 'Faces: 6'),
         m('span.bl-statusbar-item', 'Objects: 3/3'),
-        m('span.bl-statusbar-item', { style: { marginLeft: 'auto', borderRight: 'none' } }, 'Blender UI Toolkit v1.0')
-      ])
+        m(
+          'span.bl-statusbar-item',
+          { style: { marginLeft: 'auto', borderRight: 'none' } },
+          'Nightshift v1.0'
+        ),
+      ]),
     ]);
-  }
+  },
 };
 
 export default WidgetsPage;

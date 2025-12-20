@@ -1,0 +1,42 @@
+/* Select / Dropdown */
+.bl-select {
+  position: relative;
+  display: inline-block;
+}
+
+.bl-select select {
+  appearance: none;
+  height: var(--bl-input-height);
+  padding: 0 24px 0 var(--bl-spacing-md);
+  font-family: var(--bl-font-family);
+  font-size: var(--bl-font-size-base);
+  color: var(--bl-text-primary);
+  background-color: var(--bl-surface-3);
+  border: 1px solid var(--bl-border-dark);
+  border-radius: var(--bl-radius-md);
+  cursor: pointer;
+  outline: none;
+  box-shadow: var(--bl-button-highlight);
+}
+
+.bl-select select:hover {
+  background-color: var(--bl-surface-hover);
+}
+
+.bl-select select:focus {
+  border-color: var(--bl-accent);
+}
+
+.bl-select::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--bl-text-secondary);
+  pointer-events: none;
+}

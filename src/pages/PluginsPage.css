@@ -1,0 +1,88 @@
+/* Plugins Page Styles */
+
+.page-plugins {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.plugins-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--bl-spacing-lg);
+}
+
+.plugins-list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bl-spacing-md);
+}
+
+.plugin-item {
+  background-color: var(--bl-surface-2);
+  border: 1px solid var(--bl-border-dark);
+  border-radius: var(--bl-radius-md);
+  padding: var(--bl-spacing-md);
+  box-shadow: var(--bl-button-highlight);
+}
+
+.plugin-item.disabled {
+  opacity: 0.7;
+}
+
+.plugin-header {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-md);
+  margin-bottom: var(--bl-spacing-sm);
+}
+
+.plugin-header .bl-checkbox {
+  margin: 0;
+}
+
+.plugin-info {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: var(--bl-spacing-md);
+}
+
+.plugin-name {
+  font-weight: 500;
+  color: var(--bl-text-primary);
+  font-size: var(--bl-font-size-lg);
+}
+
+.plugin-version {
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-muted);
+  font-family: var(--bl-font-mono);
+}
+
+.plugin-actions {
+  display: flex;
+  gap: var(--bl-spacing-xs);
+}
+
+.plugin-description {
+  color: var(--bl-text-secondary);
+  font-size: var(--bl-font-size-base);
+  line-height: 1.5;
+  margin-bottom: var(--bl-spacing-sm);
+  padding-left: 28px;
+}
+
+.plugin-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-md);
+  padding-left: 28px;
+}
+
+.plugin-author {
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-muted);
+}

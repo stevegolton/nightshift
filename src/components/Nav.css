@@ -1,0 +1,130 @@
+/* Navigation Component Styles */
+
+.app-nav {
+  width: 200px;
+  min-width: 200px;
+  background-color: var(--bl-surface-1);
+  border-right: 1px solid var(--bl-border-dark);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-nav.collapsed {
+  width: 40px;
+  min-width: 40px;
+}
+
+.app-nav-header {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 var(--bl-spacing-sm);
+  background-color: var(--bl-surface-3);
+  border-bottom: 1px solid var(--bl-border-dark);
+  gap: var(--bl-spacing-sm);
+}
+
+.app-nav-toggle {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--bl-text-secondary);
+  cursor: pointer;
+  border-radius: var(--bl-radius-sm);
+  flex-shrink: 0;
+}
+
+.app-nav-toggle:hover {
+  background-color: var(--bl-surface-hover);
+  color: var(--bl-text-primary);
+}
+
+.app-nav-toggle svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.app-nav.collapsed .app-nav-toggle svg {
+  transform: rotate(180deg);
+}
+
+.app-nav-title {
+  font-size: var(--bl-font-size-sm);
+  font-weight: 500;
+  color: var(--bl-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.app-nav.collapsed .app-nav-title {
+  display: none;
+}
+
+.app-nav-items {
+  flex: 1;
+  padding: var(--bl-spacing-sm);
+  overflow-y: auto;
+}
+
+.app-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-md);
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  border-radius: var(--bl-radius-md);
+  cursor: pointer;
+  color: var(--bl-text-secondary);
+  font-size: var(--bl-font-size-base);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.app-nav-item:hover {
+  background-color: var(--bl-surface-3);
+  color: var(--bl-text-primary);
+}
+
+.app-nav-item.active {
+  background-color: var(--bl-accent-subtle);
+  color: var(--bl-accent);
+}
+
+.app-nav-item svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.app-nav-item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-nav.collapsed .app-nav-item {
+  padding: var(--bl-spacing-sm);
+  justify-content: center;
+}
+
+.app-nav.collapsed .app-nav-item-label {
+  display: none;
+}
+
+.app-nav-footer {
+  padding: var(--bl-spacing-sm);
+  border-top: 1px solid var(--bl-border-dark);
+}
+
+.app-nav-footer .app-nav-item {
+  margin-bottom: var(--bl-spacing-xs);
+}
+
+.app-nav-footer .app-nav-item:last-child {
+  margin-bottom: 0;
+}

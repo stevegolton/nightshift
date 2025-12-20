@@ -1,0 +1,96 @@
+/* Text Input */
+.bl-input {
+  height: var(--bl-input-height);
+  padding: 0 var(--bl-spacing-md);
+  font-family: var(--bl-font-family);
+  font-size: var(--bl-font-size-base);
+  color: var(--bl-text-primary);
+  background-color: var(--bl-surface-1);
+  border: 1px solid var(--bl-border-dark);
+  border-radius: var(--bl-radius-md);
+  outline: none;
+}
+
+.bl-input:hover {
+  border-color: var(--bl-border-light);
+}
+
+.bl-input:focus {
+  border-color: var(--bl-accent);
+  background-color: var(--bl-surface-0);
+}
+
+.bl-input::placeholder {
+  color: var(--bl-text-muted);
+}
+
+.bl-input:disabled {
+  color: var(--bl-text-disabled);
+  background-color: var(--bl-surface-2);
+  cursor: not-allowed;
+}
+
+/* Input with label inline (Blender style) */
+.bl-input-group {
+  display: inline-flex;
+  align-items: center;
+}
+
+.bl-input-group .bl-input-label {
+  height: var(--bl-input-height);
+  padding: 0 var(--bl-spacing-md);
+  display: flex;
+  align-items: center;
+  background-color: var(--bl-surface-3);
+  border: 1px solid var(--bl-border-dark);
+  border-right: none;
+  border-radius: var(--bl-radius-md) 0 0 var(--bl-radius-md);
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-secondary);
+  white-space: nowrap;
+}
+
+.bl-input-group .bl-input {
+  border-radius: 0 var(--bl-radius-md) var(--bl-radius-md) 0;
+}
+
+/* Input with icon */
+.bl-input-wrapper {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.bl-input-wrapper .bl-input {
+  padding-left: calc(var(--bl-spacing-md) + 20px);
+}
+
+.bl-input-wrapper .bl-input-icon {
+  position: absolute;
+  left: var(--bl-spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bl-text-muted);
+  pointer-events: none;
+}
+
+.bl-input-wrapper .bl-input-icon .material-icons {
+  font-size: 16px;
+}
+
+.bl-input-wrapper .bl-input:focus + .bl-input-icon,
+.bl-input-wrapper .bl-input-icon:has(+ .bl-input:focus) {
+  color: var(--bl-text-secondary);
+}
+
+/* Icon on the right side */
+.bl-input-wrapper.icon-right .bl-input {
+  padding-left: var(--bl-spacing-md);
+  padding-right: calc(var(--bl-spacing-md) + 20px);
+}
+
+.bl-input-wrapper.icon-right .bl-input-icon {
+  left: auto;
+  right: var(--bl-spacing-sm);
+}

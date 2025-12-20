@@ -4,19 +4,47 @@ export interface AppState {
   activeTab: string;
   activePrimaryTab: string;
   activeSecondaryTab: string;
+  profilerPrimaryTab: string;
+  profilerSecondaryTab: string;
   detailsPanelHeight: number;
   collapsedTrackGroups: Record<string, boolean>;
   collapsedTracks: Record<string, boolean>;
+  // Widget demo state
+  selectMode: string;
+  selectView: string;
+  checkOverlays: boolean;
+  checkFloor: boolean;
+  checkAxes: boolean;
+  radioPivot: string;
+  slider1: number;
+  slider2: number;
+  numberX: number;
+  numberY: number;
+  numberZ: number;
 }
 
 export const State: AppState = {
   navCollapsed: false,
-  activeTab: 'Scene',
+  activeTab: 'scene',
   activePrimaryTab: 'Selection',
-  activeSecondaryTab: 'Summary',
+  activeSecondaryTab: 'summary',
+  profilerPrimaryTab: 'selection',
+  profilerSecondaryTab: 'summary',
   detailsPanelHeight: 200,
   collapsedTrackGroups: {},
-  collapsedTracks: {}
+  collapsedTracks: {},
+  // Widget demo state
+  selectMode: 'object',
+  selectView: 'solid',
+  checkOverlays: true,
+  checkFloor: true,
+  checkAxes: false,
+  radioPivot: 'median',
+  slider1: 75,
+  slider2: 25,
+  numberX: 0,
+  numberY: 0,
+  numberZ: 0,
 };
 
 // Theme management

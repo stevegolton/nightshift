@@ -1,0 +1,41 @@
+/* Radio */
+.bl-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bl-spacing-sm);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--bl-font-size-base);
+  color: var(--bl-text-primary);
+}
+
+.bl-radio input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background-color: var(--bl-surface-1);
+  border: 1px solid var(--bl-border-dark);
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+}
+
+.bl-radio input:hover {
+  border-color: var(--bl-border-light);
+}
+
+.bl-radio input:checked {
+  background-color: var(--bl-accent);
+  border-color: var(--bl-accent);
+}
+
+.bl-radio input:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 6px;
+  height: 6px;
+  background-color: #fff;
+  border-radius: 50%;
+}

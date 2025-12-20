@@ -1,0 +1,73 @@
+/* Table */
+.bl-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--bl-font-size-base);
+  border: 1px solid var(--bl-border-dark);
+  border-radius: var(--bl-radius-md);
+  overflow: hidden;
+  background-color: var(--bl-surface-1);
+}
+
+.bl-table th,
+.bl-table td {
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  text-align: left;
+  border-right: 1px solid var(--bl-border-dark);
+}
+
+.bl-table th:last-child,
+.bl-table td:last-child {
+  border-right: none;
+}
+
+.bl-table th {
+  background-color: var(--bl-surface-2);
+  color: var(--bl-text-secondary);
+  font-weight: 500;
+  font-size: var(--bl-font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid var(--bl-border-light);
+}
+
+.bl-table tbody tr {
+  border-bottom: 1px solid var(--bl-border-dark);
+}
+
+.bl-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.bl-table tbody tr:nth-child(even) {
+  background-color: var(--bl-surface-2);
+}
+
+.bl-table-selectable tbody tr {
+  cursor: pointer;
+}
+
+.bl-table-selectable tbody tr:hover td {
+  background-color: var(--bl-surface-3);
+}
+
+.bl-table tbody tr.selected td {
+  background-color: var(--bl-accent-subtle);
+}
+
+.bl-table-selectable tbody tr.selected:hover td {
+  background-color: var(--bl-accent-subtle);
+}
+
+.bl-table-empty td {
+  text-align: center;
+  color: var(--bl-text-secondary);
+  padding: var(--bl-spacing-lg);
+  font-style: italic;
+}
+
+.bl-table-borderless {
+  border: none;
+  border-radius: 0;
+}

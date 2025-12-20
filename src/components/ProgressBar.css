@@ -1,0 +1,24 @@
+/* Progress Bar */
+.bl-progress {
+  height: 6px;
+  background-color: var(--bl-surface-1);
+  border-radius: var(--bl-radius-sm);
+  overflow: hidden;
+}
+
+.bl-progress-bar {
+  height: 100%;
+  background-color: var(--bl-accent);
+}
+
+.bl-progress-success .bl-progress-bar {
+  background-color: var(--bl-success);
+}
+
+.bl-progress-warning .bl-progress-bar {
+  background-color: var(--bl-warning);
+}
+
+.bl-progress-error .bl-progress-bar {
+  background-color: var(--bl-error);
+}

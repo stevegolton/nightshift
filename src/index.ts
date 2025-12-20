@@ -1,8 +1,7 @@
 import m from 'mithril';
 
 // Import styles
-import './styles/app.css';
-import '../blender-ui.css';
+import '../nightshift.css';
 
 // Import state and initialize theme
 import { loadTheme } from './state';
@@ -21,13 +20,13 @@ const root = document.getElementById('app');
 if (root) {
   m.route(root, '/widgets', {
     '/widgets': {
-      render: () => m(Layout, m(WidgetsPage))
+      render: () => m(Layout, m(WidgetsPage)),
     },
     '/profiler': {
-      render: () => m(Layout, m(ProfilerPage))
+      render: () => m(Layout, m(ProfilerPage)),
     },
     '/plugins': {
-      render: () => m(Layout, m(PluginsPage))
-    }
+      render: () => m(Layout, m(PluginsPage)),
+    },
   });
 }

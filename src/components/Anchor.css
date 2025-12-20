@@ -1,0 +1,32 @@
+/* Anchor / Link */
+.bl-anchor {
+  color: var(--bl-accent);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bl-anchor:hover {
+  color: var(--bl-accent-light);
+  text-decoration: underline;
+}
+
+.bl-anchor:active {
+  color: var(--bl-accent-dark);
+}
+
+.bl-anchor-disabled {
+  color: var(--bl-text-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.bl-anchor-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bl-anchor-icon {
+  font-size: 14px;
+  line-height: 1;
+}
