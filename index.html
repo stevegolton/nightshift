@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blender Style UI Toolkit</title>
   <link rel="stylesheet" href="blender-ui.css">
+  <script src="https://unpkg.com/mithril/mithril.js"></script>
   <style>
     html, body {
       margin: 0;
@@ -101,6 +102,7 @@
       color: var(--bl-text-secondary);
       font-size: var(--bl-font-size-base);
       white-space: nowrap;
+      text-decoration: none;
     }
 
     .app-nav-item:hover {
@@ -153,17 +155,6 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-    }
-
-    .app-page {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .app-page.active {
-      display: flex;
     }
 
     /* Page-specific styles */
@@ -546,1115 +537,23 @@
   </style>
 </head>
 <body class="bl-root">
-  <div class="app-layout">
-    <!-- Navigation Sidebar -->
-    <nav class="app-nav" id="appNav">
-      <div class="app-nav-header">
-        <button class="app-nav-toggle" onclick="toggleNav()" title="Toggle sidebar">
-          <svg viewBox="0 0 16 16"><path d="M11 3L5 8l6 5V3z"/></svg>
-        </button>
-        <span class="app-nav-title">Blender UI</span>
-      </div>
-      <div class="app-nav-items">
-        <div class="app-nav-item active" onclick="switchPage('widgets')" data-page="widgets">
-          <svg viewBox="0 0 16 16"><path d="M2 2h5v5H2V2zm7 0h5v5H9V2zM2 9h5v5H2V9zm7 0h5v5H9V9z"/></svg>
-          <span class="app-nav-item-label">Widgets</span>
-        </div>
-        <div class="app-nav-item" onclick="switchPage('profiler')" data-page="profiler">
-          <svg viewBox="0 0 16 16"><path d="M1 14h14v1H1v-1zm1-3h2v3H2v-3zm3-2h2v5H5V9zm3-4h2v9H8V5zm3 2h2v7h-2V7z"/></svg>
-          <span class="app-nav-item-label">Profiler</span>
-        </div>
-        <div class="app-nav-item" onclick="switchPage('plugins')" data-page="plugins">
-          <svg viewBox="0 0 16 16"><path d="M6 1v3H4.5A1.5 1.5 0 0 0 3 5.5v1A1.5 1.5 0 0 0 4.5 8H6v7h4V8h1.5A1.5 1.5 0 0 0 13 6.5v-1A1.5 1.5 0 0 0 11.5 4H10V1H6z"/></svg>
-          <span class="app-nav-item-label">Plugins</span>
-        </div>
-      </div>
-      <div class="app-nav-footer">
-        <div class="app-nav-item" onclick="toggleTheme()" id="themeToggle">
-          <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 12.5V2.5a5.5 5.5 0 0 1 0 11z"/></svg>
-          <span class="app-nav-item-label">Toggle Theme</span>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="app-main">
-      <!-- Widgets Page -->
-      <div class="app-page active" id="page-widgets">
-        <div class="page-widgets">
-          <!-- Header Bar -->
-          <header class="bl-header">
-            <div class="bl-header-menu">
-              <div class="bl-header-menu-item">File</div>
-              <div class="bl-header-menu-item">Edit</div>
-              <div class="bl-header-menu-item">View</div>
-              <div class="bl-header-menu-item">Object</div>
-              <div class="bl-header-menu-item">Help</div>
-            </div>
-          </header>
-
-          <div class="demo-main">
-            <!-- Sidebar with Panels -->
-            <aside class="demo-sidebar">
-              <!-- Transform Panel -->
-              <div class="bl-panel">
-                <div class="bl-panel-header" onclick="this.parentElement.classList.toggle('collapsed')">
-                  <div class="bl-panel-toggle">
-                    <svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>
-                  </div>
-                  <span class="bl-panel-title">Transform</span>
-                </div>
-                <div class="bl-panel-content">
-                  <div class="bl-form-row">
-                    <label class="bl-form-label">Location</label>
-                    <div class="bl-flex bl-gap-xs">
-                      <div class="bl-number-input">
-                        <span class="bl-number-label">X</span>
-                        <input type="text" value="0.000">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="bl-form-row">
-                    <label class="bl-form-label"></label>
-                    <div class="bl-flex bl-gap-xs">
-                      <div class="bl-number-input">
-                        <span class="bl-number-label">Y</span>
-                        <input type="text" value="0.000">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="bl-form-row">
-                    <label class="bl-form-label"></label>
-                    <div class="bl-flex bl-gap-xs">
-                      <div class="bl-number-input">
-                        <span class="bl-number-label">Z</span>
-                        <input type="text" value="0.000">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Material Panel -->
-              <div class="bl-panel">
-                <div class="bl-panel-header" onclick="this.parentElement.classList.toggle('collapsed')">
-                  <div class="bl-panel-toggle">
-                    <svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>
-                  </div>
-                  <span class="bl-panel-title">Material</span>
-                </div>
-                <div class="bl-panel-content">
-                  <div class="bl-form-row">
-                    <label class="bl-form-label">Base Color</label>
-                    <div class="bl-color-swatch">
-                      <div class="bl-color-preview" style="background-color: #e87d0d;"></div>
-                      <span class="bl-color-value">#E87D0D</span>
-                    </div>
-                  </div>
-                  <div class="bl-form-row">
-                    <label class="bl-form-label">Metallic</label>
-                    <div class="bl-slider">
-                      <input type="range" min="0" max="100" value="0">
-                      <span class="bl-slider-value">0.00</span>
-                    </div>
-                  </div>
-                  <div class="bl-form-row">
-                    <label class="bl-form-label">Roughness</label>
-                    <div class="bl-slider">
-                      <input type="range" min="0" max="100" value="50">
-                      <span class="bl-slider-value">0.50</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Tree View -->
-              <div class="bl-panel">
-                <div class="bl-panel-header" onclick="this.parentElement.classList.toggle('collapsed')">
-                  <div class="bl-panel-toggle">
-                    <svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>
-                  </div>
-                  <span class="bl-panel-title">Scene Collection</span>
-                </div>
-                <div class="bl-panel-content">
-                  <div class="bl-tree">
-                    <div class="bl-tree-item" onclick="this.classList.toggle('collapsed')">
-                      <div class="bl-tree-toggle">
-                        <svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>
-                      </div>
-                      <div class="bl-tree-icon"><div class="icon-placeholder"></div></div>
-                      <span>Collection</span>
-                    </div>
-                    <div class="bl-tree-children">
-                      <div class="bl-tree-item active">
-                        <div class="bl-tree-toggle"></div>
-                        <div class="bl-tree-icon"><div class="icon-placeholder"></div></div>
-                        <span>Cube</span>
-                      </div>
-                      <div class="bl-tree-item">
-                        <div class="bl-tree-toggle"></div>
-                        <div class="bl-tree-icon"><div class="icon-placeholder"></div></div>
-                        <span>Camera</span>
-                      </div>
-                      <div class="bl-tree-item">
-                        <div class="bl-tree-toggle"></div>
-                        <div class="bl-tree-icon"><div class="icon-placeholder"></div></div>
-                        <span>Light</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </aside>
-
-            <!-- Main Content Area -->
-            <div class="demo-content">
-              <!-- Buttons Section -->
-              <section class="demo-section">
-                <h2 class="demo-section-title">Buttons</h2>
-                <div class="demo-label">Standard Buttons</div>
-                <div class="demo-row">
-                  <button class="bl-btn">Default</button>
-                  <button class="bl-btn bl-btn-primary">Primary</button>
-                  <button class="bl-btn" disabled>Disabled</button>
-                </div>
-                <div class="demo-label">Icon Buttons</div>
-                <div class="demo-row">
-                  <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Move">
-                    <div class="icon-placeholder"></div>
-                  </button>
-                  <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Rotate">
-                    <div class="icon-placeholder"></div>
-                  </button>
-                  <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Scale">
-                    <div class="icon-placeholder"></div>
-                  </button>
-                </div>
-                <div class="demo-label">Button Group</div>
-                <div class="demo-row">
-                  <div class="bl-btn-group">
-                    <button class="bl-btn bl-btn-toggle active">Object</button>
-                    <button class="bl-btn bl-btn-toggle">Edit</button>
-                    <button class="bl-btn bl-btn-toggle">Sculpt</button>
-                  </div>
-                </div>
-                <div class="demo-label">Segmented Buttons</div>
-                <div class="demo-row">
-                  <div class="bl-segmented">
-                    <button class="bl-segmented-btn active">Vertex</button>
-                    <button class="bl-segmented-btn">Edge</button>
-                    <button class="bl-segmented-btn">Face</button>
-                  </div>
-                  <div class="bl-segmented">
-                    <button class="bl-segmented-btn icon-only active" title="Grid">
-                      <svg viewBox="0 0 16 16"><path d="M1 1h6v6H1V1zm8 0h6v6H9V1zM1 9h6v6H1V9zm8 0h6v6H9V9z"/></svg>
-                    </button>
-                    <button class="bl-segmented-btn icon-only" title="List">
-                      <svg viewBox="0 0 16 16"><path d="M1 2h14v2H1V2zm0 5h14v2H1V7zm0 5h14v2H1v-2z"/></svg>
-                    </button>
-                    <button class="bl-segmented-btn icon-only" title="Details">
-                      <svg viewBox="0 0 16 16"><path d="M1 1h4v4H1V1zm6 1h8v2H7V2zM1 6h4v4H1V6zm6 1h8v2H7V7zM1 11h4v4H1v-4zm6 1h8v2H7v-2z"/></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="demo-row">
-                  <div class="bl-segmented">
-                    <button class="bl-segmented-btn icon-only" title="Align Left">
-                      <svg viewBox="0 0 16 16"><path d="M1 2h10v2H1V2zm0 4h14v2H1V6zm0 4h8v2H1v-2zm0 4h12v2H1v-2z"/></svg>
-                    </button>
-                    <button class="bl-segmented-btn icon-only active" title="Align Center">
-                      <svg viewBox="0 0 16 16"><path d="M3 2h10v2H3V2zm1 4h8v2H4V6zm2 4h4v2H6v-2zm1 4h2v2H7v-2z"/></svg>
-                    </button>
-                    <button class="bl-segmented-btn icon-only" title="Align Right">
-                      <svg viewBox="0 0 16 16"><path d="M5 2h10v2H5V2zm1 4h9v2H6V6zm2 4h7v2H8v-2zm1 4h6v2H9v-2z"/></svg>
-                    </button>
-                  </div>
-                  <div class="bl-segmented">
-                    <button class="bl-segmented-btn">
-                      <svg viewBox="0 0 16 16"><path d="M8 1l7 14H1L8 1z"/></svg>
-                      Solid
-                    </button>
-                    <button class="bl-segmented-btn active">
-                      <svg viewBox="0 0 16 16"><path d="M8 1l7 14H1L8 1z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-                      Wire
-                    </button>
-                  </div>
-                </div>
-              </section>
-
-              <!-- Text Inputs Section -->
-              <section class="demo-section">
-                <h2 class="demo-section-title">Text Inputs</h2>
-                <div class="demo-label">Standard Input</div>
-                <div class="demo-row">
-                  <input type="text" class="bl-input" placeholder="Enter text...">
-                  <input type="text" class="bl-input" value="With value">
-                  <input type="text" class="bl-input" disabled value="Disabled">
-                </div>
-                <div class="demo-label">Number Inputs</div>
-                <div class="demo-row">
-                  <div class="bl-number-input">
-                    <span class="bl-number-label">X</span>
-                    <input type="text" value="0.000">
-                  </div>
-                  <div class="bl-number-input">
-                    <span class="bl-number-label">Y</span>
-                    <input type="text" value="0.000">
-                  </div>
-                  <div class="bl-number-input">
-                    <span class="bl-number-label">Z</span>
-                    <input type="text" value="0.000">
-                  </div>
-                </div>
-              </section>
-
-              <!-- Selects Section -->
-              <section class="demo-section">
-                <h2 class="demo-section-title">Select Inputs</h2>
-                <div class="demo-row">
-                  <div class="bl-select">
-                    <select>
-                      <option>Object Mode</option>
-                      <option>Edit Mode</option>
-                      <option>Sculpt Mode</option>
-                    </select>
-                  </div>
-                  <div class="bl-select">
-                    <select>
-                      <option>Solid</option>
-                      <option>Wireframe</option>
-                      <option>Material Preview</option>
-                    </select>
-                  </div>
-                </div>
-              </section>
-
-              <!-- Checkboxes & Radio Section -->
-              <section class="demo-section">
-                <h2 class="demo-section-title">Checkboxes & Radio Buttons</h2>
-                <div class="demo-label">Checkboxes</div>
-                <div class="demo-row">
-                  <label class="bl-checkbox">
-                    <input type="checkbox" checked>
-                    Show Overlays
-                  </label>
-                  <label class="bl-checkbox">
-                    <input type="checkbox" checked>
-                    Show Floor
-                  </label>
-                  <label class="bl-checkbox">
-                    <input type="checkbox">
-                    Show Axes
-                  </label>
-                </div>
-                <div class="demo-label">Disabled Checkboxes</div>
-                <div class="demo-row">
-                  <label class="bl-checkbox">
-                    <input type="checkbox" checked disabled>
-                    Checked Disabled
-                  </label>
-                  <label class="bl-checkbox">
-                    <input type="checkbox" disabled>
-                    Unchecked Disabled
-                  </label>
-                </div>
-                <div class="demo-label">Radio Buttons</div>
-                <div class="demo-row">
-                  <label class="bl-radio">
-                    <input type="radio" name="pivot" checked>
-                    Median Point
-                  </label>
-                  <label class="bl-radio">
-                    <input type="radio" name="pivot">
-                    3D Cursor
-                  </label>
-                  <label class="bl-radio">
-                    <input type="radio" name="pivot">
-                    Active Element
-                  </label>
-                </div>
-                <div class="demo-label">Disabled Radio Buttons</div>
-                <div class="demo-row">
-                  <label class="bl-radio">
-                    <input type="radio" name="disabled-radio" checked disabled>
-                    Selected Disabled
-                  </label>
-                  <label class="bl-radio">
-                    <input type="radio" name="disabled-radio" disabled>
-                    Unselected Disabled
-                  </label>
-                </div>
-              </section>
-
-              <!-- Sliders Section -->
-              <section class="demo-section">
-                <h2 class="demo-section-title">Sliders & Progress</h2>
-                <div class="demo-label">Sliders</div>
-                <div class="demo-grid">
-                  <div class="bl-slider">
-                    <input type="range" min="0" max="100" value="75">
-                    <span class="bl-slider-value">0.75</span>
-                  </div>
-                  <div class="bl-slider">
-                    <input type="range" min="0" max="100" value="25">
-                    <span class="bl-slider-value">0.25</span>
-                  </div>
-                </div>
-                <div class="demo-label bl-mt-md">Progress Bars</div>
-                <div style="max-width: 400px;">
-                  <div class="bl-progress bl-mb-md">
-                    <div class="bl-progress-bar" style="width: 75%;"></div>
-                  </div>
-                  <div class="bl-progress">
-                    <div class="bl-progress-bar" style="width: 45%;"></div>
-                  </div>
-                </div>
-              </section>
-
-              <!-- Tabs Section -->
-              <section class="demo-section">
-                <h2 class="demo-section-title">Tabs</h2>
-                <div class="bl-tabs">
-                  <button class="bl-tab active" onclick="switchTab(this)">Scene</button>
-                  <button class="bl-tab" onclick="switchTab(this)">World</button>
-                  <button class="bl-tab" onclick="switchTab(this)">Object</button>
-                  <button class="bl-tab" onclick="switchTab(this)">Modifiers</button>
-                </div>
-                <div class="bl-tab-content">
-                  <p style="color: var(--bl-text-secondary); margin: 0;">Tab content area</p>
-                </div>
-              </section>
-
-              <!-- Table Section -->
-              <section class="demo-section">
-                <h2 class="demo-section-title">Table</h2>
-                <table class="bl-table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Type</th>
-                      <th>Vertices</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="selected">
-                      <td>Cube</td>
-                      <td>Mesh</td>
-                      <td>8</td>
-                      <td><span class="bl-badge bl-badge-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td>Suzanne</td>
-                      <td>Mesh</td>
-                      <td>507</td>
-                      <td><span class="bl-badge">Hidden</span></td>
-                    </tr>
-                    <tr>
-                      <td>Sphere</td>
-                      <td>Mesh</td>
-                      <td>482</td>
-                      <td><span class="bl-badge bl-badge-warning">Modified</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </section>
-
-              <!-- Badges Section -->
-              <section class="demo-section">
-                <h2 class="demo-section-title">Badges</h2>
-                <div class="demo-row">
-                  <span class="bl-badge">Default</span>
-                  <span class="bl-badge bl-badge-success">Success</span>
-                  <span class="bl-badge bl-badge-warning">Warning</span>
-                  <span class="bl-badge bl-badge-error">Error</span>
-                </div>
-              </section>
-
-              <!-- Menu Section -->
-              <section class="demo-section">
-                <h2 class="demo-section-title">Dropdown Menu</h2>
-                <div class="demo-row">
-                  <div class="bl-menu" style="display: inline-block;">
-                    <div class="bl-menu-item">
-                      <span>New</span>
-                      <span class="bl-menu-item-shortcut">Ctrl+N</span>
-                    </div>
-                    <div class="bl-menu-item">
-                      <span>Open...</span>
-                      <span class="bl-menu-item-shortcut">Ctrl+O</span>
-                    </div>
-                    <div class="bl-menu-item">
-                      <span>Save</span>
-                      <span class="bl-menu-item-shortcut">Ctrl+S</span>
-                    </div>
-                    <div class="bl-menu-separator"></div>
-                    <div class="bl-menu-item disabled">
-                      <span>Recover Last Session</span>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            </div>
-          </div>
-
-          <!-- Status Bar -->
-          <footer class="bl-statusbar">
-            <span class="bl-statusbar-item">Verts: 8</span>
-            <span class="bl-statusbar-item">Faces: 6</span>
-            <span class="bl-statusbar-item">Objects: 3/3</span>
-            <span class="bl-statusbar-item" style="margin-left: auto; border-right: none;">Blender UI Toolkit v1.0</span>
-          </footer>
-        </div>
-      </div>
-
-      <!-- Profiler Page -->
-      <div class="app-page" id="page-profiler">
-        <div class="page-profiler">
-          <!-- Header Bar -->
-          <header class="bl-header">
-            <div class="bl-header-menu">
-              <div class="bl-header-menu-item">File</div>
-              <div class="bl-header-menu-item">Edit</div>
-              <div class="bl-header-menu-item">View</div>
-              <div class="bl-header-menu-item">Profile</div>
-              <div class="bl-header-menu-item">Help</div>
-            </div>
-            <div style="margin-left: auto; display: flex; align-items: center; gap: var(--bl-spacing-md);">
-              <span class="bl-badge bl-badge-success">Recording</span>
-              <button class="bl-btn bl-btn-primary">Stop</button>
-            </div>
-          </header>
-
-          <div class="profiler-main">
-            <div class="profiler-timeline-area">
-              <div class="bl-timeline">
-                <!-- Timeline Header -->
-                <div class="bl-timeline-header">
-                  <span class="bl-timeline-title">Frame Profile - Frame #1247</span>
-                  <div class="bl-btn-group">
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Previous Frame">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M11 3L5 8l6 5V3z"/><rect x="3" y="3" width="2" height="10"/></svg>
-                    </button>
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Next Frame">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M5 3l6 5-6 5V3z"/><rect x="11" y="3" width="2" height="10"/></svg>
-                    </button>
-                  </div>
-                  <div class="bl-timeline-controls">
-                    <div class="bl-select">
-                      <select>
-                        <option>All Threads</option>
-                        <option>Main Thread</option>
-                        <option>GPU</option>
-                      </select>
-                    </div>
-                    <div class="bl-timeline-zoom">
-                      <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Zoom Out">
-                        <svg viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="7" width="10" height="2"/></svg>
-                      </button>
-                      <span>100%</span>
-                      <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Zoom In">
-                        <svg viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="7" width="10" height="2"/><rect x="7" y="3" width="2" height="10"/></svg>
-                      </button>
-                    </div>
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Fit to Window">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h4v2H4v2H2V2zm8 0h4v4h-2V4h-2V2zM4 10H2v4h4v-2H4v-2zm8 2v2h-2v2h4v-4h-2z"/></svg>
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Timeline Minimap -->
-                <div class="bl-timeline-minimap">
-                  <div class="bl-timeline-minimap-slice" style="left: 2%; width: 50%; top: 6px; background-color: #5a9a5a;"></div>
-                  <div class="bl-timeline-minimap-slice" style="left: 55%; width: 15%; top: 10px; background-color: #d4842a;"></div>
-                  <div class="bl-timeline-minimap-slice" style="left: 70%; width: 20%; top: 14px; background-color: #8a6ab5;"></div>
-                  <div class="bl-timeline-minimap-slice" style="left: 3%; width: 45%; top: 20px; background-color: #b54a4a;"></div>
-                  <div class="bl-timeline-minimap-viewport" style="left: 0%; width: 100%;"></div>
-                </div>
-
-                <!-- Timeline Body -->
-                <div class="bl-timeline-body">
-                  <div class="bl-timeline-ruler-row">
-                    <div class="bl-timeline-tracks-header">
-                      <div class="bl-track-search">
-                        <svg viewBox="0 0 16 16"><path d="M11.5 10.5L15 14M10 6.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                        <input type="text" placeholder="Filter tracks...">
-                      </div>
-                      <div class="bl-track-header-actions">
-                        <button class="bl-track-btn bl-tooltip" data-tooltip="Expand All" onclick="expandAllTracks()">
-                          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 4h10v2H3V4zm3 4h4v2H6V8zm-3 4h10v2H3v-2z"/></svg>
-                        </button>
-                        <button class="bl-track-btn bl-tooltip" data-tooltip="Collapse All" onclick="collapseAllTracks()">
-                          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 7h10v2H3V7z"/></svg>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="bl-timeline-ruler">
-                      <div class="bl-timeline-ruler-inner">
-                        <div class="bl-timeline-ruler-mark major" style="left: 0;"><span>0ms</span></div>
-                        <div class="bl-timeline-ruler-mark major" style="left: 25%;"><span>4ms</span></div>
-                        <div class="bl-timeline-ruler-mark major" style="left: 50%;"><span>8ms</span></div>
-                        <div class="bl-timeline-ruler-mark major" style="left: 75%;"><span>12ms</span></div>
-                        <div class="bl-timeline-ruler-mark major" style="left: 100%;"><span>16ms</span></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="bl-timeline-scroll">
-                    <div class="bl-timeline-tracks">
-                      <!-- Main Thread Group -->
-                      <div class="bl-track-group" data-group="main-thread">
-                        <div class="bl-track-group-header" onclick="toggleTrackGroup(this, 'main-thread')">
-                          <div class="bl-track-group-toggle">
-                            <svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>
-                          </div>
-                          <span class="bl-track-group-name">Main Thread</span>
-                          <div class="bl-track-buttons">
-                            <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                            <button class="bl-track-btn" title="More" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg></button>
-                          </div>
-                        </div>
-                        <div class="bl-track-group-content">
-                          <!-- Frame Track (expandable) -->
-                          <div class="bl-track expandable" data-track="frame" data-depth="1" onclick="toggleTrack(this, 'frame')">
-                            <div class="bl-track-toggle">
-                              <svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>
-                            </div>
-                            <span class="bl-track-name">Frame</span>
-                            <div class="bl-track-buttons">
-                              <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                              <button class="bl-track-btn" title="More" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg></button>
-                            </div>
-                          </div>
-                          <div class="bl-track-children" data-track="frame">
-                            <!-- Scripts Track (expandable) -->
-                            <div class="bl-track expandable" data-track="scripts" data-depth="2" onclick="toggleTrack(this, 'scripts')">
-                              <div class="bl-track-toggle">
-                                <svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>
-                              </div>
-                              <span class="bl-track-name">Scripts</span>
-                              <div class="bl-track-buttons">
-                                <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                                <button class="bl-track-btn" title="More" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg></button>
-                              </div>
-                            </div>
-                            <div class="bl-track-children" data-track="scripts">
-                              <div class="bl-track" data-depth="3">
-                                <span class="bl-track-name">updateScene()</span>
-                                <div class="bl-track-buttons">
-                                  <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                                </div>
-                              </div>
-                              <div class="bl-track" data-depth="3">
-                                <span class="bl-track-name">processInput()</span>
-                                <div class="bl-track-buttons">
-                                  <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                                </div>
-                              </div>
-                            </div>
-                            <!-- Layout Track -->
-                            <div class="bl-track" data-depth="2">
-                              <span class="bl-track-name">Layout</span>
-                              <div class="bl-track-buttons">
-                                <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                              </div>
-                            </div>
-                            <!-- Paint Track (expandable) -->
-                            <div class="bl-track expandable" data-track="paint" data-depth="2" onclick="toggleTrack(this, 'paint')">
-                              <div class="bl-track-toggle">
-                                <svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>
-                              </div>
-                              <span class="bl-track-name">Paint</span>
-                              <div class="bl-track-buttons">
-                                <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                              </div>
-                            </div>
-                            <div class="bl-track-children" data-track="paint">
-                              <div class="bl-track" data-depth="3">
-                                <span class="bl-track-name">paint</span>
-                              </div>
-                              <div class="bl-track" data-depth="3">
-                                <span class="bl-track-name">rasterize</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- GPU Group -->
-                      <div class="bl-track-group" data-group="gpu">
-                        <div class="bl-track-group-header" onclick="toggleTrackGroup(this, 'gpu')">
-                          <div class="bl-track-group-toggle">
-                            <svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>
-                          </div>
-                          <span class="bl-track-group-name">GPU</span>
-                          <div class="bl-track-buttons">
-                            <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                          </div>
-                        </div>
-                        <div class="bl-track-group-content">
-                          <div class="bl-track">
-                            <span class="bl-track-name">Render Pass</span>
-                            <div class="bl-track-buttons">
-                              <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                            </div>
-                          </div>
-                          <div class="bl-track">
-                            <span class="bl-track-name">Compositing</span>
-                            <div class="bl-track-buttons">
-                              <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Workers Group -->
-                      <div class="bl-track-group" data-group="workers">
-                        <div class="bl-track-group-header" onclick="toggleTrackGroup(this, 'workers')">
-                          <div class="bl-track-group-toggle">
-                            <svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>
-                          </div>
-                          <span class="bl-track-group-name">Worker Threads</span>
-                          <div class="bl-track-buttons">
-                            <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                          </div>
-                        </div>
-                        <div class="bl-track-group-content">
-                          <div class="bl-track">
-                            <span class="bl-track-name">Worker 1</span>
-                            <div class="bl-track-buttons">
-                              <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                            </div>
-                          </div>
-                          <div class="bl-track">
-                            <span class="bl-track-name">Worker 2</span>
-                            <div class="bl-track-buttons">
-                              <button class="bl-track-btn" title="Pin" onclick="event.stopPropagation()"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg></button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="bl-timeline-lanes-column">
-                      <div class="bl-timeline-lanes-inner" style="width: 100%; min-height: 100%;">
-                        <!-- Grid Lines -->
-                        <div class="bl-timeline-grid">
-                          <div class="bl-timeline-grid-line major" style="left: 0;"></div>
-                          <div class="bl-timeline-grid-line" style="left: 12.5%;"></div>
-                          <div class="bl-timeline-grid-line major" style="left: 25%;"></div>
-                          <div class="bl-timeline-grid-line" style="left: 37.5%;"></div>
-                          <div class="bl-timeline-grid-line major" style="left: 50%;"></div>
-                          <div class="bl-timeline-grid-line" style="left: 62.5%;"></div>
-                          <div class="bl-timeline-grid-line major" style="left: 75%;"></div>
-                          <div class="bl-timeline-grid-line" style="left: 87.5%;"></div>
-                        </div>
-
-                        <div class="bl-timeline-playhead" style="left: 32%;"></div>
-
-                        <!-- Main Thread Lanes -->
-                        <div class="bl-lane-group" data-group="main-thread">
-                          <div class="bl-lane-group-header"></div>
-                          <div class="bl-lane-group-content">
-                            <!-- Frame lane -->
-                            <div class="bl-timeline-lane">
-                              <div class="bl-slice bl-slice-blue" style="left: 1%; width: 98%;">
-                                <span class="bl-slice-label">requestAnimationFrame</span>
-                                <span class="bl-slice-duration">16.4ms</span>
-                              </div>
-                            </div>
-                            <div class="bl-lane-children" data-track="frame">
-                              <!-- Scripts lane -->
-                              <div class="bl-timeline-lane">
-                                <div class="bl-slice bl-slice-green" style="left: 2%; width: 50%;">
-                                  <span class="bl-slice-label">Scripts</span>
-                                  <span class="bl-slice-duration">8.2ms</span>
-                                </div>
-                              </div>
-                              <div class="bl-lane-children" data-track="scripts">
-                                <!-- updateScene lane -->
-                                <div class="bl-timeline-lane">
-                                  <div class="bl-slice bl-slice-green" style="left: 3%; width: 25%;">
-                                    <span class="bl-slice-label">updateScene</span>
-                                  </div>
-                                </div>
-                                <!-- processInput lane -->
-                                <div class="bl-timeline-lane">
-                                  <div class="bl-slice bl-slice-green" style="left: 30%; width: 20%;">
-                                    <span class="bl-slice-label">processInput</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <!-- Layout lane -->
-                              <div class="bl-timeline-lane">
-                                <div class="bl-slice bl-slice-orange" style="left: 55%; width: 13%;">
-                                  <span class="bl-slice-label">Layout</span>
-                                  <span class="bl-slice-duration">2.1ms</span>
-                                </div>
-                              </div>
-                              <!-- Paint lane -->
-                              <div class="bl-timeline-lane">
-                                <div class="bl-slice bl-slice-purple" style="left: 70%; width: 12%;">
-                                  <span class="bl-slice-label">Paint</span>
-                                  <span class="bl-slice-duration">1.8ms</span>
-                                </div>
-                              </div>
-                              <div class="bl-lane-children" data-track="paint">
-                                <!-- drawRect lane -->
-                                <div class="bl-timeline-lane">
-                                  <div class="bl-slice bl-slice-purple" style="left: 71%; width: 5%;">
-                                    <span class="bl-slice-label">drawRect</span>
-                                  </div>
-                                </div>
-                                <!-- rasterize lane -->
-                                <div class="bl-timeline-lane">
-                                  <div class="bl-slice bl-slice-purple" style="left: 77%; width: 4%;">
-                                    <span class="bl-slice-label">rasterize</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- GPU Lanes -->
-                        <div class="bl-lane-group" data-group="gpu">
-                          <div class="bl-lane-group-header"></div>
-                          <div class="bl-lane-group-content">
-                            <div class="bl-timeline-lane">
-                              <div class="bl-slice bl-slice-red" style="left: 3%; width: 45%;">
-                                <span class="bl-slice-label">Render Pass</span>
-                                <span class="bl-slice-duration">7.2ms</span>
-                              </div>
-                            </div>
-                            <div class="bl-timeline-lane">
-                              <div class="bl-slice bl-slice-teal" style="left: 50%; width: 35%;">
-                                <span class="bl-slice-label">Compositing</span>
-                                <span class="bl-slice-duration">5.6ms</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- Worker Lanes -->
-                        <div class="bl-lane-group" data-group="workers">
-                          <div class="bl-lane-group-header"></div>
-                          <div class="bl-lane-group-content">
-                            <div class="bl-timeline-lane">
-                              <div class="bl-slice bl-slice-yellow" style="left: 5%; width: 20%;">
-                                <span class="bl-slice-label">parseGeometry</span>
-                              </div>
-                            </div>
-                            <div class="bl-timeline-lane">
-                              <div class="bl-slice bl-slice-yellow" style="left: 10%; width: 15%;">
-                                <span class="bl-slice-label">decodeTexture</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="profiler-resize-handle" id="resizeHandle"></div>
-
-            <!-- Details Panel -->
-            <div class="profiler-details" id="detailsPanel">
-              <!-- Primary tabs row -->
-              <div class="profiler-details-tabs-primary">
-                <div class="details-primary-tabs">
-                  <button class="details-primary-tab active" onclick="switchDetailsPrimaryTab(this)">Selection</button>
-                  <button class="details-primary-tab" onclick="switchDetailsPrimaryTab(this)">History</button>
-                  <button class="details-primary-tab" onclick="switchDetailsPrimaryTab(this)">Flame Graph</button>
-                  <button class="details-primary-tab" onclick="switchDetailsPrimaryTab(this)">Statistics</button>
-                </div>
-                <div class="profiler-details-actions">
-                  <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Pin Selection">
-                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>
-                  </button>
-                  <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Clear History">
-                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-                  </button>
-                </div>
-              </div>
-              <!-- Secondary tabs row (for Selection tab) -->
-              <div class="profiler-details-header">
-                <div class="details-secondary-tabs">
-                  <button class="details-secondary-tab active">Summary</button>
-                  <button class="details-secondary-tab">Call Stack</button>
-                  <button class="details-secondary-tab">Bottom-Up</button>
-                  <button class="details-secondary-tab">Top-Down</button>
-                </div>
-              </div>
-              <div class="profiler-details-content">
-                <div class="details-grid">
-                  <div class="details-section">
-                    <div class="details-section-title">Selected Slice</div>
-                    <div class="details-row">
-                      <span class="details-label">Function</span>
-                      <span class="details-value highlight">requestAnimationFrame</span>
-                    </div>
-                    <div class="details-row">
-                      <span class="details-label">Duration</span>
-                      <span class="details-value">16.4ms</span>
-                    </div>
-                    <div class="details-row">
-                      <span class="details-label">Self Time</span>
-                      <span class="details-value">0.4ms</span>
-                    </div>
-                  </div>
-
-                  <div class="details-section">
-                    <div class="details-section-title">Frame Statistics</div>
-                    <div class="details-row">
-                      <span class="details-label">Total Frame Time</span>
-                      <span class="details-value">16.4ms</span>
-                    </div>
-                    <div class="details-row">
-                      <span class="details-label">Scripts</span>
-                      <span class="details-value">8.2ms (50%)</span>
-                    </div>
-                    <div class="details-row">
-                      <span class="details-label">Layout</span>
-                      <span class="details-value">2.1ms (13%)</span>
-                    </div>
-                    <div class="flame-bar">
-                      <div class="flame-bar-segment" style="width: 50%; background-color: #5a9a5a;"></div>
-                      <div class="flame-bar-segment" style="width: 13%; background-color: #d4842a;"></div>
-                      <div class="flame-bar-segment" style="width: 11%; background-color: #8a6ab5;"></div>
-                      <div class="flame-bar-segment" style="width: 26%; background-color: #424242;"></div>
-                    </div>
-                  </div>
-
-                  <div class="details-section">
-                    <div class="details-section-title">Warnings</div>
-                    <div class="details-row" style="color: var(--bl-warning);">
-                      <span>Long frame detected (>16ms budget)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Status Bar -->
-          <footer class="bl-statusbar">
-            <span class="bl-statusbar-item">Frame: 1247</span>
-            <span class="bl-statusbar-item">Duration: 16.4ms</span>
-            <span class="bl-statusbar-item">60 FPS target</span>
-            <span class="bl-statusbar-item" style="margin-left: auto; border-right: none;">Profiler v1.0</span>
-          </footer>
-        </div>
-      </div>
-
-      <!-- Plugins Page -->
-      <div class="app-page" id="page-plugins">
-        <div class="page-plugins">
-          <!-- Header Bar -->
-          <header class="bl-header">
-            <div class="bl-header-menu">
-              <div class="bl-header-menu-item">File</div>
-              <div class="bl-header-menu-item">Edit</div>
-              <div class="bl-header-menu-item">View</div>
-              <div class="bl-header-menu-item">Help</div>
-            </div>
-            <div style="margin-left: auto; display: flex; align-items: center; gap: var(--bl-spacing-md);">
-              <input type="text" class="bl-input" placeholder="Search plugins..." style="width: 200px;">
-              <button class="bl-btn bl-btn-primary">Install Plugin</button>
-            </div>
-          </header>
-
-          <div class="plugins-main">
-            <div class="plugins-list">
-              <!-- Plugin Item: Enabled -->
-              <div class="plugin-item">
-                <div class="plugin-header">
-                  <label class="bl-checkbox">
-                    <input type="checkbox" checked>
-                  </label>
-                  <div class="plugin-info">
-                    <div class="plugin-name">Animation Nodes</div>
-                    <div class="plugin-version">v2.3.1</div>
-                  </div>
-                  <div class="plugin-actions">
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Settings">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0-8a6 6 0 0 1 4.47 10.02l.73.73a.5.5 0 0 1-.71.71l-.73-.73A6 6 0 1 1 8 2z"/></svg>
-                    </button>
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="More">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="plugin-description">
-                  A powerful node-based visual scripting system for creating complex animations and procedural effects.
-                </div>
-                <div class="plugin-meta">
-                  <span class="bl-badge bl-badge-success">Enabled</span>
-                  <span class="plugin-author">by Jacques Lucke</span>
-                </div>
-              </div>
-
-              <!-- Plugin Item: Enabled -->
-              <div class="plugin-item">
-                <div class="plugin-header">
-                  <label class="bl-checkbox">
-                    <input type="checkbox" checked>
-                  </label>
-                  <div class="plugin-info">
-                    <div class="plugin-name">Hard Ops</div>
-                    <div class="plugin-version">v9.87.2</div>
-                  </div>
-                  <div class="plugin-actions">
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Settings">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0-8a6 6 0 0 1 4.47 10.02l.73.73a.5.5 0 0 1-.71.71l-.73-.73A6 6 0 1 1 8 2z"/></svg>
-                    </button>
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="More">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="plugin-description">
-                  Workflow enhancement addon for hard surface modeling with boolean operations and advanced mesh tools.
-                </div>
-                <div class="plugin-meta">
-                  <span class="bl-badge bl-badge-success">Enabled</span>
-                  <span class="plugin-author">by Team C</span>
-                </div>
-              </div>
-
-              <!-- Plugin Item: Disabled -->
-              <div class="plugin-item disabled">
-                <div class="plugin-header">
-                  <label class="bl-checkbox">
-                    <input type="checkbox">
-                  </label>
-                  <div class="plugin-info">
-                    <div class="plugin-name">Node Wrangler</div>
-                    <div class="plugin-version">v1.0</div>
-                  </div>
-                  <div class="plugin-actions">
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Settings">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0-8a6 6 0 0 1 4.47 10.02l.73.73a.5.5 0 0 1-.71.71l-.73-.73A6 6 0 1 1 8 2z"/></svg>
-                    </button>
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="More">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="plugin-description">
-                  Built-in addon with shortcuts and tools for efficient node editor workflow in shader and compositor nodes.
-                </div>
-                <div class="plugin-meta">
-                  <span class="bl-badge">Disabled</span>
-                  <span class="plugin-author">by Blender Foundation</span>
-                </div>
-              </div>
-
-              <!-- Plugin Item: Disabled -->
-              <div class="plugin-item disabled">
-                <div class="plugin-header">
-                  <label class="bl-checkbox">
-                    <input type="checkbox">
-                  </label>
-                  <div class="plugin-info">
-                    <div class="plugin-name">LoopTools</div>
-                    <div class="plugin-version">v4.6.7</div>
-                  </div>
-                  <div class="plugin-actions">
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Settings">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0-8a6 6 0 0 1 4.47 10.02l.73.73a.5.5 0 0 1-.71.71l-.73-.73A6 6 0 1 1 8 2z"/></svg>
-                    </button>
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="More">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="plugin-description">
-                  Mesh editing tools including circle, curve, flatten, and relax operations for cleaner topology.
-                </div>
-                <div class="plugin-meta">
-                  <span class="bl-badge">Disabled</span>
-                  <span class="plugin-author">by Bart Crouch</span>
-                </div>
-              </div>
-
-              <!-- Plugin Item: Enabled -->
-              <div class="plugin-item">
-                <div class="plugin-header">
-                  <label class="bl-checkbox">
-                    <input type="checkbox" checked>
-                  </label>
-                  <div class="plugin-info">
-                    <div class="plugin-name">Rigify</div>
-                    <div class="plugin-version">v0.6.5</div>
-                  </div>
-                  <div class="plugin-actions">
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Settings">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0-8a6 6 0 0 1 4.47 10.02l.73.73a.5.5 0 0 1-.71.71l-.73-.73A6 6 0 1 1 8 2z"/></svg>
-                    </button>
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="More">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="plugin-description">
-                  Automatic rigging system that generates production-ready character rigs with advanced controls.
-                </div>
-                <div class="plugin-meta">
-                  <span class="bl-badge bl-badge-success">Enabled</span>
-                  <span class="plugin-author">by Blender Foundation</span>
-                </div>
-              </div>
-
-              <!-- Plugin Item: Warning -->
-              <div class="plugin-item">
-                <div class="plugin-header">
-                  <label class="bl-checkbox">
-                    <input type="checkbox" checked>
-                  </label>
-                  <div class="plugin-info">
-                    <div class="plugin-name">Decal Machine</div>
-                    <div class="plugin-version">v2.4.0</div>
-                  </div>
-                  <div class="plugin-actions">
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="Settings">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0-8a6 6 0 0 1 4.47 10.02l.73.73a.5.5 0 0 1-.71.71l-.73-.73A6 6 0 1 1 8 2z"/></svg>
-                    </button>
-                    <button class="bl-btn bl-btn-icon bl-tooltip" data-tooltip="More">
-                      <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="plugin-description">
-                  Decal and trim sheet workflow addon for adding surface details without UV mapping complexity.
-                </div>
-                <div class="plugin-meta">
-                  <span class="bl-badge bl-badge-warning">Update Available</span>
-                  <span class="plugin-author">by MACHIN3</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Status Bar -->
-          <footer class="bl-statusbar">
-            <span class="bl-statusbar-item">Plugins: 6 total</span>
-            <span class="bl-statusbar-item">4 enabled</span>
-            <span class="bl-statusbar-item">2 disabled</span>
-            <span class="bl-statusbar-item" style="margin-left: auto; border-right: none;">Plugin Manager v1.0</span>
-          </footer>
-        </div>
-      </div>
-    </main>
-  </div>
+  <div id="app"></div>
 
   <script>
-    // Theme persistence
+    // Application state
+    var State = {
+      navCollapsed: false,
+      activeTab: 'Scene',
+      activePrimaryTab: 'Selection',
+      activeSecondaryTab: 'Summary',
+      detailsPanelHeight: 200,
+      collapsedTrackGroups: {},
+      collapsedTracks: {}
+    };
+
+    // Theme management
     function loadTheme() {
-      const savedTheme = localStorage.getItem('bl-theme');
+      var savedTheme = localStorage.getItem('bl-theme');
       if (savedTheme === 'light') {
         document.body.classList.add('bl-theme-light');
       }
@@ -1662,162 +561,986 @@
 
     function toggleTheme() {
       document.body.classList.toggle('bl-theme-light');
-      const isLight = document.body.classList.contains('bl-theme-light');
+      var isLight = document.body.classList.contains('bl-theme-light');
       localStorage.setItem('bl-theme', isLight ? 'light' : 'dark');
     }
 
-    // Load theme on page load
     loadTheme();
 
-    // Navigation
-    function toggleNav() {
-      document.getElementById('appNav').classList.toggle('collapsed');
+    // Navigation component
+    function NavItem(route, icon, label) {
+      var currentRoute = m.route.get();
+      var isActive = currentRoute === route;
+      return m('a.app-nav-item', {
+        class: isActive ? 'active' : '',
+        href: '#!/' + route,
+        oncreate: m.route.link,
+        onupdate: m.route.link
+      }, [
+        m.trust(icon),
+        m('span.app-nav-item-label', label)
+      ]);
     }
 
-    function switchPage(pageId) {
-      // Update nav items
-      document.querySelectorAll('.app-nav-item[data-page]').forEach(item => {
-        item.classList.toggle('active', item.dataset.page === pageId);
-      });
-
-      // Update pages
-      document.querySelectorAll('.app-page').forEach(page => {
-        page.classList.toggle('active', page.id === 'page-' + pageId);
-      });
-
-      // Save to localStorage
-      localStorage.setItem('bl-current-page', pageId);
-    }
-
-    // Restore saved page on load
-    (function() {
-      const savedPage = localStorage.getItem('bl-current-page');
-      if (savedPage) {
-        switchPage(savedPage);
-      }
-    })();
-
-    // Tab switching
-    function switchTab(tab) {
-      const tabs = tab.parentElement.querySelectorAll('.bl-tab');
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-    }
-
-    // Details panel primary tab switching
-    function switchDetailsPrimaryTab(tab) {
-      const tabs = tab.parentElement.querySelectorAll('.details-primary-tab');
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-    }
-
-    // Track group toggle
-    function toggleTrackGroup(header, groupId) {
-      const trackGroup = header.parentElement;
-      const laneGroup = document.querySelector(`.bl-lane-group[data-group="${groupId}"]`);
-
-      trackGroup.classList.toggle('collapsed');
-      if (laneGroup) {
-        laneGroup.classList.toggle('collapsed');
-      }
-    }
-
-    // Individual track toggle (for nested tracks)
-    function toggleTrack(trackElement, trackId) {
-      const isCollapsed = trackElement.classList.toggle('collapsed');
-
-      // Find and toggle the track's children container
-      const trackChildren = trackElement.nextElementSibling;
-      if (trackChildren && trackChildren.classList.contains('bl-track-children') && trackChildren.dataset.track === trackId) {
-        trackChildren.style.display = isCollapsed ? 'none' : '';
-      }
-
-      // Also toggle corresponding lane children if they exist
-      const laneChildren = document.querySelector(`.bl-lane-children[data-track="${trackId}"]`);
-      if (laneChildren) {
-        laneChildren.style.display = isCollapsed ? 'none' : '';
-      }
-    }
-
-    // Expand all track groups and tracks
-    function expandAllTracks() {
-      // Expand all track groups
-      document.querySelectorAll('.bl-track-group.collapsed').forEach(group => {
-        group.classList.remove('collapsed');
-        const groupId = group.dataset.group;
-        const laneGroup = document.querySelector(`.bl-lane-group[data-group="${groupId}"]`);
-        if (laneGroup) laneGroup.classList.remove('collapsed');
-      });
-      // Expand all nested tracks
-      document.querySelectorAll('.bl-track.collapsed').forEach(track => {
-        track.classList.remove('collapsed');
-        const trackId = track.dataset.track;
-        const trackChildren = track.nextElementSibling;
-        if (trackChildren && trackChildren.classList.contains('bl-track-children')) {
-          trackChildren.style.display = '';
+    function Nav() {
+      return {
+        view: function() {
+          return m('nav.app-nav', { class: State.navCollapsed ? 'collapsed' : '', id: 'appNav' }, [
+            m('.app-nav-header', [
+              m('button.app-nav-toggle', {
+                onclick: function() { State.navCollapsed = !State.navCollapsed; },
+                title: 'Toggle sidebar'
+              }, m.trust('<svg viewBox="0 0 16 16"><path d="M11 3L5 8l6 5V3z"/></svg>')),
+              m('span.app-nav-title', 'Blender UI')
+            ]),
+            m('.app-nav-items', [
+              NavItem('widgets', '<svg viewBox="0 0 16 16"><path d="M2 2h5v5H2V2zm7 0h5v5H9V2zM2 9h5v5H2V9zm7 0h5v5H9V9z"/></svg>', 'Widgets'),
+              NavItem('profiler', '<svg viewBox="0 0 16 16"><path d="M1 14h14v1H1v-1zm1-3h2v3H2v-3zm3-2h2v5H5V9zm3-4h2v9H8V5zm3 2h2v7h-2V7z"/></svg>', 'Profiler'),
+              NavItem('plugins', '<svg viewBox="0 0 16 16"><path d="M6 1v3H4.5A1.5 1.5 0 0 0 3 5.5v1A1.5 1.5 0 0 0 4.5 8H6v7h4V8h1.5A1.5 1.5 0 0 0 13 6.5v-1A1.5 1.5 0 0 0 11.5 4H10V1H6z"/></svg>', 'Plugins')
+            ]),
+            m('.app-nav-footer', [
+              m('.app-nav-item', { onclick: toggleTheme }, [
+                m.trust('<svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 12.5V2.5a5.5 5.5 0 0 1 0 11z"/></svg>'),
+                m('span.app-nav-item-label', 'Toggle Theme')
+              ])
+            ])
+          ]);
         }
-        const laneChildren = document.querySelector(`.bl-lane-children[data-track="${trackId}"]`);
-        if (laneChildren) laneChildren.style.display = '';
-      });
+      };
     }
 
-    // Collapse all track groups and tracks
-    function collapseAllTracks() {
-      // Collapse all track groups
-      document.querySelectorAll('.bl-track-group:not(.collapsed)').forEach(group => {
-        group.classList.add('collapsed');
-        const groupId = group.dataset.group;
-        const laneGroup = document.querySelector(`.bl-lane-group[data-group="${groupId}"]`);
-        if (laneGroup) laneGroup.classList.add('collapsed');
-      });
-      // Collapse all nested tracks
-      document.querySelectorAll('.bl-track.expandable:not(.collapsed)').forEach(track => {
-        track.classList.add('collapsed');
-        const trackId = track.dataset.track;
-        const trackChildren = track.nextElementSibling;
-        if (trackChildren && trackChildren.classList.contains('bl-track-children')) {
-          trackChildren.style.display = 'none';
+    // Widgets Page
+    var WidgetsPage = {
+      view: function() {
+        return m('.page-widgets', [
+          // Header Bar
+          m('header.bl-header', [
+            m('.bl-header-menu', [
+              m('.bl-header-menu-item', 'File'),
+              m('.bl-header-menu-item', 'Edit'),
+              m('.bl-header-menu-item', 'View'),
+              m('.bl-header-menu-item', 'Object'),
+              m('.bl-header-menu-item', 'Help')
+            ])
+          ]),
+
+          m('.demo-main', [
+            // Sidebar with Panels
+            m('aside.demo-sidebar', [
+              // Transform Panel
+              m('.bl-panel', [
+                m('.bl-panel-header', { onclick: function(e) { e.target.closest('.bl-panel').classList.toggle('collapsed'); } }, [
+                  m('.bl-panel-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
+                  m('span.bl-panel-title', 'Transform')
+                ]),
+                m('.bl-panel-content', [
+                  m('.bl-form-row', [
+                    m('label.bl-form-label', 'Location'),
+                    m('.bl-flex.bl-gap-xs', [
+                      m('.bl-number-input', [
+                        m('span.bl-number-label', 'X'),
+                        m('input[type=text]', { value: '0.000' })
+                      ])
+                    ])
+                  ]),
+                  m('.bl-form-row', [
+                    m('label.bl-form-label'),
+                    m('.bl-flex.bl-gap-xs', [
+                      m('.bl-number-input', [
+                        m('span.bl-number-label', 'Y'),
+                        m('input[type=text]', { value: '0.000' })
+                      ])
+                    ])
+                  ]),
+                  m('.bl-form-row', [
+                    m('label.bl-form-label'),
+                    m('.bl-flex.bl-gap-xs', [
+                      m('.bl-number-input', [
+                        m('span.bl-number-label', 'Z'),
+                        m('input[type=text]', { value: '0.000' })
+                      ])
+                    ])
+                  ])
+                ])
+              ]),
+
+              // Material Panel
+              m('.bl-panel', [
+                m('.bl-panel-header', { onclick: function(e) { e.target.closest('.bl-panel').classList.toggle('collapsed'); } }, [
+                  m('.bl-panel-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
+                  m('span.bl-panel-title', 'Material')
+                ]),
+                m('.bl-panel-content', [
+                  m('.bl-form-row', [
+                    m('label.bl-form-label', 'Base Color'),
+                    m('.bl-color-swatch', [
+                      m('.bl-color-preview', { style: { backgroundColor: '#e87d0d' } }),
+                      m('span.bl-color-value', '#E87D0D')
+                    ])
+                  ]),
+                  m('.bl-form-row', [
+                    m('label.bl-form-label', 'Metallic'),
+                    m('.bl-slider', [
+                      m('input[type=range]', { min: 0, max: 100, value: 0 }),
+                      m('span.bl-slider-value', '0.00')
+                    ])
+                  ]),
+                  m('.bl-form-row', [
+                    m('label.bl-form-label', 'Roughness'),
+                    m('.bl-slider', [
+                      m('input[type=range]', { min: 0, max: 100, value: 50 }),
+                      m('span.bl-slider-value', '0.50')
+                    ])
+                  ])
+                ])
+              ]),
+
+              // Tree View Panel
+              m('.bl-panel', [
+                m('.bl-panel-header', { onclick: function(e) { e.target.closest('.bl-panel').classList.toggle('collapsed'); } }, [
+                  m('.bl-panel-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
+                  m('span.bl-panel-title', 'Scene Collection')
+                ]),
+                m('.bl-panel-content', [
+                  m('.bl-tree', [
+                    m('.bl-tree-item', { onclick: function(e) { e.target.closest('.bl-tree-item').classList.toggle('collapsed'); } }, [
+                      m('.bl-tree-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
+                      m('.bl-tree-icon', m('.icon-placeholder')),
+                      m('span', 'Collection')
+                    ]),
+                    m('.bl-tree-children', [
+                      m('.bl-tree-item.active', [
+                        m('.bl-tree-toggle'),
+                        m('.bl-tree-icon', m('.icon-placeholder')),
+                        m('span', 'Cube')
+                      ]),
+                      m('.bl-tree-item', [
+                        m('.bl-tree-toggle'),
+                        m('.bl-tree-icon', m('.icon-placeholder')),
+                        m('span', 'Camera')
+                      ]),
+                      m('.bl-tree-item', [
+                        m('.bl-tree-toggle'),
+                        m('.bl-tree-icon', m('.icon-placeholder')),
+                        m('span', 'Light')
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ]),
+
+            // Main Content Area
+            m('.demo-content', [
+              // Buttons Section
+              m('section.demo-section', [
+                m('h2.demo-section-title', 'Buttons'),
+                m('.demo-label', 'Standard Buttons'),
+                m('.demo-row', [
+                  m('button.bl-btn', 'Default'),
+                  m('button.bl-btn.bl-btn-primary', 'Primary'),
+                  m('button.bl-btn', { disabled: true }, 'Disabled')
+                ]),
+                m('.demo-label', 'Icon Buttons'),
+                m('.demo-row', [
+                  m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Move' }, m('.icon-placeholder')),
+                  m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Rotate' }, m('.icon-placeholder')),
+                  m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Scale' }, m('.icon-placeholder'))
+                ]),
+                m('.demo-label', 'Button Group'),
+                m('.demo-row', [
+                  m('.bl-btn-group', [
+                    m('button.bl-btn.bl-btn-toggle.active', 'Object'),
+                    m('button.bl-btn.bl-btn-toggle', 'Edit'),
+                    m('button.bl-btn.bl-btn-toggle', 'Sculpt')
+                  ])
+                ]),
+                m('.demo-label', 'Segmented Buttons'),
+                m('.demo-row', [
+                  m('.bl-segmented', [
+                    m('button.bl-segmented-btn.active', 'Vertex'),
+                    m('button.bl-segmented-btn', 'Edge'),
+                    m('button.bl-segmented-btn', 'Face')
+                  ]),
+                  m('.bl-segmented', [
+                    m('button.bl-segmented-btn.icon-only.active', { title: 'Grid' }, m.trust('<svg viewBox="0 0 16 16"><path d="M1 1h6v6H1V1zm8 0h6v6H9V1zM1 9h6v6H1V9zm8 0h6v6H9V9z"/></svg>')),
+                    m('button.bl-segmented-btn.icon-only', { title: 'List' }, m.trust('<svg viewBox="0 0 16 16"><path d="M1 2h14v2H1V2zm0 5h14v2H1V7zm0 5h14v2H1v-2z"/></svg>')),
+                    m('button.bl-segmented-btn.icon-only', { title: 'Details' }, m.trust('<svg viewBox="0 0 16 16"><path d="M1 1h4v4H1V1zm6 1h8v2H7V2zM1 6h4v4H1V6zm6 1h8v2H7V7zM1 11h4v4H1v-4zm6 1h8v2H7v-2z"/></svg>'))
+                  ])
+                ]),
+                m('.demo-row', [
+                  m('.bl-segmented', [
+                    m('button.bl-segmented-btn.icon-only', { title: 'Align Left' }, m.trust('<svg viewBox="0 0 16 16"><path d="M1 2h10v2H1V2zm0 4h14v2H1V6zm0 4h8v2H1v-2zm0 4h12v2H1v-2z"/></svg>')),
+                    m('button.bl-segmented-btn.icon-only.active', { title: 'Align Center' }, m.trust('<svg viewBox="0 0 16 16"><path d="M3 2h10v2H3V2zm1 4h8v2H4V6zm2 4h4v2H6v-2zm1 4h2v2H7v-2z"/></svg>')),
+                    m('button.bl-segmented-btn.icon-only', { title: 'Align Right' }, m.trust('<svg viewBox="0 0 16 16"><path d="M5 2h10v2H5V2zm1 4h9v2H6V6zm2 4h7v2H8v-2zm1 4h6v2H9v-2z"/></svg>'))
+                  ]),
+                  m('.bl-segmented', [
+                    m('button.bl-segmented-btn', [
+                      m.trust('<svg viewBox="0 0 16 16"><path d="M8 1l7 14H1L8 1z"/></svg>'),
+                      ' Solid'
+                    ]),
+                    m('button.bl-segmented-btn.active', [
+                      m.trust('<svg viewBox="0 0 16 16"><path d="M8 1l7 14H1L8 1z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>'),
+                      ' Wire'
+                    ])
+                  ])
+                ])
+              ]),
+
+              // Text Inputs Section
+              m('section.demo-section', [
+                m('h2.demo-section-title', 'Text Inputs'),
+                m('.demo-label', 'Standard Input'),
+                m('.demo-row', [
+                  m('input.bl-input[type=text]', { placeholder: 'Enter text...' }),
+                  m('input.bl-input[type=text]', { value: 'With value' }),
+                  m('input.bl-input[type=text]', { disabled: true, value: 'Disabled' })
+                ]),
+                m('.demo-label', 'Number Inputs'),
+                m('.demo-row', [
+                  m('.bl-number-input', [m('span.bl-number-label', 'X'), m('input[type=text]', { value: '0.000' })]),
+                  m('.bl-number-input', [m('span.bl-number-label', 'Y'), m('input[type=text]', { value: '0.000' })]),
+                  m('.bl-number-input', [m('span.bl-number-label', 'Z'), m('input[type=text]', { value: '0.000' })])
+                ])
+              ]),
+
+              // Selects Section
+              m('section.demo-section', [
+                m('h2.demo-section-title', 'Select Inputs'),
+                m('.demo-row', [
+                  m('.bl-select', m('select', [
+                    m('option', 'Object Mode'),
+                    m('option', 'Edit Mode'),
+                    m('option', 'Sculpt Mode')
+                  ])),
+                  m('.bl-select', m('select', [
+                    m('option', 'Solid'),
+                    m('option', 'Wireframe'),
+                    m('option', 'Material Preview')
+                  ]))
+                ])
+              ]),
+
+              // Checkboxes & Radio Section
+              m('section.demo-section', [
+                m('h2.demo-section-title', 'Checkboxes & Radio Buttons'),
+                m('.demo-label', 'Checkboxes'),
+                m('.demo-row', [
+                  m('label.bl-checkbox', [m('input[type=checkbox]', { checked: true }), ' Show Overlays']),
+                  m('label.bl-checkbox', [m('input[type=checkbox]', { checked: true }), ' Show Floor']),
+                  m('label.bl-checkbox', [m('input[type=checkbox]'), ' Show Axes'])
+                ]),
+                m('.demo-label', 'Disabled Checkboxes'),
+                m('.demo-row', [
+                  m('label.bl-checkbox', [m('input[type=checkbox]', { checked: true, disabled: true }), ' Checked Disabled']),
+                  m('label.bl-checkbox', [m('input[type=checkbox]', { disabled: true }), ' Unchecked Disabled'])
+                ]),
+                m('.demo-label', 'Radio Buttons'),
+                m('.demo-row', [
+                  m('label.bl-radio', [m('input[type=radio]', { name: 'pivot', checked: true }), ' Median Point']),
+                  m('label.bl-radio', [m('input[type=radio]', { name: 'pivot' }), ' 3D Cursor']),
+                  m('label.bl-radio', [m('input[type=radio]', { name: 'pivot' }), ' Active Element'])
+                ]),
+                m('.demo-label', 'Disabled Radio Buttons'),
+                m('.demo-row', [
+                  m('label.bl-radio', [m('input[type=radio]', { name: 'disabled-radio', checked: true, disabled: true }), ' Selected Disabled']),
+                  m('label.bl-radio', [m('input[type=radio]', { name: 'disabled-radio', disabled: true }), ' Unselected Disabled'])
+                ])
+              ]),
+
+              // Sliders Section
+              m('section.demo-section', [
+                m('h2.demo-section-title', 'Sliders & Progress'),
+                m('.demo-label', 'Sliders'),
+                m('.demo-grid', [
+                  m('.bl-slider', [
+                    m('input[type=range]', { min: 0, max: 100, value: 75, oninput: function(e) { e.target.nextElementSibling.textContent = (e.target.value / 100).toFixed(2); } }),
+                    m('span.bl-slider-value', '0.75')
+                  ]),
+                  m('.bl-slider', [
+                    m('input[type=range]', { min: 0, max: 100, value: 25, oninput: function(e) { e.target.nextElementSibling.textContent = (e.target.value / 100).toFixed(2); } }),
+                    m('span.bl-slider-value', '0.25')
+                  ])
+                ]),
+                m('.demo-label.bl-mt-md', 'Progress Bars'),
+                m('div', { style: { maxWidth: '400px' } }, [
+                  m('.bl-progress.bl-mb-md', m('.bl-progress-bar', { style: { width: '75%' } })),
+                  m('.bl-progress', m('.bl-progress-bar', { style: { width: '45%' } }))
+                ])
+              ]),
+
+              // Tabs Section
+              m('section.demo-section', [
+                m('h2.demo-section-title', 'Tabs'),
+                m('.bl-tabs', [
+                  m('button.bl-tab', { class: State.activeTab === 'Scene' ? 'active' : '', onclick: function() { State.activeTab = 'Scene'; } }, 'Scene'),
+                  m('button.bl-tab', { class: State.activeTab === 'World' ? 'active' : '', onclick: function() { State.activeTab = 'World'; } }, 'World'),
+                  m('button.bl-tab', { class: State.activeTab === 'Object' ? 'active' : '', onclick: function() { State.activeTab = 'Object'; } }, 'Object'),
+                  m('button.bl-tab', { class: State.activeTab === 'Modifiers' ? 'active' : '', onclick: function() { State.activeTab = 'Modifiers'; } }, 'Modifiers')
+                ]),
+                m('.bl-tab-content', m('p', { style: { color: 'var(--bl-text-secondary)', margin: 0 } }, 'Tab content area'))
+              ]),
+
+              // Table Section
+              m('section.demo-section', [
+                m('h2.demo-section-title', 'Table'),
+                m('table.bl-table', [
+                  m('thead', m('tr', [
+                    m('th', 'Name'),
+                    m('th', 'Type'),
+                    m('th', 'Vertices'),
+                    m('th', 'Status')
+                  ])),
+                  m('tbody', [
+                    m('tr.selected', [
+                      m('td', 'Cube'),
+                      m('td', 'Mesh'),
+                      m('td', '8'),
+                      m('td', m('span.bl-badge.bl-badge-success', 'Active'))
+                    ]),
+                    m('tr', [
+                      m('td', 'Suzanne'),
+                      m('td', 'Mesh'),
+                      m('td', '507'),
+                      m('td', m('span.bl-badge', 'Hidden'))
+                    ]),
+                    m('tr', [
+                      m('td', 'Sphere'),
+                      m('td', 'Mesh'),
+                      m('td', '482'),
+                      m('td', m('span.bl-badge.bl-badge-warning', 'Modified'))
+                    ])
+                  ])
+                ])
+              ]),
+
+              // Badges Section
+              m('section.demo-section', [
+                m('h2.demo-section-title', 'Badges'),
+                m('.demo-row', [
+                  m('span.bl-badge', 'Default'),
+                  m('span.bl-badge.bl-badge-success', 'Success'),
+                  m('span.bl-badge.bl-badge-warning', 'Warning'),
+                  m('span.bl-badge.bl-badge-error', 'Error')
+                ])
+              ]),
+
+              // Menu Section
+              m('section.demo-section', [
+                m('h2.demo-section-title', 'Dropdown Menu'),
+                m('.demo-row', [
+                  m('.bl-menu', { style: { display: 'inline-block' } }, [
+                    m('.bl-menu-item', [m('span', 'New'), m('span.bl-menu-item-shortcut', 'Ctrl+N')]),
+                    m('.bl-menu-item', [m('span', 'Open...'), m('span.bl-menu-item-shortcut', 'Ctrl+O')]),
+                    m('.bl-menu-item', [m('span', 'Save'), m('span.bl-menu-item-shortcut', 'Ctrl+S')]),
+                    m('.bl-menu-separator'),
+                    m('.bl-menu-item.disabled', m('span', 'Recover Last Session'))
+                  ])
+                ])
+              ])
+            ])
+          ]),
+
+          // Status Bar
+          m('footer.bl-statusbar', [
+            m('span.bl-statusbar-item', 'Verts: 8'),
+            m('span.bl-statusbar-item', 'Faces: 6'),
+            m('span.bl-statusbar-item', 'Objects: 3/3'),
+            m('span.bl-statusbar-item', { style: { marginLeft: 'auto', borderRight: 'none' } }, 'Blender UI Toolkit v1.0')
+          ])
+        ]);
+      }
+    };
+
+    // Profiler Page
+    var ProfilerPage = {
+      oncreate: function(vnode) {
+        // Setup resize handle
+        var resizeHandle = vnode.dom.querySelector('#resizeHandle');
+        var detailsPanel = vnode.dom.querySelector('#detailsPanel');
+        var isResizing = false;
+
+        if (resizeHandle && detailsPanel) {
+          resizeHandle.addEventListener('mousedown', function(e) {
+            isResizing = true;
+            document.body.style.cursor = 'ns-resize';
+            document.body.style.userSelect = 'none';
+          });
+
+          document.addEventListener('mousemove', function(e) {
+            if (!isResizing) return;
+            var containerRect = detailsPanel.parentElement.getBoundingClientRect();
+            var newHeight = containerRect.bottom - e.clientY;
+            if (newHeight >= 100 && newHeight <= window.innerHeight * 0.5) {
+              detailsPanel.style.height = newHeight + 'px';
+              State.detailsPanelHeight = newHeight;
+            }
+          });
+
+          document.addEventListener('mouseup', function() {
+            isResizing = false;
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+          });
         }
-        const laneChildren = document.querySelector(`.bl-lane-children[data-track="${trackId}"]`);
-        if (laneChildren) laneChildren.style.display = 'none';
-      });
-    }
+      },
 
-    // Slider value updates
-    document.querySelectorAll('.bl-slider input[type="range"]').forEach(slider => {
-      slider.addEventListener('input', function() {
-        const value = (this.value / 100).toFixed(2);
-        this.nextElementSibling.textContent = value;
-      });
+      view: function() {
+        function toggleTrackGroup(groupId) {
+          State.collapsedTrackGroups[groupId] = !State.collapsedTrackGroups[groupId];
+        }
+
+        function toggleTrack(trackId) {
+          State.collapsedTracks[trackId] = !State.collapsedTracks[trackId];
+        }
+
+        function expandAllTracks() {
+          State.collapsedTrackGroups = {};
+          State.collapsedTracks = {};
+        }
+
+        function collapseAllTracks() {
+          State.collapsedTrackGroups = { 'main-thread': true, 'gpu': true, 'workers': true };
+          State.collapsedTracks = { 'frame': true, 'scripts': true, 'paint': true };
+        }
+
+        return m('.page-profiler', [
+          // Header Bar
+          m('header.bl-header', [
+            m('.bl-header-menu', [
+              m('.bl-header-menu-item', 'File'),
+              m('.bl-header-menu-item', 'Edit'),
+              m('.bl-header-menu-item', 'View'),
+              m('.bl-header-menu-item', 'Profile'),
+              m('.bl-header-menu-item', 'Help')
+            ]),
+            m('div', { style: { marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 'var(--bl-spacing-md)' } }, [
+              m('span.bl-badge.bl-badge-success', 'Recording'),
+              m('button.bl-btn.bl-btn-primary', 'Stop')
+            ])
+          ]),
+
+          m('.profiler-main', [
+            m('.profiler-timeline-area', [
+              m('.bl-timeline', [
+                // Timeline Header
+                m('.bl-timeline-header', [
+                  m('span.bl-timeline-title', 'Frame Profile - Frame #1247'),
+                  m('.bl-btn-group', [
+                    m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Previous Frame' },
+                      m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M11 3L5 8l6 5V3z"/><rect x="3" y="3" width="2" height="10"/></svg>')),
+                    m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Next Frame' },
+                      m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M5 3l6 5-6 5V3z"/><rect x="11" y="3" width="2" height="10"/></svg>'))
+                  ]),
+                  m('.bl-timeline-controls', [
+                    m('.bl-select', m('select', [
+                      m('option', 'All Threads'),
+                      m('option', 'Main Thread'),
+                      m('option', 'GPU')
+                    ])),
+                    m('.bl-timeline-zoom', [
+                      m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Zoom Out' },
+                        m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="7" width="10" height="2"/></svg>')),
+                      m('span', '100%'),
+                      m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Zoom In' },
+                        m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="7" width="10" height="2"/><rect x="7" y="3" width="2" height="10"/></svg>'))
+                    ]),
+                    m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Fit to Window' },
+                      m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h4v2H4v2H2V2zm8 0h4v4h-2V4h-2V2zM4 10H2v4h4v-2H4v-2zm8 2v2h-2v2h4v-4h-2z"/></svg>'))
+                  ])
+                ]),
+
+                // Timeline Minimap
+                m('.bl-timeline-minimap', [
+                  m('.bl-timeline-minimap-slice', { style: { left: '2%', width: '50%', top: '6px', backgroundColor: '#5a9a5a' } }),
+                  m('.bl-timeline-minimap-slice', { style: { left: '55%', width: '15%', top: '10px', backgroundColor: '#d4842a' } }),
+                  m('.bl-timeline-minimap-slice', { style: { left: '70%', width: '20%', top: '14px', backgroundColor: '#8a6ab5' } }),
+                  m('.bl-timeline-minimap-slice', { style: { left: '3%', width: '45%', top: '20px', backgroundColor: '#b54a4a' } }),
+                  m('.bl-timeline-minimap-viewport', { style: { left: '0%', width: '100%' } })
+                ]),
+
+                // Timeline Body
+                m('.bl-timeline-body', [
+                  m('.bl-timeline-ruler-row', [
+                    m('.bl-timeline-tracks-header', [
+                      m('.bl-track-search', [
+                        m.trust('<svg viewBox="0 0 16 16"><path d="M11.5 10.5L15 14M10 6.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'),
+                        m('input[type=text]', { placeholder: 'Filter tracks...' })
+                      ]),
+                      m('.bl-track-header-actions', [
+                        m('button.bl-track-btn.bl-tooltip', { 'data-tooltip': 'Expand All', onclick: expandAllTracks },
+                          m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 4h10v2H3V4zm3 4h4v2H6V8zm-3 4h10v2H3v-2z"/></svg>')),
+                        m('button.bl-track-btn.bl-tooltip', { 'data-tooltip': 'Collapse All', onclick: collapseAllTracks },
+                          m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 7h10v2H3V7z"/></svg>'))
+                      ])
+                    ]),
+                    m('.bl-timeline-ruler', [
+                      m('.bl-timeline-ruler-inner', [
+                        m('.bl-timeline-ruler-mark.major', { style: { left: '0' } }, m('span', '0ms')),
+                        m('.bl-timeline-ruler-mark.major', { style: { left: '25%' } }, m('span', '4ms')),
+                        m('.bl-timeline-ruler-mark.major', { style: { left: '50%' } }, m('span', '8ms')),
+                        m('.bl-timeline-ruler-mark.major', { style: { left: '75%' } }, m('span', '12ms')),
+                        m('.bl-timeline-ruler-mark.major', { style: { left: '100%' } }, m('span', '16ms'))
+                      ])
+                    ])
+                  ]),
+
+                  m('.bl-timeline-scroll', [
+                    m('.bl-timeline-tracks', [
+                      // Main Thread Group
+                      m('.bl-track-group', {
+                        'data-group': 'main-thread',
+                        class: State.collapsedTrackGroups['main-thread'] ? 'collapsed' : ''
+                      }, [
+                        m('.bl-track-group-header', { onclick: function() { toggleTrackGroup('main-thread'); } }, [
+                          m('.bl-track-group-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
+                          m('span.bl-track-group-name', 'Main Thread'),
+                          m('.bl-track-buttons', [
+                            m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                              m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>')),
+                            m('button.bl-track-btn', { title: 'More', onclick: function(e) { e.stopPropagation(); } },
+                              m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>'))
+                          ])
+                        ]),
+                        m('.bl-track-group-content', [
+                          // Frame Track
+                          m('.bl-track.expandable', {
+                            'data-track': 'frame',
+                            'data-depth': '1',
+                            class: State.collapsedTracks['frame'] ? 'collapsed' : '',
+                            onclick: function() { toggleTrack('frame'); }
+                          }, [
+                            m('.bl-track-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
+                            m('span.bl-track-name', 'Frame'),
+                            m('.bl-track-buttons', [
+                              m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                                m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>')),
+                              m('button.bl-track-btn', { title: 'More', onclick: function(e) { e.stopPropagation(); } },
+                                m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>'))
+                            ])
+                          ]),
+                          !State.collapsedTracks['frame'] && m('.bl-track-children', { 'data-track': 'frame' }, [
+                            // Scripts Track
+                            m('.bl-track.expandable', {
+                              'data-track': 'scripts',
+                              'data-depth': '2',
+                              class: State.collapsedTracks['scripts'] ? 'collapsed' : '',
+                              onclick: function(e) { e.stopPropagation(); toggleTrack('scripts'); }
+                            }, [
+                              m('.bl-track-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
+                              m('span.bl-track-name', 'Scripts'),
+                              m('.bl-track-buttons', [
+                                m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                                  m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>'))
+                              ])
+                            ]),
+                            !State.collapsedTracks['scripts'] && m('.bl-track-children', { 'data-track': 'scripts' }, [
+                              m('.bl-track', { 'data-depth': '3' }, [
+                                m('span.bl-track-name', 'updateScene()'),
+                                m('.bl-track-buttons', [
+                                  m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                                    m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>'))
+                                ])
+                              ]),
+                              m('.bl-track', { 'data-depth': '3' }, [
+                                m('span.bl-track-name', 'processInput()'),
+                                m('.bl-track-buttons', [
+                                  m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                                    m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>'))
+                                ])
+                              ])
+                            ]),
+                            m('.bl-track', { 'data-depth': '2' }, [
+                              m('span.bl-track-name', 'Layout'),
+                              m('.bl-track-buttons', [
+                                m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                                  m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>'))
+                              ])
+                            ]),
+                            // Paint Track
+                            m('.bl-track.expandable', {
+                              'data-track': 'paint',
+                              'data-depth': '2',
+                              class: State.collapsedTracks['paint'] ? 'collapsed' : '',
+                              onclick: function(e) { e.stopPropagation(); toggleTrack('paint'); }
+                            }, [
+                              m('.bl-track-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
+                              m('span.bl-track-name', 'Paint'),
+                              m('.bl-track-buttons', [
+                                m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                                  m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>'))
+                              ])
+                            ]),
+                            !State.collapsedTracks['paint'] && m('.bl-track-children', { 'data-track': 'paint' }, [
+                              m('.bl-track', { 'data-depth': '3' }, m('span.bl-track-name', 'paint')),
+                              m('.bl-track', { 'data-depth': '3' }, m('span.bl-track-name', 'rasterize'))
+                            ])
+                          ])
+                        ])
+                      ]),
+
+                      // GPU Group
+                      m('.bl-track-group', {
+                        'data-group': 'gpu',
+                        class: State.collapsedTrackGroups['gpu'] ? 'collapsed' : ''
+                      }, [
+                        m('.bl-track-group-header', { onclick: function() { toggleTrackGroup('gpu'); } }, [
+                          m('.bl-track-group-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
+                          m('span.bl-track-group-name', 'GPU'),
+                          m('.bl-track-buttons', [
+                            m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                              m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>'))
+                          ])
+                        ]),
+                        m('.bl-track-group-content', [
+                          m('.bl-track', [
+                            m('span.bl-track-name', 'Render Pass'),
+                            m('.bl-track-buttons', [
+                              m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                                m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>'))
+                            ])
+                          ]),
+                          m('.bl-track', [
+                            m('span.bl-track-name', 'Compositing'),
+                            m('.bl-track-buttons', [
+                              m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                                m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>'))
+                            ])
+                          ])
+                        ])
+                      ]),
+
+                      // Workers Group
+                      m('.bl-track-group', {
+                        'data-group': 'workers',
+                        class: State.collapsedTrackGroups['workers'] ? 'collapsed' : ''
+                      }, [
+                        m('.bl-track-group-header', { onclick: function() { toggleTrackGroup('workers'); } }, [
+                          m('.bl-track-group-toggle', m.trust('<svg viewBox="0 0 10 10"><path d="M2 1 L8 5 L2 9 Z"/></svg>')),
+                          m('span.bl-track-group-name', 'Worker Threads'),
+                          m('.bl-track-buttons', [
+                            m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                              m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>'))
+                          ])
+                        ]),
+                        m('.bl-track-group-content', [
+                          m('.bl-track', [
+                            m('span.bl-track-name', 'Worker 1'),
+                            m('.bl-track-buttons', [
+                              m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                                m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>'))
+                            ])
+                          ]),
+                          m('.bl-track', [
+                            m('span.bl-track-name', 'Worker 2'),
+                            m('.bl-track-buttons', [
+                              m('button.bl-track-btn', { title: 'Pin', onclick: function(e) { e.stopPropagation(); } },
+                                m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>'))
+                            ])
+                          ])
+                        ])
+                      ])
+                    ]),
+
+                    m('.bl-timeline-lanes-column', [
+                      m('.bl-timeline-lanes-inner', { style: { width: '100%', minHeight: '100%' } }, [
+                        // Grid Lines
+                        m('.bl-timeline-grid', [
+                          m('.bl-timeline-grid-line.major', { style: { left: '0' } }),
+                          m('.bl-timeline-grid-line', { style: { left: '12.5%' } }),
+                          m('.bl-timeline-grid-line.major', { style: { left: '25%' } }),
+                          m('.bl-timeline-grid-line', { style: { left: '37.5%' } }),
+                          m('.bl-timeline-grid-line.major', { style: { left: '50%' } }),
+                          m('.bl-timeline-grid-line', { style: { left: '62.5%' } }),
+                          m('.bl-timeline-grid-line.major', { style: { left: '75%' } }),
+                          m('.bl-timeline-grid-line', { style: { left: '87.5%' } })
+                        ]),
+
+                        m('.bl-timeline-playhead', { style: { left: '32%' } }),
+
+                        // Main Thread Lanes
+                        m('.bl-lane-group', {
+                          'data-group': 'main-thread',
+                          class: State.collapsedTrackGroups['main-thread'] ? 'collapsed' : ''
+                        }, [
+                          m('.bl-lane-group-header'),
+                          m('.bl-lane-group-content', [
+                            m('.bl-timeline-lane', [
+                              m('.bl-slice.bl-slice-blue', { style: { left: '1%', width: '98%' } }, [
+                                m('span.bl-slice-label', 'requestAnimationFrame'),
+                                m('span.bl-slice-duration', '16.4ms')
+                              ])
+                            ]),
+                            !State.collapsedTracks['frame'] && m('.bl-lane-children', { 'data-track': 'frame' }, [
+                              m('.bl-timeline-lane', [
+                                m('.bl-slice.bl-slice-green', { style: { left: '2%', width: '50%' } }, [
+                                  m('span.bl-slice-label', 'Scripts'),
+                                  m('span.bl-slice-duration', '8.2ms')
+                                ])
+                              ]),
+                              !State.collapsedTracks['scripts'] && m('.bl-lane-children', { 'data-track': 'scripts' }, [
+                                m('.bl-timeline-lane', [
+                                  m('.bl-slice.bl-slice-green', { style: { left: '3%', width: '25%' } }, m('span.bl-slice-label', 'updateScene'))
+                                ]),
+                                m('.bl-timeline-lane', [
+                                  m('.bl-slice.bl-slice-green', { style: { left: '30%', width: '20%' } }, m('span.bl-slice-label', 'processInput'))
+                                ])
+                              ]),
+                              m('.bl-timeline-lane', [
+                                m('.bl-slice.bl-slice-orange', { style: { left: '55%', width: '13%' } }, [
+                                  m('span.bl-slice-label', 'Layout'),
+                                  m('span.bl-slice-duration', '2.1ms')
+                                ])
+                              ]),
+                              m('.bl-timeline-lane', [
+                                m('.bl-slice.bl-slice-purple', { style: { left: '70%', width: '12%' } }, [
+                                  m('span.bl-slice-label', 'Paint'),
+                                  m('span.bl-slice-duration', '1.8ms')
+                                ])
+                              ]),
+                              !State.collapsedTracks['paint'] && m('.bl-lane-children', { 'data-track': 'paint' }, [
+                                m('.bl-timeline-lane', [
+                                  m('.bl-slice.bl-slice-purple', { style: { left: '71%', width: '5%' } }, m('span.bl-slice-label', 'drawRect'))
+                                ]),
+                                m('.bl-timeline-lane', [
+                                  m('.bl-slice.bl-slice-purple', { style: { left: '77%', width: '4%' } }, m('span.bl-slice-label', 'rasterize'))
+                                ])
+                              ])
+                            ])
+                          ])
+                        ]),
+
+                        // GPU Lanes
+                        m('.bl-lane-group', {
+                          'data-group': 'gpu',
+                          class: State.collapsedTrackGroups['gpu'] ? 'collapsed' : ''
+                        }, [
+                          m('.bl-lane-group-header'),
+                          m('.bl-lane-group-content', [
+                            m('.bl-timeline-lane', [
+                              m('.bl-slice.bl-slice-red', { style: { left: '3%', width: '45%' } }, [
+                                m('span.bl-slice-label', 'Render Pass'),
+                                m('span.bl-slice-duration', '7.2ms')
+                              ])
+                            ]),
+                            m('.bl-timeline-lane', [
+                              m('.bl-slice.bl-slice-teal', { style: { left: '50%', width: '35%' } }, [
+                                m('span.bl-slice-label', 'Compositing'),
+                                m('span.bl-slice-duration', '5.6ms')
+                              ])
+                            ])
+                          ])
+                        ]),
+
+                        // Worker Lanes
+                        m('.bl-lane-group', {
+                          'data-group': 'workers',
+                          class: State.collapsedTrackGroups['workers'] ? 'collapsed' : ''
+                        }, [
+                          m('.bl-lane-group-header'),
+                          m('.bl-lane-group-content', [
+                            m('.bl-timeline-lane', [
+                              m('.bl-slice.bl-slice-yellow', { style: { left: '5%', width: '20%' } }, m('span.bl-slice-label', 'parseGeometry'))
+                            ]),
+                            m('.bl-timeline-lane', [
+                              m('.bl-slice.bl-slice-yellow', { style: { left: '10%', width: '15%' } }, m('span.bl-slice-label', 'decodeTexture'))
+                            ])
+                          ])
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ]),
+
+            m('.profiler-resize-handle', { id: 'resizeHandle' }),
+
+            // Details Panel
+            m('.profiler-details', { id: 'detailsPanel', style: { height: State.detailsPanelHeight + 'px' } }, [
+              m('.profiler-details-tabs-primary', [
+                m('.details-primary-tabs', [
+                  ['Selection', 'History', 'Flame Graph', 'Statistics'].map(function(tab) {
+                    return m('button.details-primary-tab', {
+                      class: State.activePrimaryTab === tab ? 'active' : '',
+                      onclick: function() { State.activePrimaryTab = tab; }
+                    }, tab);
+                  })
+                ]),
+                m('.profiler-details-actions', [
+                  m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Pin Selection' },
+                    m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M10 1L7 4 4.5 3.5 2 6l3.5 2L2 14l6-3.5L10.5 14 13 11.5 12.5 9l3-3z"/></svg>')),
+                  m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Clear History' },
+                    m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'))
+                ])
+              ]),
+              m('.profiler-details-header', [
+                m('.details-secondary-tabs', [
+                  ['Summary', 'Call Stack', 'Bottom-Up', 'Top-Down'].map(function(tab) {
+                    return m('button.details-secondary-tab', {
+                      class: State.activeSecondaryTab === tab ? 'active' : '',
+                      onclick: function() { State.activeSecondaryTab = tab; }
+                    }, tab);
+                  })
+                ])
+              ]),
+              m('.profiler-details-content', [
+                m('.details-grid', [
+                  m('.details-section', [
+                    m('.details-section-title', 'Selected Slice'),
+                    m('.details-row', [
+                      m('span.details-label', 'Function'),
+                      m('span.details-value.highlight', 'requestAnimationFrame')
+                    ]),
+                    m('.details-row', [
+                      m('span.details-label', 'Duration'),
+                      m('span.details-value', '16.4ms')
+                    ]),
+                    m('.details-row', [
+                      m('span.details-label', 'Self Time'),
+                      m('span.details-value', '0.4ms')
+                    ])
+                  ]),
+                  m('.details-section', [
+                    m('.details-section-title', 'Frame Statistics'),
+                    m('.details-row', [
+                      m('span.details-label', 'Total Frame Time'),
+                      m('span.details-value', '16.4ms')
+                    ]),
+                    m('.details-row', [
+                      m('span.details-label', 'Scripts'),
+                      m('span.details-value', '8.2ms (50%)')
+                    ]),
+                    m('.details-row', [
+                      m('span.details-label', 'Layout'),
+                      m('span.details-value', '2.1ms (13%)')
+                    ]),
+                    m('.flame-bar', [
+                      m('.flame-bar-segment', { style: { width: '50%', backgroundColor: '#5a9a5a' } }),
+                      m('.flame-bar-segment', { style: { width: '13%', backgroundColor: '#d4842a' } }),
+                      m('.flame-bar-segment', { style: { width: '11%', backgroundColor: '#8a6ab5' } }),
+                      m('.flame-bar-segment', { style: { width: '26%', backgroundColor: '#424242' } })
+                    ])
+                  ]),
+                  m('.details-section', [
+                    m('.details-section-title', 'Warnings'),
+                    m('.details-row', { style: { color: 'var(--bl-warning)' } }, 'Long frame detected (>16ms budget)')
+                  ])
+                ])
+              ])
+            ])
+          ]),
+
+          // Status Bar
+          m('footer.bl-statusbar', [
+            m('span.bl-statusbar-item', 'Frame: 1247'),
+            m('span.bl-statusbar-item', 'Duration: 16.4ms'),
+            m('span.bl-statusbar-item', '60 FPS target'),
+            m('span.bl-statusbar-item', { style: { marginLeft: 'auto', borderRight: 'none' } }, 'Profiler v1.0')
+          ])
+        ]);
+      }
+    };
+
+    // Plugins Page
+    var PluginsPage = {
+      view: function() {
+        var plugins = [
+          { name: 'Animation Nodes', version: 'v2.3.1', author: 'Jacques Lucke', enabled: true, status: 'Enabled', statusClass: 'bl-badge-success',
+            description: 'A powerful node-based visual scripting system for creating complex animations and procedural effects.' },
+          { name: 'Hard Ops', version: 'v9.87.2', author: 'Team C', enabled: true, status: 'Enabled', statusClass: 'bl-badge-success',
+            description: 'Workflow enhancement addon for hard surface modeling with boolean operations and advanced mesh tools.' },
+          { name: 'Node Wrangler', version: 'v1.0', author: 'Blender Foundation', enabled: false, status: 'Disabled', statusClass: '',
+            description: 'Built-in addon with shortcuts and tools for efficient node editor workflow in shader and compositor nodes.' },
+          { name: 'LoopTools', version: 'v4.6.7', author: 'Bart Crouch', enabled: false, status: 'Disabled', statusClass: '',
+            description: 'Mesh editing tools including circle, curve, flatten, and relax operations for cleaner topology.' },
+          { name: 'Rigify', version: 'v0.6.5', author: 'Blender Foundation', enabled: true, status: 'Enabled', statusClass: 'bl-badge-success',
+            description: 'Automatic rigging system that generates production-ready character rigs with advanced controls.' },
+          { name: 'Decal Machine', version: 'v2.4.0', author: 'MACHIN3', enabled: true, status: 'Update Available', statusClass: 'bl-badge-warning',
+            description: 'Decal and trim sheet workflow addon for adding surface details without UV mapping complexity.' }
+        ];
+
+        return m('.page-plugins', [
+          // Header Bar
+          m('header.bl-header', [
+            m('.bl-header-menu', [
+              m('.bl-header-menu-item', 'File'),
+              m('.bl-header-menu-item', 'Edit'),
+              m('.bl-header-menu-item', 'View'),
+              m('.bl-header-menu-item', 'Help')
+            ]),
+            m('div', { style: { marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 'var(--bl-spacing-md)' } }, [
+              m('input.bl-input[type=text]', { placeholder: 'Search plugins...', style: { width: '200px' } }),
+              m('button.bl-btn.bl-btn-primary', 'Install Plugin')
+            ])
+          ]),
+
+          m('.plugins-main', [
+            m('.plugins-list', plugins.map(function(plugin) {
+              return m('.plugin-item', { class: plugin.enabled ? '' : 'disabled' }, [
+                m('.plugin-header', [
+                  m('label.bl-checkbox', [
+                    m('input[type=checkbox]', { checked: plugin.enabled })
+                  ]),
+                  m('.plugin-info', [
+                    m('.plugin-name', plugin.name),
+                    m('.plugin-version', plugin.version)
+                  ]),
+                  m('.plugin-actions', [
+                    m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'Settings' },
+                      m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0-8a6 6 0 0 1 4.47 10.02l.73.73a.5.5 0 0 1-.71.71l-.73-.73A6 6 0 1 1 8 2z"/></svg>')),
+                    m('button.bl-btn.bl-btn-icon.bl-tooltip', { 'data-tooltip': 'More' },
+                      m.trust('<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>'))
+                  ])
+                ]),
+                m('.plugin-description', plugin.description),
+                m('.plugin-meta', [
+                  m('span.bl-badge', { class: plugin.statusClass }, plugin.status),
+                  m('span.plugin-author', 'by ' + plugin.author)
+                ])
+              ]);
+            }))
+          ]),
+
+          // Status Bar
+          m('footer.bl-statusbar', [
+            m('span.bl-statusbar-item', 'Plugins: 6 total'),
+            m('span.bl-statusbar-item', '4 enabled'),
+            m('span.bl-statusbar-item', '2 disabled'),
+            m('span.bl-statusbar-item', { style: { marginLeft: 'auto', borderRight: 'none' } }, 'Plugin Manager v1.0')
+          ])
+        ]);
+      }
+    };
+
+    // Layout wrapper
+    var Layout = {
+      view: function(vnode) {
+        return m('.app-layout', [
+          m(Nav),
+          m('main.app-main', vnode.children)
+        ]);
+      }
+    };
+
+    // Route configuration
+    m.route(document.getElementById('app'), '/widgets', {
+      '/widgets': {
+        render: function() {
+          return m(Layout, m(WidgetsPage));
+        }
+      },
+      '/profiler': {
+        render: function() {
+          return m(Layout, m(ProfilerPage));
+        }
+      },
+      '/plugins': {
+        render: function() {
+          return m(Layout, m(PluginsPage));
+        }
+      }
     });
-
-    // Resize handle for details panel
-    const resizeHandle = document.getElementById('resizeHandle');
-    const detailsPanel = document.getElementById('detailsPanel');
-    let isResizing = false;
-
-    if (resizeHandle && detailsPanel) {
-      resizeHandle.addEventListener('mousedown', function(e) {
-        isResizing = true;
-        document.body.style.cursor = 'ns-resize';
-        document.body.style.userSelect = 'none';
-      });
-
-      document.addEventListener('mousemove', function(e) {
-        if (!isResizing) return;
-        const containerRect = detailsPanel.parentElement.getBoundingClientRect();
-        const newHeight = containerRect.bottom - e.clientY;
-        if (newHeight >= 100 && newHeight <= window.innerHeight * 0.5) {
-          detailsPanel.style.height = newHeight + 'px';
-        }
-      });
-
-      document.addEventListener('mouseup', function() {
-        isResizing = false;
-        document.body.style.cursor = '';
-        document.body.style.userSelect = '';
-      });
-    }
   </script>
 </body>
 </html>
