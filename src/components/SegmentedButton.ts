@@ -1,4 +1,5 @@
 import m from 'mithril';
+import cx from 'classnames';
 
 export interface SegmentedButtonGroupAttrs {
   /** Additional CSS classes */
@@ -19,10 +20,7 @@ export interface SegmentedButtonAttrs {
 /** Container for segmented buttons */
 export const SegmentedButtonGroup: m.Component<SegmentedButtonGroupAttrs> = {
   view(vnode) {
-    const classes = ['bl-segmented'];
-    if (vnode.attrs.class) classes.push(vnode.attrs.class);
-
-    return m('div', { class: classes.join(' ') }, vnode.children);
+    return m('div', { class: cx('bl-segmented', vnode.attrs.class) }, vnode.children);
   },
 };
 
@@ -31,12 +29,13 @@ export const SegmentedButton: m.Component<SegmentedButtonAttrs> = {
   view(vnode) {
     const { icon, active, title, onclick } = vnode.attrs;
 
-    const classes = ['bl-segmented-btn'];
     const hasChildren =
       vnode.children && (Array.isArray(vnode.children) ? vnode.children.length > 0 : true);
 
-    if (icon && !hasChildren) classes.push('icon-only');
-    if (active) classes.push('active');
+    const classes = cx('bl-segmented-btn', {
+      'icon-only': icon && !hasChildren,
+      active,
+    });
 
     const content: m.Children[] = [];
 
@@ -54,7 +53,7 @@ export const SegmentedButton: m.Component<SegmentedButtonAttrs> = {
     return m(
       'button',
       {
-        class: classes.join(' '),
+        class: classes,
         title,
         onclick,
       },

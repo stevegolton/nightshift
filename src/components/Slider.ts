@@ -1,4 +1,5 @@
 import m from 'mithril';
+import cx from 'classnames';
 import './Slider.css';
 
 export interface SliderAttrs {
@@ -39,10 +40,7 @@ const Slider: m.Component<SliderAttrs> = {
       onchange,
     } = vnode.attrs;
 
-    const wrapperClasses = ['bl-slider'];
-    if (className) wrapperClasses.push(className);
-
-    return m('div', { class: wrapperClasses.join(' ') }, [
+    return m('div', { class: cx('bl-slider', className) }, [
       m('input[type=range]', {
         value,
         min,

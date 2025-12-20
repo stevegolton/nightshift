@@ -435,3 +435,641 @@
   color: var(--bl-text-secondary);
   margin-top: var(--bl-spacing-sm);
 }
+
+/* ============================================
+   Timeline / Profiler View
+   ============================================ */
+
+/* Timeline Container */
+.bl-timeline {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bl-surface-0);
+  border: 1px solid var(--bl-border-dark);
+  border-radius: var(--bl-radius-md);
+  overflow: hidden;
+}
+
+/* Timeline Header with controls */
+.bl-timeline-header {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-md);
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  background-color: var(--bl-surface-3);
+  border-bottom: 1px solid var(--bl-border-dark);
+}
+
+.bl-timeline-title {
+  font-size: var(--bl-font-size-base);
+  font-weight: 500;
+  color: var(--bl-text-primary);
+}
+
+.bl-timeline-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-xs);
+  margin-left: auto;
+}
+
+/* Main timeline area */
+.bl-timeline-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Ruler row: tracks label + time ruler */
+.bl-timeline-ruler-row {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.bl-timeline-ruler-row .bl-timeline-tracks-header {
+  width: var(--bl-tracks-width);
+  min-width: var(--bl-tracks-width);
+  height: 24px;
+  background-color: var(--bl-surface-1);
+  border-bottom: 1px solid var(--bl-border-dark);
+  border-right: 1px solid var(--bl-border-dark);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--bl-spacing-sm);
+  font-size: var(--bl-font-size-xs);
+  color: var(--bl-text-muted);
+  gap: var(--bl-spacing-xs);
+}
+
+.bl-track-header-actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.bl-track-search {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  height: 18px;
+  background-color: var(--bl-surface-2);
+  border: 1px solid var(--bl-border-dark);
+  border-radius: var(--bl-radius-sm);
+  padding: 0 var(--bl-spacing-sm);
+  gap: var(--bl-spacing-xs);
+}
+
+.bl-track-search svg,
+.bl-track-search .material-icons {
+  width: 12px;
+  height: 12px;
+  fill: var(--bl-text-muted);
+  flex-shrink: 0;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--bl-text-muted);
+}
+
+.bl-track-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--bl-font-family);
+  font-size: var(--bl-font-size-xs);
+  color: var(--bl-text-primary);
+}
+
+.bl-track-search input::placeholder {
+  color: var(--bl-text-muted);
+}
+
+.bl-track-search:focus-within {
+  border-color: var(--bl-accent);
+}
+
+.bl-track-search:focus-within svg,
+.bl-track-search:focus-within .material-icons {
+  fill: var(--bl-accent);
+  color: var(--bl-accent);
+}
+
+/* Scrollable area containing both tracks and lanes */
+.bl-timeline-scroll {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Track shell column (left side) */
+.bl-timeline-tracks {
+  width: var(--bl-tracks-width);
+  min-width: var(--bl-tracks-width);
+  flex-shrink: 0;
+  background-color: var(--bl-surface-2);
+  border-right: 1px solid var(--bl-border-dark);
+}
+
+/* Timeline lanes column (right side) */
+.bl-timeline-lanes-column {
+  flex: 1;
+  position: relative;
+}
+
+/* Time ruler */
+.bl-timeline-ruler {
+  flex: 1;
+  height: 24px;
+  background-color: var(--bl-surface-1);
+  border-bottom: 1px solid var(--bl-border-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.bl-timeline-ruler-inner {
+  display: flex;
+  height: 100%;
+  position: relative;
+}
+
+.bl-timeline-ruler-mark {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--bl-text-muted);
+  font-size: var(--bl-font-size-xs);
+  font-family: var(--bl-font-mono);
+}
+
+.bl-timeline-ruler-mark::after {
+  content: '';
+  width: 1px;
+  flex: 1;
+  background-color: var(--bl-border-light);
+}
+
+.bl-timeline-ruler-mark.major::after {
+  background-color: var(--bl-text-muted);
+}
+
+.bl-timeline-ruler-mark span {
+  padding: 2px 4px;
+}
+
+/* Scrollable lanes area */
+.bl-timeline-lanes {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+.bl-timeline-lanes-inner {
+  min-width: 100%;
+  position: relative;
+}
+
+/* Track Group */
+.bl-track-group {
+  /* No border here - tracks have their own borders, avoids double-thickness at group boundaries */
+}
+
+.bl-track-group-header {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-sm);
+  height: 26px;
+  padding: 0 var(--bl-spacing-sm);
+  background-color: var(--bl-surface-3);
+  border-bottom: 1px solid var(--bl-border-dark);
+  cursor: pointer;
+  user-select: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: var(--bl-button-highlight);
+}
+
+.bl-track-group-header:hover {
+  background-color: var(--bl-surface-hover);
+}
+
+.bl-track-group-header:hover .bl-track-buttons {
+  opacity: 1;
+}
+
+.bl-track-group-toggle {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--bl-text-secondary);
+  transform: rotate(90deg); /* Points down when expanded */
+  transition: transform 0.15s ease;
+}
+
+.bl-track-group-toggle svg {
+  width: 10px;
+  height: 10px;
+  fill: var(--bl-text-secondary);
+}
+
+.bl-track-group.collapsed .bl-track-group-toggle {
+  transform: rotate(0deg); /* Points right when collapsed */
+}
+
+.bl-track-group-name {
+  font-size: var(--bl-font-size-base);
+  font-weight: 500;
+  color: var(--bl-text-primary);
+  flex: 1;
+}
+
+.bl-track-group.collapsed .bl-track-group-content {
+  display: none;
+}
+
+/* Lane Group (mirrors track group on timeline side) */
+.bl-lane-group {
+  /* No border - tracks have their own borders */
+}
+
+.bl-lane-group-header {
+  height: 26px;
+  background-color: var(--bl-surface-1);
+  border-bottom: 1px solid var(--bl-border-light);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.bl-lane-group-content {
+  /* Container for lanes */
+}
+
+.bl-lane-group.collapsed .bl-lane-group-content {
+  display: none;
+}
+
+/* Nested lane children container */
+.bl-lane-children {
+  /* Children are displayed by default */
+}
+
+.bl-lane-children.collapsed {
+  display: none;
+}
+
+/* Individual Track Shell */
+.bl-track {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 var(--bl-spacing-sm);
+  padding-left: 22px;
+  border-bottom: 1px solid var(--bl-border-dark);
+  background-color: var(--bl-surface-2);
+}
+
+/* Expandable track (has children) */
+.bl-track.expandable {
+  padding-left: var(--bl-spacing-sm);
+}
+
+.bl-track-toggle {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--bl-spacing-xs);
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--bl-text-secondary);
+  transform: rotate(90deg); /* Points down when expanded */
+  transition: transform 0.15s ease;
+}
+
+.bl-track-toggle svg {
+  width: 10px;
+  height: 10px;
+  fill: var(--bl-text-secondary);
+}
+
+.bl-track.collapsed .bl-track-toggle {
+  transform: rotate(0deg); /* Points right when collapsed */
+}
+
+/* Track children container */
+.bl-track-children {
+  /* Children are displayed by default */
+}
+
+.bl-track.collapsed + .bl-track-children {
+  display: none;
+}
+
+/* Nested track indentation levels */
+.bl-track[data-depth='1'] {
+  padding-left: 22px;
+}
+.bl-track[data-depth='2'] {
+  padding-left: 36px;
+}
+.bl-track[data-depth='3'] {
+  padding-left: 50px;
+}
+.bl-track[data-depth='4'] {
+  padding-left: 64px;
+}
+
+.bl-track.expandable[data-depth='1'] {
+  padding-left: 8px;
+}
+.bl-track.expandable[data-depth='2'] {
+  padding-left: 22px;
+}
+.bl-track.expandable[data-depth='3'] {
+  padding-left: 36px;
+}
+.bl-track.expandable[data-depth='4'] {
+  padding-left: 50px;
+}
+
+.bl-track-name {
+  flex: 1;
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bl-track-buttons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+}
+
+.bl-track:hover .bl-track-buttons {
+  opacity: 1;
+}
+
+.bl-track-btn {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--bl-radius-sm);
+  color: var(--bl-text-secondary);
+  cursor: pointer;
+  padding: 0;
+}
+
+.bl-track-btn:hover {
+  background-color: var(--bl-surface-hover);
+  color: var(--bl-text-primary);
+}
+
+.bl-track-btn.active {
+  color: var(--bl-accent);
+}
+
+.bl-track-btn svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+/* Timeline Lane (row in content area) */
+.bl-timeline-lane {
+  height: 24px;
+  position: relative;
+  border-bottom: 1px solid var(--bl-border-light);
+  /* No background - grid lines show through */
+}
+
+/* Lane for track group header (spacer) - deprecated, use .bl-lane-group instead */
+.bl-timeline-lane-group {
+  height: 26px;
+  background-color: var(--bl-surface-1);
+  border-bottom: 1px solid var(--bl-border-dark);
+}
+
+/* Profile Slice */
+.bl-slice {
+  position: absolute;
+  height: 18px;
+  top: 3px;
+  border-radius: var(--bl-radius-sm);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--bl-spacing-sm);
+  font-size: var(--bl-font-size-xs);
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  box-shadow: var(--bl-button-highlight);
+}
+
+.bl-slice:hover {
+  filter: brightness(1.2);
+  z-index: 10;
+}
+
+.bl-slice.selected {
+  outline: 2px solid #fff;
+  outline-offset: -1px;
+  z-index: 11;
+}
+
+.bl-slice-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bl-slice-duration {
+  margin-left: auto;
+  padding-left: var(--bl-spacing-sm);
+  font-family: var(--bl-font-mono);
+  opacity: 0.8;
+}
+
+/* Slice color variations */
+.bl-slice-blue {
+  background-color: #4a7fb5;
+}
+.bl-slice-green {
+  background-color: #5a9a5a;
+}
+.bl-slice-orange {
+  background-color: #d4842a;
+}
+.bl-slice-purple {
+  background-color: #8a6ab5;
+}
+.bl-slice-red {
+  background-color: #b54a4a;
+}
+.bl-slice-teal {
+  background-color: #4a9a9a;
+}
+.bl-slice-yellow {
+  background-color: #a8a840;
+}
+.bl-slice-pink {
+  background-color: #b5608a;
+}
+.bl-slice-gray {
+  background-color: #6a6a6a;
+}
+
+/* Nested slices (flame graph style) */
+.bl-timeline-lane.nested-1 .bl-slice {
+  top: 3px;
+  height: 18px;
+}
+.bl-timeline-lane.nested-2 .bl-slice {
+  top: 3px;
+  height: 18px;
+  opacity: 0.9;
+}
+.bl-timeline-lane.nested-3 .bl-slice {
+  top: 3px;
+  height: 18px;
+  opacity: 0.8;
+}
+
+/* Playhead / Cursor */
+.bl-timeline-playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--bl-accent);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.bl-timeline-playhead::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -5px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid var(--bl-accent);
+}
+
+/* Selection range */
+.bl-timeline-selection {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: var(--bl-accent-subtle);
+  border-left: 1px solid var(--bl-accent);
+  border-right: 1px solid var(--bl-accent);
+  pointer-events: none;
+}
+
+/* Grid lines */
+.bl-timeline-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.bl-timeline-grid-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--bl-grid-line);
+}
+
+.bl-timeline-grid-line.major {
+  background-color: var(--bl-grid-line-major);
+}
+
+/* Zoom indicator */
+.bl-timeline-zoom {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-xs);
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-secondary);
+}
+
+/* Stats panel */
+.bl-timeline-stats {
+  display: flex;
+  gap: var(--bl-spacing-lg);
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  background-color: var(--bl-surface-1);
+  border-top: 1px solid var(--bl-border-dark);
+  font-size: var(--bl-font-size-sm);
+}
+
+.bl-timeline-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-sm);
+}
+
+.bl-timeline-stat-label {
+  color: var(--bl-text-muted);
+}
+
+.bl-timeline-stat-value {
+  font-family: var(--bl-font-mono);
+  color: var(--bl-text-primary);
+}
+
+/* Minimap */
+.bl-timeline-minimap {
+  height: 32px;
+  background-color: var(--bl-surface-1);
+  border-top: 1px solid var(--bl-border-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.bl-timeline-minimap-viewport {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  background-color: var(--bl-accent-subtle);
+  border: 1px solid var(--bl-accent);
+  border-radius: var(--bl-radius-sm);
+  cursor: grab;
+}
+
+.bl-timeline-minimap-slice {
+  position: absolute;
+  height: 3px;
+  border-radius: 1px;
+  opacity: 0.6;
+}

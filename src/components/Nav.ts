@@ -1,4 +1,5 @@
 import m from 'mithril';
+import cx from 'classnames';
 import './Nav.css';
 import { State, toggleTheme } from '../state';
 
@@ -8,7 +9,7 @@ function NavItem(route: string, icon: string, label: string): m.Vnode {
   return m(
     'a.app-nav-item',
     {
-      class: isActive ? 'active' : '',
+      class: cx({ active: isActive }),
       href: '#/' + route,
     },
     [m('span.material-icons', icon), m('span.app-nav-item-label', label)]
@@ -17,7 +18,7 @@ function NavItem(route: string, icon: string, label: string): m.Vnode {
 
 const Nav: m.Component = {
   view(): m.Vnode {
-    return m('nav.app-nav', { class: State.navCollapsed ? 'collapsed' : '', id: 'appNav' }, [
+    return m('nav.app-nav', { class: cx({ collapsed: State.navCollapsed }), id: 'appNav' }, [
       m('.app-nav-header', [
         m(
           'button.app-nav-toggle',
@@ -29,7 +30,7 @@ const Nav: m.Component = {
           },
           m('span.material-icons', 'chevron_left')
         ),
-        m('span.app-nav-title', 'Nightshift UI'),
+        m('span.app-nav-title', 'Nightshift Demo'),
       ]),
       m('.app-nav-items', [
         NavItem('widgets', 'widgets', 'Widgets'),

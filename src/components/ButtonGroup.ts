@@ -1,4 +1,5 @@
 import m from 'mithril';
+import cx from 'classnames';
 
 export interface ButtonGroupAttrs {
   /** Additional CSS classes */
@@ -7,10 +8,7 @@ export interface ButtonGroupAttrs {
 
 const ButtonGroup: m.Component<ButtonGroupAttrs> = {
   view(vnode) {
-    const classes = ['bl-btn-group'];
-    if (vnode.attrs.class) classes.push(vnode.attrs.class);
-
-    return m('div', { class: classes.join(' ') }, vnode.children);
+    return m('div', { class: cx('bl-btn-group', vnode.attrs.class) }, vnode.children);
   },
 };
 

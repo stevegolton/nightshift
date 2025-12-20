@@ -1,4 +1,6 @@
 import m from 'mithril';
+import cx from 'classnames';
+import './Tabs.css';
 
 export interface TabItem {
   /** Unique identifier for the tab */
@@ -28,21 +30,22 @@ export const Tabs: m.Component<TabsAttrs> = {
   view(vnode) {
     const { tabs, activeTab, onTabChange, variant = 'inline' } = vnode.attrs;
 
-    const containerClasses = ['bl-tabs-container'];
-    if (variant === 'primary') containerClasses.push('bl-tabs-primary');
-    if (vnode.attrs.class) containerClasses.push(vnode.attrs.class);
+    const containerClasses = cx('bl-tabs-container', vnode.attrs.class, {
+      'bl-tabs-primary': variant === 'primary',
+    });
 
-    const tabListClasses = variant === 'primary' ? ['bl-tabs-list-primary'] : ['bl-tabs-list'];
+    const tabListClasses = variant === 'primary' ? 'bl-tabs-list-primary' : 'bl-tabs-list';
 
     const activeTabItem = tabs.find((t) => t.id === activeTab);
 
-    return m('.', { class: containerClasses.join(' ') }, [
+    return m('.', { class: containerClasses }, [
       m(
         '.',
-        { class: tabListClasses.join(' ') },
+        { class: tabListClasses },
         tabs.map((tab) => {
-          const tabClasses = variant === 'primary' ? ['bl-tab-primary'] : ['bl-tab'];
-          if (tab.id === activeTab) tabClasses.push('active');
+          const tabClasses = cx(variant === 'primary' ? 'bl-tab-primary' : 'bl-tab', {
+            active: tab.id === activeTab,
+          });
 
           const content: m.Children[] = [];
           if (tab.icon) {
@@ -53,7 +56,7 @@ export const Tabs: m.Component<TabsAttrs> = {
           return m(
             'button',
             {
-              class: tabClasses.join(' '),
+              class: tabClasses,
               onclick: () => onTabChange(tab.id),
             },
             content

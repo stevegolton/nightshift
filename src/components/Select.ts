@@ -1,4 +1,5 @@
 import m from 'mithril';
+import cx from 'classnames';
 import './Select.css';
 
 export interface SelectOption {
@@ -26,12 +27,9 @@ const Select: m.Component<SelectAttrs> = {
   view(vnode) {
     const { options, value, placeholder, disabled, class: className, onchange } = vnode.attrs;
 
-    const wrapperClasses = ['bl-select'];
-    if (className) wrapperClasses.push(className);
-
     return m(
       'div',
-      { class: wrapperClasses.join(' ') },
+      { class: cx('bl-select', className) },
       m(
         'select',
         {

@@ -1,4 +1,5 @@
 import m from 'mithril';
+import cx from 'classnames';
 import './Radio.css';
 
 export interface RadioAttrs {
@@ -22,16 +23,13 @@ const Radio: m.Component<RadioAttrs> = {
   view(vnode) {
     const { name, value, checked, disabled, label, class: className, onchange } = vnode.attrs;
 
-    const wrapperClasses = ['bl-radio'];
-    if (className) wrapperClasses.push(className);
-
     // Support children as label content
     const labelContent =
       vnode.children && (Array.isArray(vnode.children) ? vnode.children.length > 0 : true)
         ? vnode.children
         : label;
 
-    return m('label', { class: wrapperClasses.join(' ') }, [
+    return m('label', { class: cx('bl-radio', className) }, [
       m('input[type=radio]', {
         name,
         value,

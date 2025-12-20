@@ -1,4 +1,6 @@
 import m from 'mithril';
+import cx from 'classnames';
+import './SplitPanel.css';
 
 export interface SplitPanelAttrs {
   direction?: 'horizontal' | 'vertical';
@@ -95,22 +97,14 @@ export function SplitPanel(): m.Component<SplitPanelAttrs> {
     view(vnode) {
       const { direction = 'horizontal', firstPanel, secondPanel } = vnode.attrs;
 
-      const containerClasses = ['bl-split-panel', `bl-split-${direction}`];
-      if (vnode.attrs.class) containerClasses.push(vnode.attrs.class);
+      const containerClasses = cx('bl-split-panel', `bl-split-${direction}`, vnode.attrs.class);
 
       // Use flex-basis with calc to account for handle width (4px)
       const handleSize = 4;
-      const firstStyle =
-        direction === 'horizontal'
-          ? { flex: `0 0 calc(${splitPercent}% - ${handleSize / 2}px)` }
-          : { flex: `0 0 calc(${splitPercent}% - ${handleSize / 2}px)` };
+      const firstStyle = { flex: `0 0 calc(${splitPercent}% - ${handleSize / 2}px)` };
+      const secondStyle = { flex: `0 0 calc(${100 - splitPercent}% - ${handleSize / 2}px)` };
 
-      const secondStyle =
-        direction === 'horizontal'
-          ? { flex: `0 0 calc(${100 - splitPercent}% - ${handleSize / 2}px)` }
-          : { flex: `0 0 calc(${100 - splitPercent}% - ${handleSize / 2}px)` };
-
-      return m('div', { class: containerClasses.join(' ') }, [
+      return m('div', { class: containerClasses }, [
         m('.bl-split-first', { style: firstStyle }, firstPanel),
         m('.bl-split-handle'),
         m('.bl-split-second', { style: secondStyle }, secondPanel),

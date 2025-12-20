@@ -1,4 +1,5 @@
 import m from 'mithril';
+import cx from 'classnames';
 import './Input.css';
 
 export interface InputAttrs {
@@ -74,13 +75,13 @@ const Input: m.Component<InputAttrs> = {
     }
 
     // With icon, wrap in container
-    const wrapperClasses = ['bl-input-wrapper'];
-    if (iconPosition === 'right') wrapperClasses.push('icon-right');
-    if (className) wrapperClasses.push(className);
+    const wrapperClasses = cx('bl-input-wrapper', className, {
+      'icon-right': iconPosition === 'right',
+    });
 
     const iconEl = m('.bl-input-icon', m('span.material-icons', icon));
 
-    return m('div', { class: wrapperClasses.join(' ') }, [
+    return m('div', { class: wrapperClasses }, [
       iconPosition === 'left' ? iconEl : null,
       inputEl,
       iconPosition === 'right' ? iconEl : null,

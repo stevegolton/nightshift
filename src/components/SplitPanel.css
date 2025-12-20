@@ -1,0 +1,84 @@
+/* Split Panel */
+.bl-split-panel {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.bl-split-horizontal {
+  flex-direction: row;
+}
+
+.bl-split-vertical {
+  flex-direction: column;
+}
+
+.bl-split-first,
+.bl-split-second {
+  overflow: auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.bl-split-handle {
+  flex-shrink: 0;
+  background-color: var(--bl-surface-3);
+  transition: background-color 0.15s ease;
+}
+
+.bl-split-horizontal > .bl-split-handle {
+  width: 4px;
+  cursor: col-resize;
+  position: relative;
+}
+
+.bl-split-vertical > .bl-split-handle {
+  height: 4px;
+  cursor: row-resize;
+  position: relative;
+}
+
+.bl-split-handle:hover,
+.bl-split-handle.active {
+  background-color: var(--bl-accent);
+}
+
+/* Optional: Add a visible grip pattern */
+.bl-split-handle::after {
+  content: '';
+  display: block;
+  position: absolute;
+}
+
+.bl-split-horizontal > .bl-split-handle::after {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px;
+  height: 24px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--bl-text-muted) 0px,
+    var(--bl-text-muted) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  opacity: 0.5;
+}
+
+.bl-split-vertical > .bl-split-handle::after {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 2px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--bl-text-muted) 0px,
+    var(--bl-text-muted) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  opacity: 0.5;
+}

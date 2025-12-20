@@ -1,4 +1,5 @@
 import m from 'mithril';
+import cx from 'classnames';
 import './Checkbox.css';
 
 export interface CheckboxAttrs {
@@ -18,16 +19,13 @@ const Checkbox: m.Component<CheckboxAttrs> = {
   view(vnode) {
     const { checked, disabled, label, class: className, onchange } = vnode.attrs;
 
-    const wrapperClasses = ['bl-checkbox'];
-    if (className) wrapperClasses.push(className);
-
     // Support children as label content
     const labelContent =
       vnode.children && (Array.isArray(vnode.children) ? vnode.children.length > 0 : true)
         ? vnode.children
         : label;
 
-    return m('label', { class: wrapperClasses.join(' ') }, [
+    return m('label', { class: cx('bl-checkbox', className) }, [
       m('input[type=checkbox]', {
         checked,
         disabled,

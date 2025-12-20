@@ -1,4 +1,5 @@
 import m from 'mithril';
+import cx from 'classnames';
 import './NumberInput.css';
 
 export interface NumberInputAttrs {
@@ -103,13 +104,13 @@ const NumberInput = (): m.Component<NumberInputAttrs> => {
       // Keep attrs reference updated for drag handler
       state.currentAttrs = vnode.attrs;
 
-      const classes = ['bl-number-input'];
-      if (disabled) classes.push('bl-number-input-disabled');
-      if (className) classes.push(className);
+      const classes = cx('bl-number-input', className, {
+        'bl-number-input-disabled': disabled,
+      });
 
       const displayValue = value.toFixed(precision);
 
-      return m('div', { class: classes.join(' ') }, [
+      return m('div', { class: classes }, [
         label &&
           m(
             'span.bl-number-label',

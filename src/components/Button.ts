@@ -1,4 +1,5 @@
 import m from 'mithril';
+import cx from 'classnames';
 import './Button.css';
 
 export interface ButtonAttrs {
@@ -20,16 +21,17 @@ const Button: m.Component<ButtonAttrs> = {
   view(vnode) {
     const { variant, icon, active, disabled, tooltip, onclick } = vnode.attrs;
 
-    const classes = ['bl-btn'];
-
-    if (variant === 'primary') classes.push('bl-btn-primary');
-    if (variant === 'toggle') classes.push('bl-btn-toggle');
-    if (variant === 'ghost') classes.push('bl-btn-ghost');
     const hasChildren =
       vnode.children && (Array.isArray(vnode.children) ? vnode.children.length > 0 : true);
-    if (icon && !hasChildren) classes.push('bl-btn-icon');
-    if (active) classes.push('active');
-    if (tooltip) classes.push('bl-tooltip');
+
+    const classes = cx('bl-btn', {
+      'bl-btn-primary': variant === 'primary',
+      'bl-btn-toggle': variant === 'toggle',
+      'bl-btn-ghost': variant === 'ghost',
+      'bl-btn-icon': icon && !hasChildren,
+      active,
+      'bl-tooltip': tooltip,
+    });
 
     const content: m.Children[] = [];
 
@@ -47,7 +49,7 @@ const Button: m.Component<ButtonAttrs> = {
     return m(
       'button',
       {
-        class: classes.join(' '),
+        class: classes,
         disabled,
         onclick,
         'data-tooltip': tooltip,
