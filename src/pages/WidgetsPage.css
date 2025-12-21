@@ -27,7 +27,7 @@
 
 .demo-section {
   margin-bottom: var(--bl-spacing-xl);
-  padding: var(--bl-spacing-lg);
+  padding: var(--bl-spacing-md) var(--bl-spacing-lg) var(--bl-spacing-lg);
   background-color: var(--bl-surface-2);
   border-radius: var(--bl-radius-md);
 }
