@@ -38,7 +38,7 @@
   color: var(--bl-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: var(--bl-spacing-lg);
+  margin-bottom: var(--bl-spacing-md);
   padding-bottom: var(--bl-spacing-sm);
   border-bottom: 1px solid var(--bl-border-dark);
 }
@@ -84,13 +84,11 @@
 
 .split-panel-content h4 {
   margin: 0 0 var(--bl-spacing-sm) 0;
-  font-size: var(--bl-font-size-sm);
   font-weight: 500;
   color: var(--bl-text-primary);
 }
 
 .split-panel-content p {
   margin: 0;
-  font-size: var(--bl-font-size-sm);
   color: var(--bl-text-secondary);
 }

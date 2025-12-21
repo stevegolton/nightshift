@@ -1,0 +1,456 @@
+/* Quadcopter Page Styles */
+
+.page-quadcopter {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Toolbar */
+.quad-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  background-color: var(--bl-surface-2);
+  border-bottom: 1px solid var(--bl-border-dark);
+  gap: var(--bl-spacing-md);
+}
+
+.toolbar-left,
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-sm);
+}
+
+/* Main content */
+.quad-main {
+  flex: 1;
+  overflow: hidden;
+}
+
+.quad-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--bl-surface-1);
+}
+
+.panel-header {
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  background-color: var(--bl-surface-3);
+  border-bottom: 1px solid var(--bl-border-dark);
+  font-weight: 500;
+  color: var(--bl-text-primary);
+}
+
+/* Monitor Panel */
+.monitor-content {
+  display: flex;
+  flex: 1;
+  padding: var(--bl-spacing-md);
+  gap: var(--bl-spacing-lg);
+  overflow: auto;
+}
+
+.monitor-left,
+.monitor-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bl-spacing-md);
+}
+
+.monitor-left {
+  flex: 1;
+}
+
+.monitor-right {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+/* Attitude Indicator */
+.attitude-indicator {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background-color: var(--bl-surface-0);
+  border: 2px solid var(--bl-border-dark);
+  overflow: hidden;
+}
+
+.attitude-sphere {
+  position: absolute;
+  inset: 0;
+}
+
+.attitude-horizon {
+  position: absolute;
+  top: 50%;
+  left: -20%;
+  right: -20%;
+  height: 100%;
+  background: linear-gradient(to bottom, #4a7fb5 0%, #4a7fb5 50%, #8b5a2b 50%, #8b5a2b 100%);
+}
+
+.attitude-pitch-lines {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 40%;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.attitude-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.attitude-center-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 2px;
+  background-color: #ffa500;
+}
+
+.attitude-center-mark::before,
+.attitude-center-mark::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #ffa500;
+  border-radius: 50%;
+}
+
+.attitude-center-mark::before {
+  left: -14px;
+}
+
+.attitude-center-mark::after {
+  right: -14px;
+}
+
+.attitude-labels {
+  position: absolute;
+  bottom: var(--bl-spacing-sm);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: var(--bl-spacing-md);
+}
+
+.attitude-value {
+  font-family: var(--bl-font-mono);
+  font-size: var(--bl-font-size-xs);
+  color: var(--bl-text-primary);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2px 6px;
+  border-radius: var(--bl-radius-sm);
+}
+
+/* Motor Outputs */
+.motor-outputs {
+  flex: 1;
+}
+
+.motor-diagram {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--bl-spacing-md);
+}
+
+.motor-quad {
+  position: relative;
+  width: 140px;
+  height: 140px;
+}
+
+.motor-body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background-color: var(--bl-surface-3);
+  border: 2px solid var(--bl-border-dark);
+  border-radius: var(--bl-radius-sm);
+}
+
+.motor-arm {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.motor-arm.front-left {
+  top: 0;
+  left: 0;
+}
+
+.motor-arm.front-right {
+  top: 0;
+  right: 0;
+}
+
+.motor-arm.rear-left {
+  bottom: 0;
+  left: 0;
+}
+
+.motor-arm.rear-right {
+  bottom: 0;
+  right: 0;
+}
+
+.motor-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--bl-surface-2);
+  border: 2px solid var(--bl-border-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.motor-circle.spinning {
+  border-color: var(--bl-success);
+  box-shadow: 0 0 8px rgba(74, 157, 74, 0.4);
+}
+
+.motor-value {
+  font-family: var(--bl-font-mono);
+  font-size: var(--bl-font-size-xs);
+  color: var(--bl-text-primary);
+}
+
+/* Battery Status */
+.battery-status {
+  background-color: var(--bl-surface-2);
+  border-radius: var(--bl-radius-md);
+  padding: var(--bl-spacing-md);
+}
+
+.battery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--bl-spacing-sm);
+}
+
+.battery-title {
+  font-weight: 500;
+  color: var(--bl-text-primary);
+}
+
+.battery-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--bl-spacing-sm);
+  font-family: var(--bl-font-mono);
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-secondary);
+}
+
+/* Telemetry Panel */
+.telemetry-panel {
+  background-color: var(--bl-surface-2);
+  border-radius: var(--bl-radius-md);
+  padding: var(--bl-spacing-md);
+}
+
+.telemetry-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bl-spacing-sm);
+}
+
+.telemetry-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.telemetry-label {
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-muted);
+}
+
+.telemetry-value {
+  font-family: var(--bl-font-mono);
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-primary);
+}
+
+.telemetry-value.small {
+  font-size: var(--bl-font-size-xs);
+}
+
+.telemetry-sub {
+  color: var(--bl-text-muted);
+}
+
+.rssi-bar {
+  display: inline-block;
+  height: 4px;
+  margin-left: var(--bl-spacing-sm);
+  background-color: var(--bl-success);
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.rssi-bar.low {
+  background-color: var(--bl-error);
+}
+
+.rssi-bar.medium {
+  background-color: var(--bl-warning);
+}
+
+/* Tuning Panel */
+.tuning-content {
+  display: flex;
+  gap: var(--bl-spacing-lg);
+  padding: var(--bl-spacing-md);
+  overflow: auto;
+}
+
+/* PID Tuning */
+.pid-tuning {
+  flex: 1;
+  background-color: var(--bl-surface-2);
+  border-radius: var(--bl-radius-md);
+  padding: var(--bl-spacing-md);
+}
+
+.pid-header,
+.rates-header {
+  font-weight: 500;
+  color: var(--bl-text-primary);
+  margin-bottom: var(--bl-spacing-md);
+  padding-bottom: var(--bl-spacing-sm);
+  border-bottom: 1px solid var(--bl-border-dark);
+}
+
+.pid-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bl-spacing-sm);
+}
+
+.pid-labels,
+.pid-row {
+  display: grid;
+  grid-template-columns: 50px repeat(3, 1fr);
+  gap: var(--bl-spacing-sm);
+  align-items: center;
+}
+
+.pid-labels span {
+  font-size: var(--bl-font-size-xs);
+  color: var(--bl-text-muted);
+  text-align: center;
+}
+
+.pid-axis {
+  font-weight: 500;
+  color: var(--bl-text-primary);
+}
+
+/* Rates Tuning */
+.rates-tuning {
+  flex: 1;
+  background-color: var(--bl-surface-2);
+  border-radius: var(--bl-radius-md);
+  padding: var(--bl-spacing-md);
+}
+
+.rates-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bl-spacing-md);
+}
+
+.rates-row {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-md);
+}
+
+.rates-label {
+  width: 50px;
+  font-weight: 500;
+  color: var(--bl-text-primary);
+}
+
+.rates-row .bl-slider {
+  flex: 1;
+}
+
+/* Parameters Panel */
+.params-content {
+  padding: var(--bl-spacing-md);
+  overflow: auto;
+  flex: 1;
+}
+
+.param-group {
+  margin-bottom: var(--bl-spacing-lg);
+}
+
+.param-group-header {
+  font-weight: 500;
+  color: var(--bl-text-primary);
+  margin-bottom: var(--bl-spacing-sm);
+  padding-bottom: var(--bl-spacing-xs);
+  border-bottom: 1px solid var(--bl-border-dark);
+}
+
+.param-group .bl-checkbox {
+  display: block;
+  margin-bottom: var(--bl-spacing-sm);
+}
+
+.param-row {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-sm);
+  margin-bottom: var(--bl-spacing-sm);
+}
+
+.param-row > span:first-child {
+  flex: 1;
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-secondary);
+}
+
+.param-unit {
+  font-size: var(--bl-font-size-sm);
+  color: var(--bl-text-muted);
+  width: 30px;
+}
+
+/* Status bar colors */
+.status-armed {
+  color: var(--bl-success);
+  font-weight: 500;
+}
+
+.status-disarmed {
+  color: var(--bl-text-muted);
+}

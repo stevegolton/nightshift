@@ -80,8 +80,6 @@ body {
   --bl-font-size-lg: 13px;
 
   /* Component Sizing */
-  --bl-input-height: 22px;
-  --bl-button-height: 22px;
   --bl-header-height: 26px;
 }
 
@@ -141,6 +139,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.bl-root .material-icons {
+  font-size: inherit;
+}
+
 .bl-root *,
 .bl-root *::before,
 .bl-root *::after {
@@ -191,7 +193,6 @@ body {
 }
 
 .bl-panel-title {
-  font-size: var(--bl-font-size-base);
   font-weight: 500;
   color: var(--bl-text-primary);
 }
@@ -218,7 +219,6 @@ body {
   left: 50%;
   transform: translateX(-50%);
   padding: var(--bl-spacing-sm) var(--bl-spacing-md);
-  font-size: var(--bl-font-size-sm);
   color: var(--bl-text-primary);
   background-color: var(--bl-surface-0);
   border: 1px solid var(--bl-border-light);
@@ -252,7 +252,6 @@ body {
   align-items: center;
   gap: var(--bl-spacing-md);
   padding: var(--bl-spacing-sm) var(--bl-spacing-md);
-  font-size: var(--bl-font-size-base);
   color: var(--bl-text-primary);
   cursor: pointer;
 }
@@ -280,7 +279,6 @@ body {
 
 .bl-menu-item-shortcut {
   margin-left: auto;
-  font-size: var(--bl-font-size-sm);
   color: var(--bl-text-muted);
 }
 
@@ -288,7 +286,6 @@ body {
    Tree View
    ============================================ */
 .bl-tree {
-  font-size: var(--bl-font-size-base);
 }
 
 .bl-tree-item {
@@ -354,8 +351,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: var(--bl-spacing-sm);
-  height: var(--bl-input-height);
-  padding: 0 var(--bl-spacing-md);
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
   background-color: var(--bl-surface-3);
   border: 1px solid var(--bl-border-dark);
   border-radius: var(--bl-radius-md);
@@ -375,7 +371,6 @@ body {
 
 .bl-color-value {
   font-family: var(--bl-font-mono);
-  font-size: var(--bl-font-size-sm);
   color: var(--bl-text-secondary);
 }
 
@@ -396,18 +391,6 @@ body {
   gap: var(--bl-spacing-xs);
 }
 
-.bl-header-menu-item {
-  padding: var(--bl-spacing-xs) var(--bl-spacing-md);
-  font-size: var(--bl-font-size-base);
-  color: var(--bl-text-primary);
-  border-radius: var(--bl-radius-sm);
-  cursor: pointer;
-}
-
-.bl-header-menu-item:hover {
-  background-color: var(--bl-surface-hover);
-}
-
 /* ============================================
    Status Bar
    ============================================ */
@@ -418,7 +401,6 @@ body {
   padding: 0 var(--bl-spacing-md);
   background-color: var(--bl-surface-3);
   border-top: 1px solid var(--bl-border-dark);
-  font-size: var(--bl-font-size-sm);
   color: var(--bl-text-secondary);
 }
 
@@ -443,7 +425,6 @@ body {
 
 .bl-form-label {
   min-width: 80px;
-  font-size: var(--bl-font-size-base);
   color: var(--bl-text-secondary);
 }
 
@@ -459,7 +440,6 @@ body {
   align-items: center;
   padding: 0 var(--bl-spacing-sm);
   height: 16px;
-  font-size: var(--bl-font-size-xs);
   font-weight: 500;
   border-radius: var(--bl-radius-sm);
   background-color: var(--bl-surface-4);

@@ -14,6 +14,10 @@ import Layout from './components/Layout';
 import WidgetsPage from './pages/WidgetsPage';
 import ProfilerPage from './pages/ProfilerPage';
 import PluginsPage from './pages/PluginsPage';
+import HeatingPage from './pages/HeatingPage';
+import QuadcopterPage from './pages/QuadcopterPage';
+import ProxmoxPage from './pages/ProxmoxPage';
+import FinancesPage from './pages/FinancesPage';
 
 // Route configuration
 const root = document.getElementById('app');
@@ -27,6 +31,18 @@ if (root) {
     },
     '/plugins': {
       render: () => m(Layout, m(PluginsPage)),
+    },
+    '/heating': {
+      render: () => m(Layout, m(HeatingPage)),
+    },
+    '/quadcopter': {
+      render: () => m(Layout, m(QuadcopterPage)),
+    },
+    '/proxmox': {
+      render: () => m(Layout, m(ProxmoxPage)),
+    },
+    '/finances': {
+      render: () => m(Layout, m(FinancesPage)),
     },
   });
 }

@@ -21,6 +21,20 @@ export interface AppState {
   numberX: number;
   numberY: number;
   numberZ: number;
+  // Segmented button demo state
+  segmentedMode: string;
+  segmentedView: string;
+  segmentedAlign: string;
+  segmentedDisplay: string;
+  // Page-specific state (initialized by pages)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  quad: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  proxmox: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  heating: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  finances: any;
 }
 
 export const State: AppState = {
@@ -45,6 +59,16 @@ export const State: AppState = {
   numberX: 0,
   numberY: 0,
   numberZ: 0,
+  // Segmented button demo state
+  segmentedMode: 'vertex',
+  segmentedView: 'grid',
+  segmentedAlign: 'center',
+  segmentedDisplay: 'wire',
+  // Page-specific state
+  quad: null,
+  proxmox: null,
+  heating: null,
+  finances: null,
 };
 
 // Theme management

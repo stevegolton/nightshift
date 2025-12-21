@@ -1,0 +1,22 @@
+import m from 'mithril';
+import cx from 'classnames';
+
+export interface MenuBarAttrs {
+  /** Optional content for the right side of the menu bar */
+  rightContent?: m.Children;
+  /** Additional class names */
+  class?: string;
+}
+
+const MenuBar: m.Component<MenuBarAttrs> = {
+  view(vnode) {
+    const { rightContent, class: className } = vnode.attrs;
+
+    return m('header.bl-header', { class: cx(className) }, [
+      m('.bl-header-menu', vnode.children),
+      rightContent,
+    ]);
+  },
+};
+
+export default MenuBar;

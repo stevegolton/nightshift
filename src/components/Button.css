@@ -4,10 +4,9 @@
   align-items: center;
   justify-content: center;
   gap: var(--bl-spacing-sm);
-  height: var(--bl-button-height);
-  padding: 0 var(--bl-spacing-md);
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
   font-family: var(--bl-font-family);
-  font-size: var(--bl-font-size-base);
+  font-size: inherit;
   color: var(--bl-text-primary);
   background-color: var(--bl-surface-3);
   border: 1px solid var(--bl-border-button);
@@ -57,17 +56,10 @@
 
 /* Icon Button */
 .bl-btn-icon {
-  width: var(--bl-button-height);
-  padding: 0;
-}
-
-.bl-btn-icon svg {
-  width: 14px;
-  height: 14px;
+  padding: var(--bl-spacing-sm);
 }
 
 .bl-btn .material-icons {
-  font-size: 16px;
   line-height: 1;
 }
 
@@ -130,11 +122,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bl-spacing-xs);
-  height: 20px;
-  padding: 0 var(--bl-spacing-md);
+  gap: var(--bl-spacing-sm);
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
   font-family: var(--bl-font-family);
-  font-size: var(--bl-font-size-sm);
+  font-size: inherit;
   color: var(--bl-text-secondary);
   background-color: var(--bl-surface-2);
   border: none;
@@ -142,6 +133,15 @@
   cursor: pointer;
   white-space: nowrap;
   user-select: none;
+}
+
+.bl-segmented-btn:focus {
+  outline: none;
+}
+
+.bl-segmented-btn:focus-visible {
+  outline: 2px solid var(--bl-accent);
+  outline-offset: -2px;
 }
 
 .bl-segmented-btn:first-child {
@@ -167,18 +167,10 @@
   box-shadow: var(--bl-button-highlight);
 }
 
-.bl-segmented-btn svg {
-  width: 12px;
-  height: 12px;
-  fill: currentColor;
-}
-
 .bl-segmented-btn .material-icons {
-  font-size: 14px;
   line-height: 1;
 }
 
 .bl-segmented-btn.icon-only {
-  width: 22px;
-  padding: 0;
+  padding: var(--bl-spacing-sm);
 }

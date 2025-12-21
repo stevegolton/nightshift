@@ -3,7 +3,6 @@
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  font-size: var(--bl-font-size-base);
   border: 1px solid var(--bl-border-dark);
   border-radius: var(--bl-radius-md);
   overflow: hidden;
@@ -26,7 +25,6 @@
   background-color: var(--bl-surface-2);
   color: var(--bl-text-secondary);
   font-weight: 500;
-  font-size: var(--bl-font-size-sm);
   text-transform: uppercase;
   letter-spacing: 0.02em;
   border-bottom: 1px solid var(--bl-border-light);
@@ -42,22 +40,6 @@
 
 .bl-table tbody tr:nth-child(even) {
   background-color: var(--bl-surface-2);
-}
-
-.bl-table-selectable tbody tr {
-  cursor: pointer;
-}
-
-.bl-table-selectable tbody tr:hover td {
-  background-color: var(--bl-surface-3);
-}
-
-.bl-table tbody tr.selected td {
-  background-color: var(--bl-accent-subtle);
-}
-
-.bl-table-selectable tbody tr.selected:hover td {
-  background-color: var(--bl-accent-subtle);
 }
 
 .bl-table-empty td {

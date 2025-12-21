@@ -30,12 +30,16 @@ const Nav: m.Component = {
           },
           m('span.material-icons', 'chevron_left')
         ),
-        m('span.app-nav-title', 'Nightshift Demo'),
+        m('span.app-nav-title', 'NightShift Demo'),
       ]),
       m('.app-nav-items', [
         NavItem('widgets', 'widgets', 'Widgets'),
         NavItem('profiler', 'bar_chart', 'Profiler'),
         NavItem('plugins', 'extension', 'Plugins'),
+        NavItem('heating', 'thermostat', 'Heating'),
+        NavItem('quadcopter', 'flight', 'Quadcopter'),
+        NavItem('proxmox', 'dns', 'Proxmox'),
+        NavItem('finances', 'account_balance', 'Finances'),
       ]),
       m('.app-nav-footer', [
         m('.app-nav-item', { onclick: toggleTheme }, [

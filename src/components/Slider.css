@@ -54,7 +54,6 @@
 .bl-slider-value {
   min-width: 40px;
   font-family: var(--bl-font-mono);
-  font-size: var(--bl-font-size-sm);
   color: var(--bl-text-secondary);
   text-align: right;
 }

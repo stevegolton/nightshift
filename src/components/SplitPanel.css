@@ -24,7 +24,6 @@
 .bl-split-handle {
   flex-shrink: 0;
   background-color: var(--bl-surface-3);
-  transition: background-color 0.15s ease;
 }
 
 .bl-split-horizontal > .bl-split-handle {

@@ -23,16 +23,12 @@ export interface TableAttrs<T = Record<string, unknown>> {
   data: T[];
   /** Key function to get unique row identifier */
   rowKey?: (row: T, index: number) => string | number;
-  /** Currently selected row key(s) */
-  selectedKey?: string | number | (string | number)[];
   /** Row click handler */
   onRowClick?: (row: T, index: number, e: Event) => void;
   /** Row double-click handler */
   onRowDblClick?: (row: T, index: number, e: Event) => void;
   /** Additional class names */
   class?: string;
-  /** Whether rows are selectable (adds hover styles) */
-  selectable?: boolean;
   /** Remove outer border and radius (for embedding in containers) */
   borderless?: boolean;
   /** Empty state content when no data */
@@ -54,23 +50,14 @@ const Table = <T = Record<string, unknown>>(): m.Component<TableAttrs<T>> => ({
       columns,
       data,
       rowKey = (_row: T, index: number) => index,
-      selectedKey,
       onRowClick,
       onRowDblClick,
       class: className,
-      selectable = true,
       borderless = false,
       emptyContent = 'No data',
     } = vnode.attrs;
 
-    const selectedKeys = Array.isArray(selectedKey)
-      ? selectedKey
-      : selectedKey !== undefined
-        ? [selectedKey]
-        : [];
-
     const tableClasses = ['bl-table'];
-    if (selectable) tableClasses.push('bl-table-selectable');
     if (borderless) tableClasses.push('bl-table-borderless');
     if (className) tableClasses.push(className);
 
@@ -96,13 +83,11 @@ const Table = <T = Record<string, unknown>>(): m.Component<TableAttrs<T>> => ({
           ? m('tr.bl-table-empty', m('td', { colspan: columns.length }, emptyContent))
           : data.map((row, rowIndex) => {
               const key = rowKey(row, rowIndex);
-              const isSelected = selectedKeys.includes(key);
 
               return m(
                 'tr',
                 {
                   key,
-                  class: isSelected ? 'selected' : undefined,
                   onclick: onRowClick ? (e: Event) => onRowClick(row, rowIndex, e) : undefined,
                   ondblclick: onRowDblClick
                     ? (e: Event) => onRowDblClick(row, rowIndex, e)

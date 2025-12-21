@@ -44,18 +44,7 @@
   color: var(--bl-text-primary);
 }
 
-.app-nav-toggle svg {
-  width: 14px;
-  height: 14px;
-  fill: currentColor;
-}
-
-.app-nav.collapsed .app-nav-toggle svg {
-  transform: rotate(180deg);
-}
-
 .app-nav-title {
-  font-size: var(--bl-font-size-sm);
   font-weight: 500;
   color: var(--bl-text-primary);
   white-space: nowrap;
@@ -80,7 +69,6 @@
   border-radius: var(--bl-radius-md);
   cursor: pointer;
   color: var(--bl-text-secondary);
-  font-size: var(--bl-font-size-base);
   white-space: nowrap;
   text-decoration: none;
 }
@@ -93,13 +81,6 @@
 .app-nav-item.active {
   background-color: var(--bl-accent-subtle);
   color: var(--bl-accent);
-}
-
-.app-nav-item svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-  flex-shrink: 0;
 }
 
 .app-nav-item-label {

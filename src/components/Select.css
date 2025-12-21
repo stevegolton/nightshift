@@ -6,10 +6,9 @@
 
 .bl-select select {
   appearance: none;
-  height: var(--bl-input-height);
-  padding: 0 24px 0 var(--bl-spacing-md);
+  padding: var(--bl-spacing-sm) 24px var(--bl-spacing-sm) var(--bl-spacing-md);
   font-family: var(--bl-font-family);
-  font-size: var(--bl-font-size-base);
+  font-size: inherit;
   color: var(--bl-text-primary);
   background-color: var(--bl-surface-3);
   border: 1px solid var(--bl-border-dark);

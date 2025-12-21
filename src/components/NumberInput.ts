@@ -7,6 +7,8 @@ export interface NumberInputAttrs {
   value: number;
   /** Label text (e.g., 'X', 'Y', 'Z') */
   label?: string;
+  /** Unit suffix (e.g., 'm', 'kg', '°/s') */
+  unit?: string;
   /** Minimum value */
   min?: number;
   /** Maximum value */
@@ -31,123 +33,114 @@ interface NumberInputState {
   isDragging: boolean;
   startX: number;
   startValue: number;
-  currentAttrs: NumberInputAttrs | null;
+  handleMouseMove: (e: MouseEvent) => void;
+  handleMouseUp: () => void;
 }
 
-const NumberInput = (): m.Component<NumberInputAttrs> => {
-  const state: NumberInputState = {
-    isDragging: false,
-    startX: 0,
-    startValue: 0,
-    currentAttrs: null,
-  };
-
-  let labelEl: HTMLElement | null = null;
-
-  function handleMouseMove(e: MouseEvent): void {
-    if (!state.isDragging || !state.currentAttrs) return;
-
-    const { min, max, step = 1, oninput } = state.currentAttrs;
-    const delta = e.clientX - state.startX;
-    const sensitivity = e.shiftKey ? 0.1 : 1;
-    let newValue = state.startValue + delta * step * sensitivity * 0.1;
-
-    if (min !== undefined) newValue = Math.max(min, newValue);
-    if (max !== undefined) newValue = Math.min(max, newValue);
-
-    if (oninput) oninput(newValue, e);
-    m.redraw();
-  }
-
-  function handleMouseUp(): void {
+const NumberInput: m.Component<NumberInputAttrs, NumberInputState> = {
+  oninit(vnode) {
+    const state = vnode.state;
     state.isDragging = false;
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseUp);
-    document.body.style.cursor = '';
-    document.body.style.userSelect = '';
-    m.redraw();
-  }
+    state.startX = 0;
+    state.startValue = 0;
 
-  function handleMouseDown(e: MouseEvent, attrs: NumberInputAttrs): void {
-    if (attrs.disabled) return;
+    state.handleMouseMove = (e: MouseEvent) => {
+      if (!state.isDragging) return;
 
-    state.isDragging = true;
-    state.startX = e.clientX;
-    state.startValue = attrs.value;
-    state.currentAttrs = attrs;
+      const { min, max, step = 1, oninput } = vnode.attrs;
+      const delta = e.clientX - state.startX;
+      const sensitivity = e.shiftKey ? 0.1 : 1;
+      let newValue = state.startValue + delta * step * sensitivity * 0.1;
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+      if (min !== undefined) newValue = Math.max(min, newValue);
+      if (max !== undefined) newValue = Math.min(max, newValue);
 
-    if (labelEl) {
-      labelEl.style.cursor = 'ew-resize';
+      if (oninput) oninput(newValue, e);
+      m.redraw();
+    };
+
+    state.handleMouseUp = () => {
+      state.isDragging = false;
+      document.removeEventListener('mousemove', state.handleMouseMove);
+      document.removeEventListener('mouseup', state.handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      m.redraw();
+    };
+  },
+
+  view(vnode) {
+    const {
+      value,
+      label,
+      unit,
+      min,
+      max,
+      precision = 3,
+      width,
+      disabled,
+      class: className,
+      onchange,
+      oninput,
+    } = vnode.attrs;
+
+    const state = vnode.state;
+
+    const classes = cx('bl-number-input', className, {
+      'bl-number-input-disabled': disabled,
+    });
+
+    const displayValue = (value ?? 0).toFixed(precision);
+
+    function handleMouseDown(e: MouseEvent): void {
+      if (disabled) return;
+
+      state.isDragging = true;
+      state.startX = e.clientX;
+      state.startValue = value ?? 0;
+
+      document.addEventListener('mousemove', state.handleMouseMove);
+      document.addEventListener('mouseup', state.handleMouseUp);
+
+      document.body.style.cursor = 'ew-resize';
+      document.body.style.userSelect = 'none';
     }
-    document.body.style.cursor = 'ew-resize';
-    document.body.style.userSelect = 'none';
-  }
 
-  return {
-    view(vnode) {
-      const {
-        value,
-        label,
-        min,
-        max,
-        precision = 3,
-        width,
+    return m('div', { class: classes }, [
+      label &&
+        m(
+          'span.bl-number-label',
+          {
+            onmousedown: handleMouseDown,
+          },
+          label
+        ),
+      m('input[type=text]', {
+        value: displayValue,
         disabled,
-        class: className,
-        onchange,
-        oninput,
-      } = vnode.attrs;
-
-      // Keep attrs reference updated for drag handler
-      state.currentAttrs = vnode.attrs;
-
-      const classes = cx('bl-number-input', className, {
-        'bl-number-input-disabled': disabled,
-      });
-
-      const displayValue = value.toFixed(precision);
-
-      return m('div', { class: classes }, [
-        label &&
-          m(
-            'span.bl-number-label',
-            {
-              oncreate: (vn: m.VnodeDOM) => {
-                labelEl = vn.dom as HTMLElement;
-              },
-              onmousedown: (e: MouseEvent) => handleMouseDown(e, vnode.attrs),
-            },
-            label
-          ),
-        m('input[type=text]', {
-          value: displayValue,
-          disabled,
-          style: width ? { width: `${width}px` } : undefined,
-          onchange: (e: Event) => {
-            const target = e.target as HTMLInputElement;
-            let newValue = parseFloat(target.value);
-            if (isNaN(newValue)) newValue = 0;
-            if (min !== undefined) newValue = Math.max(min, newValue);
-            if (max !== undefined) newValue = Math.min(max, newValue);
-            if (onchange) onchange(newValue, e);
-          },
-          oninput: (e: Event) => {
-            const target = e.target as HTMLInputElement;
-            const newValue = parseFloat(target.value);
-            if (!isNaN(newValue) && oninput) {
-              let clampedValue = newValue;
-              if (min !== undefined) clampedValue = Math.max(min, clampedValue);
-              if (max !== undefined) clampedValue = Math.min(max, clampedValue);
-              oninput(clampedValue, e);
-            }
-          },
-        }),
-      ]);
-    },
-  };
+        style: width ? { width: `${width}px` } : undefined,
+        onchange: (e: Event) => {
+          const target = e.target as HTMLInputElement;
+          let newValue = parseFloat(target.value);
+          if (isNaN(newValue)) newValue = 0;
+          if (min !== undefined) newValue = Math.max(min, newValue);
+          if (max !== undefined) newValue = Math.min(max, newValue);
+          if (onchange) onchange(newValue, e);
+        },
+        oninput: (e: Event) => {
+          const target = e.target as HTMLInputElement;
+          const newValue = parseFloat(target.value);
+          if (!isNaN(newValue) && oninput) {
+            let clampedValue = newValue;
+            if (min !== undefined) clampedValue = Math.max(min, clampedValue);
+            if (max !== undefined) clampedValue = Math.min(max, clampedValue);
+            oninput(clampedValue, e);
+          }
+        },
+      }),
+      unit && m('span.bl-number-unit', unit),
+    ]);
+  },
 };
 
 export default NumberInput;

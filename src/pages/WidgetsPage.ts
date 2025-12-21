@@ -15,6 +15,8 @@ import ProgressBar from '../components/ProgressBar';
 import Table from '../components/Table';
 import Anchor from '../components/Anchor';
 import NumberInput from '../components/NumberInput';
+import MenuBar from '../components/MenuBar';
+import Badge from '../components/Badge';
 
 // Create SplitPanel instances once to maintain state
 const HorizontalSplit = SplitPanel();
@@ -40,15 +42,12 @@ const tableData: ObjectData[] = [
 const WidgetsPage: m.Component = {
   view(): m.Vnode {
     return m('.page-widgets', [
-      // Header Bar
-      m('header.bl-header', [
-        m('.bl-header-menu', [
-          m('.bl-header-menu-item', 'File'),
-          m('.bl-header-menu-item', 'Edit'),
-          m('.bl-header-menu-item', 'View'),
-          m('.bl-header-menu-item', 'Object'),
-          m('.bl-header-menu-item', 'Help'),
-        ]),
+      m(MenuBar, [
+        m(Button, { variant: 'ghost' }, 'File'),
+        m(Button, { variant: 'ghost' }, 'Edit'),
+        m(Button, { variant: 'ghost' }, 'View'),
+        m(Button, { variant: 'ghost' }, 'Object'),
+        m(Button, { variant: 'ghost' }, 'Help'),
       ]),
 
       m('.demo-main', [
@@ -65,9 +64,9 @@ const WidgetsPage: m.Component = {
             ]),
             m('.demo-label', 'Icon Buttons'),
             m('.demo-row', [
-              m(Button, { icon: 'open_with', tooltip: 'Move' }, null),
-              m(Button, { icon: 'rotate_right', tooltip: 'Rotate' }, null),
-              m(Button, { icon: 'zoom_out_map', tooltip: 'Scale' }, null),
+              m(Button, { icon: 'open_with', tooltip: 'Move' }),
+              m(Button, { icon: 'rotate_right', tooltip: 'Rotate' }),
+              m(Button, { icon: 'zoom_out_map', tooltip: 'Scale' }),
             ]),
             m('.demo-label', 'Icon + Text Buttons'),
             m('.demo-row', [
@@ -103,45 +102,125 @@ const WidgetsPage: m.Component = {
             m('.demo-label', 'Segmented Buttons'),
             m('.demo-row', [
               m(SegmentedButtonGroup, [
-                m(SegmentedButton, { active: true }, 'Vertex'),
-                m(SegmentedButton, null, 'Edge'),
-                m(SegmentedButton, null, 'Face'),
+                m(
+                  SegmentedButton,
+                  {
+                    active: State.segmentedMode === 'vertex',
+                    onclick: () => (State.segmentedMode = 'vertex'),
+                  },
+                  'Vertex'
+                ),
+                m(
+                  SegmentedButton,
+                  {
+                    active: State.segmentedMode === 'edge',
+                    onclick: () => (State.segmentedMode = 'edge'),
+                  },
+                  'Edge'
+                ),
+                m(
+                  SegmentedButton,
+                  {
+                    active: State.segmentedMode === 'face',
+                    onclick: () => (State.segmentedMode = 'face'),
+                  },
+                  'Face'
+                ),
               ]),
               m(SegmentedButtonGroup, [
                 m(
                   SegmentedButton,
-                  { active: true, title: 'Grid' },
+                  {
+                    active: State.segmentedView === 'grid',
+                    title: 'Grid',
+                    onclick: () => (State.segmentedView = 'grid'),
+                  },
                   m('span.material-icons', 'grid_view')
                 ),
-                m(SegmentedButton, { title: 'List' }, m('span.material-icons', 'view_list')),
-                m(SegmentedButton, { title: 'Details' }, m('span.material-icons', 'view_module')),
+                m(
+                  SegmentedButton,
+                  {
+                    active: State.segmentedView === 'list',
+                    title: 'List',
+                    onclick: () => (State.segmentedView = 'list'),
+                  },
+                  m('span.material-icons', 'view_list')
+                ),
+                m(
+                  SegmentedButton,
+                  {
+                    active: State.segmentedView === 'details',
+                    title: 'Details',
+                    onclick: () => (State.segmentedView = 'details'),
+                  },
+                  m('span.material-icons', 'view_module')
+                ),
               ]),
             ]),
             m('.demo-row', [
               m(SegmentedButtonGroup, [
                 m(
                   SegmentedButton,
-                  { title: 'Align Left' },
+                  {
+                    active: State.segmentedAlign === 'left',
+                    title: 'Align Left',
+                    onclick: () => (State.segmentedAlign = 'left'),
+                  },
                   m('span.material-icons', 'format_align_left')
                 ),
                 m(
                   SegmentedButton,
-                  { active: true, title: 'Align Center' },
+                  {
+                    active: State.segmentedAlign === 'center',
+                    title: 'Align Center',
+                    onclick: () => (State.segmentedAlign = 'center'),
+                  },
                   m('span.material-icons', 'format_align_center')
                 ),
                 m(
                   SegmentedButton,
-                  { title: 'Align Right' },
+                  {
+                    active: State.segmentedAlign === 'right',
+                    title: 'Align Right',
+                    onclick: () => (State.segmentedAlign = 'right'),
+                  },
                   m('span.material-icons', 'format_align_right')
                 ),
               ]),
               m(SegmentedButtonGroup, [
-                m(SegmentedButton, null, [m('span.material-icons', 'change_history'), ' Solid']),
-                m(SegmentedButton, { active: true }, [
-                  m('span.material-icons', 'change_history_outlined'),
-                  ' Wire',
-                ]),
+                m(
+                  SegmentedButton,
+                  {
+                    active: State.segmentedDisplay === 'solid',
+                    onclick: () => (State.segmentedDisplay = 'solid'),
+                  },
+                  [m('span.material-icons', 'change_history'), 'Solid']
+                ),
+                m(
+                  SegmentedButton,
+                  {
+                    active: State.segmentedDisplay === 'wire',
+                    onclick: () => (State.segmentedDisplay = 'wire'),
+                  },
+                  [m('span.material-icons', 'change_history_outlined'), 'Wire']
+                ),
               ]),
+            ]),
+          ]),
+
+          // Anchors Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Anchors'),
+            m('.demo-row', [
+              m(Anchor, { href: '#' }, 'Default Link'),
+              m(Anchor, { href: 'https://blender.org', external: true }, 'External Link'),
+              m(Anchor, { href: '#', disabled: true }, 'Disabled Link'),
+            ]),
+            m('.demo-label', 'With Icons'),
+            m('.demo-row', [
+              m(Anchor, { href: '#', icon: 'link' }, 'With Icon'),
+              m(Anchor, { href: '#', icon: 'open_in_new', iconPosition: 'right' }, 'Icon Right'),
+              m(Anchor, { href: '#', icon: 'download' }, 'Download'),
             ]),
           ]),
 
@@ -172,22 +251,49 @@ const WidgetsPage: m.Component = {
             ]),
             m('.demo-label', 'Number Inputs'),
             m('.demo-row', [
-              m(NumberInput(), {
+              m(NumberInput, {
                 label: 'X',
                 value: State.numberX ?? 0,
                 oninput: (v: number) => {
                   State.numberX = v;
                 },
               }),
-              m(NumberInput(), {
+              m(NumberInput, {
                 label: 'Y',
                 value: State.numberY ?? 0,
                 oninput: (v: number) => {
                   State.numberY = v;
                 },
               }),
-              m(NumberInput(), {
+              m(NumberInput, {
                 label: 'Z',
+                value: State.numberZ ?? 0,
+                oninput: (v: number) => {
+                  State.numberZ = v;
+                },
+              }),
+            ]),
+            m('.demo-label', 'Number Inputs with units'),
+            m('.demo-row', [
+              m(NumberInput, {
+                label: 'Roll',
+                unit: 'rad/s',
+                value: State.numberX ?? 0,
+                oninput: (v: number) => {
+                  State.numberX = v;
+                },
+              }),
+              m(NumberInput, {
+                label: 'Pitch',
+                unit: 'rad/s',
+                value: State.numberY ?? 0,
+                oninput: (v: number) => {
+                  State.numberY = v;
+                },
+              }),
+              m(NumberInput, {
+                label: 'Yaw',
+                unit: 'rad/s',
                 value: State.numberZ ?? 0,
                 oninput: (v: number) => {
                   State.numberZ = v;
@@ -481,20 +587,19 @@ const WidgetsPage: m.Component = {
                 {
                   header: 'Status',
                   render: (row) => {
-                    const badgeClass =
+                    const variant =
                       row.status === 'active'
-                        ? 'bl-badge-success'
+                        ? 'success'
                         : row.status === 'modified'
-                          ? 'bl-badge-warning'
-                          : '';
+                          ? 'warning'
+                          : undefined;
                     const label = row.status.charAt(0).toUpperCase() + row.status.slice(1);
-                    return m('span', { class: `bl-badge ${badgeClass}` }, label);
+                    return m(Badge, { variant }, label);
                   },
                 },
               ],
               data: tableData,
               rowKey: (row) => row.id,
-              selectedKey: 'cube',
             }),
           ]),
 
@@ -502,26 +607,10 @@ const WidgetsPage: m.Component = {
           m('section.demo-section', [
             m('h2.demo-section-title', 'Badges'),
             m('.demo-row', [
-              m('span.bl-badge', 'Default'),
-              m('span.bl-badge.bl-badge-success', 'Success'),
-              m('span.bl-badge.bl-badge-warning', 'Warning'),
-              m('span.bl-badge.bl-badge-error', 'Error'),
-            ]),
-          ]),
-
-          // Anchors Section
-          m('section.demo-section', [
-            m('h2.demo-section-title', 'Anchors'),
-            m('.demo-row', [
-              m(Anchor, { href: '#' }, 'Default Link'),
-              m(Anchor, { href: 'https://blender.org', external: true }, 'External Link'),
-              m(Anchor, { href: '#', disabled: true }, 'Disabled Link'),
-            ]),
-            m('.demo-label', 'With Icons'),
-            m('.demo-row', [
-              m(Anchor, { href: '#', icon: 'link' }, 'With Icon'),
-              m(Anchor, { href: '#', icon: 'open_in_new', iconPosition: 'right' }, 'Icon Right'),
-              m(Anchor, { href: '#', icon: 'download' }, 'Download'),
+              m(Badge, 'Default'),
+              m(Badge, { variant: 'success' }, 'Success'),
+              m(Badge, { variant: 'warning' }, 'Warning'),
+              m(Badge, { variant: 'error' }, 'Error'),
             ]),
           ]),
 
@@ -607,7 +696,7 @@ const WidgetsPage: m.Component = {
         m(
           'span.bl-statusbar-item',
           { style: { marginLeft: 'auto', borderRight: 'none' } },
-          'Nightshift v1.0'
+          'NightShift v1.0'
         ),
       ]),
     ]);

@@ -53,11 +53,9 @@
 .plugin-name {
   font-weight: 500;
   color: var(--bl-text-primary);
-  font-size: var(--bl-font-size-lg);
 }
 
 .plugin-version {
-  font-size: var(--bl-font-size-sm);
   color: var(--bl-text-muted);
   font-family: var(--bl-font-mono);
 }
@@ -69,7 +67,6 @@
 
 .plugin-description {
   color: var(--bl-text-secondary);
-  font-size: var(--bl-font-size-base);
   line-height: 1.5;
   margin-bottom: var(--bl-spacing-sm);
   padding-left: 28px;
@@ -83,6 +80,5 @@
 }
 
 .plugin-author {
-  font-size: var(--bl-font-size-sm);
   color: var(--bl-text-muted);
 }

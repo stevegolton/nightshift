@@ -5,6 +5,10 @@ import { Tabs } from '../components/Tabs';
 import Button from '../components/Button';
 import { SplitPanel } from '../components/SplitPanel';
 import Table from '../components/Table';
+import MenuBar from '../components/MenuBar';
+import Badge from '../components/Badge';
+import Input from '../components/Input';
+import Select from '../components/Select';
 
 // Create SplitPanel instance at module level
 const ProfilerSplit = SplitPanel();
@@ -50,30 +54,33 @@ const ProfilerPage: m.Component = {
     }
 
     return m('.page-profiler', [
-      m('header.bl-header', [
-        m('.bl-header-menu', [
-          m('.bl-header-menu-item', 'File'),
-          m('.bl-header-menu-item', 'Edit'),
-          m('.bl-header-menu-item', 'View'),
-          m('.bl-header-menu-item', 'Profile'),
-          m('.bl-header-menu-item', 'Help'),
-        ]),
-        m(
-          'div',
-          {
-            style: {
-              marginLeft: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 'var(--bl-spacing-md)',
+      m(
+        MenuBar,
+        {
+          rightContent: m(
+            'div',
+            {
+              style: {
+                marginLeft: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--bl-spacing-md)',
+              },
             },
-          },
-          [
-            m('span.bl-badge.bl-badge-success', 'Recording'),
-            m('button.bl-btn.bl-btn-primary', 'Stop'),
-          ]
-        ),
-      ]),
+            [
+              m(Badge, { variant: 'success' }, 'Recording'),
+              m(Button, { variant: 'primary' }, 'Stop'),
+            ]
+          ),
+        },
+        [
+          m(Button, { variant: 'ghost' }, 'File'),
+          m(Button, { variant: 'ghost' }, 'Edit'),
+          m(Button, { variant: 'ghost' }, 'View'),
+          m(Button, { variant: 'ghost' }, 'Profile'),
+          m(Button, { variant: 'ghost' }, 'Help'),
+        ]
+      ),
 
       m(ProfilerSplit, {
         direction: 'vertical',
@@ -89,24 +96,20 @@ const ProfilerPage: m.Component = {
                 m(Button, { icon: 'skip_next', tooltip: 'Next Frame' }),
               ]),
               m('.bl-timeline-controls', [
-                m('.bl-track-search', [
-                  m('span.material-icons', 'search'),
-                  m('input[type=text]', { placeholder: 'Filter tracks...' }),
-                ]),
+                m(Input, { placeholder: 'Filter tracks...', icon: 'search' }),
                 m(Button, { icon: 'unfold_more', tooltip: 'Expand All', onclick: expandAllTracks }),
                 m(Button, {
                   icon: 'unfold_less',
                   tooltip: 'Collapse All',
                   onclick: collapseAllTracks,
                 }),
-                m(
-                  '.bl-select',
-                  m('select', [
-                    m('option', 'All Threads'),
-                    m('option', 'Main Thread'),
-                    m('option', 'GPU'),
-                  ])
-                ),
+                m(Select, {
+                  options: [
+                    { value: 'all', label: 'All Threads' },
+                    { value: 'main', label: 'Main Thread' },
+                    { value: 'gpu', label: 'GPU' },
+                  ],
+                }),
                 m('.bl-timeline-zoom', [
                   m(Button, { icon: 'remove', tooltip: 'Zoom Out' }),
                   m('span', '100%'),
@@ -703,7 +706,6 @@ const ProfilerPage: m.Component = {
                             ],
                             data: bottomUpData,
                             rowKey: (row) => row.id,
-                            selectedKey: '1',
                           }),
                         ]),
                       },
