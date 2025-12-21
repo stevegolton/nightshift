@@ -2,6 +2,8 @@
 
 A Mithril.js component library inspired by the dense, utilitarian interfaces of mid-2000s DAWs and 3D modelling tools.
 
+[Demo](https://stevegolton.github.io/nightshift/)
+
 ![Screenshot](screenshot.png)
 
 I've always had a soft spot for the gray, cramped, skeuomorphic aesthetic of 'pro' apps from that era - before the web became obsessed with whitespace and smooth transitions. NightShift revives that look for the kind of UI you'll be staring at late into the night.
