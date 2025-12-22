@@ -24,6 +24,7 @@
 .bl-split-handle {
   flex-shrink: 0;
   background-color: var(--bl-surface-3);
+  touch-action: none;
 }
 
 .bl-split-horizontal > .bl-split-handle {
@@ -32,10 +33,22 @@
   position: relative;
 }
 
+.bl-split-horizontal > .bl-split-handle::before {
+  content: '';
+  position: absolute;
+  inset: 0 -6px;
+}
+
 .bl-split-vertical > .bl-split-handle {
   height: 4px;
   cursor: row-resize;
   position: relative;
+}
+
+.bl-split-vertical > .bl-split-handle::before {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
 }
 
 .bl-split-handle:hover,

@@ -21,7 +21,8 @@
   background-color: var(--bl-surface-hover);
 }
 
-.bl-btn:active {
+.bl-btn:active,
+.bl-btn.active {
   background-color: var(--bl-surface-4);
 }
 

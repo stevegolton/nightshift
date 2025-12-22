@@ -16,32 +16,37 @@ export interface SplitPanelAttrs {
 export function SplitPanel(): m.Component<SplitPanelAttrs> {
   let splitPercent = 50;
   let isResizing = false;
-  let cleanup: (() => void) | null = null;
 
   return {
     oninit(vnode) {
       splitPercent = vnode.attrs.initialSplit ?? 50;
     },
 
-    oncreate(vnode) {
-      const container = vnode.dom as HTMLElement;
-      const handle = container.querySelector(':scope > .bl-split-handle') as HTMLElement;
-      const direction = vnode.attrs.direction ?? 'horizontal';
-      const minSize = vnode.attrs.minSize ?? 50;
+    view(vnode) {
+      const { direction = 'horizontal', minSize = 50, firstPanel, secondPanel } = vnode.attrs;
 
-      if (!handle) return;
+      const containerClasses = cx('bl-split-panel', `bl-split-${direction}`, vnode.attrs.class);
 
-      const onMouseDown = (e: MouseEvent) => {
+      // Use flex-basis with calc to account for handle width (4px)
+      const handleSize = 4;
+      const firstStyle = { flex: `0 0 calc(${splitPercent}% - ${handleSize / 2}px)` };
+      const secondStyle = { flex: `0 0 calc(${100 - splitPercent}% - ${handleSize / 2}px)` };
+
+      const onPointerDown = (e: PointerEvent) => {
         e.preventDefault();
+        const handle = e.currentTarget as HTMLElement;
+        handle.setPointerCapture(e.pointerId);
         isResizing = true;
         document.body.style.cursor = direction === 'horizontal' ? 'col-resize' : 'row-resize';
         document.body.style.userSelect = 'none';
         handle.classList.add('active');
       };
 
-      const onMouseMove = (e: MouseEvent) => {
+      const onPointerMove = (e: PointerEvent) => {
         if (!isResizing) return;
 
+        const handle = e.currentTarget as HTMLElement;
+        const container = handle.parentElement!;
         const rect = container.getBoundingClientRect();
         let newPercent: number;
 
@@ -68,8 +73,10 @@ export function SplitPanel(): m.Component<SplitPanelAttrs> {
         m.redraw();
       };
 
-      const onMouseUp = () => {
+      const onPointerUp = (e: PointerEvent) => {
         if (isResizing) {
+          const handle = e.currentTarget as HTMLElement;
+          handle.releasePointerCapture(e.pointerId);
           isResizing = false;
           document.body.style.cursor = '';
           document.body.style.userSelect = '';
@@ -77,36 +84,14 @@ export function SplitPanel(): m.Component<SplitPanelAttrs> {
         }
       };
 
-      handle.addEventListener('mousedown', onMouseDown);
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-
-      cleanup = () => {
-        handle.removeEventListener('mousedown', onMouseDown);
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      };
-    },
-
-    onremove() {
-      if (cleanup) {
-        cleanup();
-      }
-    },
-
-    view(vnode) {
-      const { direction = 'horizontal', firstPanel, secondPanel } = vnode.attrs;
-
-      const containerClasses = cx('bl-split-panel', `bl-split-${direction}`, vnode.attrs.class);
-
-      // Use flex-basis with calc to account for handle width (4px)
-      const handleSize = 4;
-      const firstStyle = { flex: `0 0 calc(${splitPercent}% - ${handleSize / 2}px)` };
-      const secondStyle = { flex: `0 0 calc(${100 - splitPercent}% - ${handleSize / 2}px)` };
-
       return m('div', { class: containerClasses }, [
         m('.bl-split-first', { style: firstStyle }, firstPanel),
-        m('.bl-split-handle'),
+        m('.bl-split-handle', {
+          onpointerdown: onPointerDown,
+          onpointermove: onPointerMove,
+          onpointerup: onPointerUp,
+          onpointercancel: onPointerUp,
+        }),
         m('.bl-split-second', { style: secondStyle }, secondPanel),
       ]);
     },

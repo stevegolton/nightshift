@@ -94,9 +94,9 @@ const WidgetsPage: m.Component = {
             m('.demo-label', 'Button Group'),
             m('.demo-row', [
               m(ButtonGroup, [
-                m(Button, { variant: 'toggle', active: true }, 'Object'),
-                m(Button, { variant: 'toggle' }, 'Edit'),
-                m(Button, { variant: 'toggle' }, 'Sculpt'),
+                m(Button, { active: true }, 'Object'),
+                m(Button, {}, 'Edit'),
+                m(Button, {}, 'Sculpt'),
               ]),
             ]),
             m('.demo-label', 'Segmented Buttons'),
