@@ -5,12 +5,12 @@ export interface MenuBarAttrs {
   /** Optional content for the right side of the menu bar */
   rightContent?: m.Children;
   /** Additional class names */
-  class?: string;
+  className?: string;
 }
 
 const MenuBar: m.Component<MenuBarAttrs> = {
   view(vnode) {
-    const { rightContent, class: className } = vnode.attrs;
+    const { rightContent, className } = vnode.attrs;
 
     return m('header.bl-header', { class: cx(className) }, [
       m('.bl-header-menu', vnode.children),

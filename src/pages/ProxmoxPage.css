@@ -89,7 +89,7 @@
   color: var(--bl-text-primary);
 }
 
-.vm-group-header .material-icons {
+.vm-group-header .material-symbols-outlined {
   font-size: 16px;
   color: var(--bl-text-secondary);
 }
@@ -172,7 +172,7 @@
   gap: var(--bl-spacing-md);
 }
 
-.vm-details.empty .material-icons {
+.vm-details.empty .material-symbols-outlined {
   font-size: 48px;
   opacity: 0.5;
 }
@@ -196,7 +196,7 @@
   color: var(--bl-text-primary);
 }
 
-.details-title .material-icons {
+.details-title .material-symbols-outlined {
   color: var(--bl-text-secondary);
 }
 

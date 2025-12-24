@@ -18,7 +18,7 @@ export interface SliderAttrs {
   /** Format function for displayed value */
   formatValue?: (value: number) => string;
   /** Additional class names */
-  class?: string;
+  className?: string;
   /** Input handler (fires during drag) */
   oninput?: (value: number, e: Event) => void;
   /** Change handler (fires on release) */
@@ -35,7 +35,7 @@ const Slider: m.Component<SliderAttrs> = {
       disabled,
       showValue = true,
       formatValue = (v: number) => (v / 100).toFixed(2),
-      class: className,
+      className,
       oninput,
       onchange,
     } = vnode.attrs;

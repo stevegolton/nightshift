@@ -1,3 +1,5 @@
+import type { IconProp } from './utils/icon';
+
 // Application state
 export interface AppState {
   navCollapsed: boolean;
@@ -26,6 +28,18 @@ export interface AppState {
   segmentedView: string;
   segmentedAlign: string;
   segmentedDisplay: string;
+  // Filter chip demo state
+  activeFilters: { id: string; label: string; value?: string; variant?: string }[];
+  // Reorderable list demo state
+  reorderableItems: { id: string; label: string; icon?: IconProp }[];
+  // Reorderable tree demo state
+  reorderableTree: {
+    id: string;
+    label: string;
+    icon?: IconProp;
+    children?: AppState['reorderableTree'];
+    expanded?: boolean;
+  }[];
   // Page-specific state (initialized by pages)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   quad: any;
@@ -64,6 +78,53 @@ export const State: AppState = {
   segmentedView: 'grid',
   segmentedAlign: 'center',
   segmentedDisplay: 'wire',
+  // Filter chip demo state
+  activeFilters: [
+    { id: '1', label: 'Status', value: 'Active', variant: 'success' },
+    { id: '2', label: 'Type', value: 'Mesh' },
+    { id: '3', label: 'Modified', variant: 'warning' },
+  ],
+  // Reorderable list demo state
+  reorderableItems: [
+    { id: '1', label: 'Camera', icon: 'videocam' },
+    { id: '2', label: 'Light', icon: 'light_mode' },
+    { id: '3', label: 'Cube', icon: 'check_box_outline_blank' },
+    { id: '4', label: 'Sphere', icon: 'circle' },
+    { id: '5', label: 'Plane', icon: 'square' },
+  ],
+  // Reorderable tree demo state
+  reorderableTree: [
+    {
+      id: 'scene',
+      label: 'Scene',
+      icon: 'public',
+      children: [
+        {
+          id: 'camera',
+          label: 'Camera',
+          icon: 'videocam',
+        },
+        {
+          id: 'lights',
+          label: 'Lights',
+          icon: 'lightbulb',
+          children: [
+            { id: 'sun', label: 'Sun', icon: 'light_mode' },
+            { id: 'spot', label: 'Spot Light', icon: 'highlight' },
+          ],
+        },
+        {
+          id: 'meshes',
+          label: 'Meshes',
+          icon: 'category',
+          children: [
+            { id: 'cube', label: 'Cube', icon: 'check_box_outline_blank' },
+            { id: 'sphere', label: 'Sphere', icon: 'circle' },
+          ],
+        },
+      ],
+    },
+  ],
   // Page-specific state
   quad: null,
   proxmox: null,

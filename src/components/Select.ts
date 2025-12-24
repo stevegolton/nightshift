@@ -18,14 +18,14 @@ export interface SelectAttrs {
   /** Select is disabled */
   disabled?: boolean;
   /** Additional class names */
-  class?: string;
+  className?: string;
   /** Change handler */
   onchange?: (value: string, e: Event) => void;
 }
 
 const Select: m.Component<SelectAttrs> = {
   view(vnode) {
-    const { options, value, placeholder, disabled, class: className, onchange } = vnode.attrs;
+    const { options, value, placeholder, disabled, className, onchange } = vnode.attrs;
 
     return m(
       'div',

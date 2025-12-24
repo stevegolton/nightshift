@@ -14,14 +14,14 @@ export interface RadioAttrs {
   /** Radio label */
   label?: string;
   /** Additional class names */
-  class?: string;
+  className?: string;
   /** Change handler */
   onchange?: (value: string, e: Event) => void;
 }
 
 const Radio: m.Component<RadioAttrs> = {
   view(vnode) {
-    const { name, value, checked, disabled, label, class: className, onchange } = vnode.attrs;
+    const { name, value, checked, disabled, label, className, onchange } = vnode.attrs;
 
     // Support children as label content
     const labelContent =

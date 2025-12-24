@@ -78,7 +78,7 @@
   border-left-color: var(--bl-accent);
 }
 
-.account-item .material-icons {
+.account-item .material-symbols-outlined {
   font-size: 20px;
   color: var(--bl-text-secondary);
 }
@@ -152,7 +152,7 @@
   font-size: var(--bl-font-size-xs);
 }
 
-.category-badge .material-icons {
+.category-badge .material-symbols-outlined {
   font-size: 14px;
   color: var(--bl-text-secondary);
 }
@@ -224,7 +224,7 @@
   border-radius: var(--bl-radius-sm);
 }
 
-.budget-icon .material-icons {
+.budget-icon .material-symbols-outlined {
   font-size: 20px;
   color: var(--bl-text-secondary);
 }
@@ -301,7 +301,7 @@
   border-radius: var(--bl-radius-sm);
 }
 
-.card-icon .material-icons {
+.card-icon .material-symbols-outlined {
   font-size: 24px;
 }
 
@@ -309,7 +309,7 @@
   background-color: rgba(76, 175, 80, 0.15);
 }
 
-.overview-card.income .card-icon .material-icons {
+.overview-card.income .card-icon .material-symbols-outlined {
   color: var(--bl-success);
 }
 
@@ -317,7 +317,7 @@
   background-color: rgba(244, 67, 54, 0.15);
 }
 
-.overview-card.expenses .card-icon .material-icons {
+.overview-card.expenses .card-icon .material-symbols-outlined {
   color: var(--bl-error);
 }
 
@@ -325,7 +325,7 @@
   background-color: rgba(33, 150, 243, 0.15);
 }
 
-.overview-card.savings .card-icon .material-icons {
+.overview-card.savings .card-icon .material-symbols-outlined {
   color: var(--bl-accent);
 }
 
@@ -397,7 +397,7 @@
   border-radius: var(--bl-radius-sm);
 }
 
-.recent-icon .material-icons {
+.recent-icon .material-symbols-outlined {
   font-size: 16px;
   color: var(--bl-text-secondary);
 }
@@ -455,7 +455,7 @@
   color: var(--bl-text-secondary);
 }
 
-.spending-label .material-icons {
+.spending-label .material-symbols-outlined {
   font-size: 16px;
 }
 

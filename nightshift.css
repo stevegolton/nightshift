@@ -139,8 +139,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.bl-root .material-icons {
+.bl-root .material-symbols-outlined {
   font-size: inherit;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.bl-root .material-symbols-outlined.filled {
+  font-size: inherit;
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
 }
 
 .bl-root *,

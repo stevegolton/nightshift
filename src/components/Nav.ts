@@ -12,7 +12,7 @@ function NavItem(route: string, icon: string, label: string): m.Vnode {
       class: cx({ active: isActive }),
       href: '#' + route,
     },
-    [m('span.material-icons', icon), m('span.app-nav-item-label', label)]
+    [m('span.material-symbols-outlined', icon), m('span.app-nav-item-label', label)]
   );
 }
 
@@ -28,7 +28,7 @@ const Nav: m.Component = {
             },
             title: 'Toggle sidebar',
           },
-          m('span.material-icons', 'chevron_left')
+          m('span.material-symbols-outlined', 'chevron_left')
         ),
         m('span.app-nav-title', 'NightShift Demo'),
       ]),
@@ -43,7 +43,7 @@ const Nav: m.Component = {
       ]),
       m('.app-nav-footer', [
         m('.app-nav-item', { onclick: toggleTheme }, [
-          m('span.material-icons', 'contrast'),
+          m('span.material-symbols-outlined', 'contrast'),
           m('span.app-nav-item-label', 'Toggle Theme'),
         ]),
       ]),

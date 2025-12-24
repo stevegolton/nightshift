@@ -1,14 +1,16 @@
 import m from 'mithril';
 import cx from 'classnames';
+import './SegmentedButton.css';
+import { renderIcon, IconProp } from '../utils/icon';
 
 export interface SegmentedButtonGroupAttrs {
   /** Additional CSS classes */
-  class?: string;
+  className?: string;
 }
 
 export interface SegmentedButtonAttrs {
-  /** Material Icon name */
-  icon?: string;
+  /** Material Icon name. Use ":filled" suffix or object { name, filled } for filled icons */
+  icon?: IconProp;
   /** Button is currently active */
   active?: boolean;
   /** Tooltip/title text */
@@ -20,7 +22,7 @@ export interface SegmentedButtonAttrs {
 /** Container for segmented buttons */
 export const SegmentedButtonGroup: m.Component<SegmentedButtonGroupAttrs> = {
   view(vnode) {
-    return m('div', { class: cx('bl-segmented', vnode.attrs.class) }, vnode.children);
+    return m('div', { class: cx('bl-segmented', vnode.attrs.className) }, vnode.children);
   },
 };
 
@@ -40,7 +42,7 @@ export const SegmentedButton: m.Component<SegmentedButtonAttrs> = {
     const content: m.Children[] = [];
 
     if (icon) {
-      content.push(m('span.material-icons', icon));
+      content.push(renderIcon(icon));
     }
 
     const children = vnode.children;

@@ -156,14 +156,14 @@ function VMList(): m.Component {
       return m('.vm-list', [
         m('.vm-group', [
           m('.vm-group-header', [
-            m('span.material-icons', 'computer'),
+            m('span.material-symbols-outlined', 'computer'),
             m('span', 'Virtual Machines'),
           ]),
           ...runningVMs.map((vm: VM) => m(VMListItem, { vm })),
         ]),
         m('.vm-group', [
           m('.vm-group-header', [
-            m('span.material-icons', 'inventory_2'),
+            m('span.material-symbols-outlined', 'inventory_2'),
             m('span', 'LXC Containers'),
           ]),
           ...containers.map((vm: VM) => m(VMListItem, { vm })),
@@ -192,7 +192,7 @@ const VMListItem: m.Component<{ vm: VM }> = {
         onclick: () => (State.proxmox.selectedVM = vm.id),
       },
       [
-        m('span.vm-status-icon.material-icons', { class: statusClass }, statusIcon),
+        m('span.vm-status-icon.material-symbols-outlined', { class: statusClass }, statusIcon),
         m('.vm-info', [m('.vm-name', vm.name), m('.vm-id', `${vm.type.toUpperCase()} ${vm.id}`)]),
         vm.status === 'running' && m('.vm-cpu', `${vm.cpu}%`),
       ]
@@ -208,7 +208,7 @@ function VMDetails(): m.Component {
 
       if (!vm) {
         return m('.vm-details.empty', [
-          m('span.material-icons', 'touch_app'),
+          m('span.material-symbols-outlined', 'touch_app'),
           m('p', 'Select a VM or container'),
         ]);
       }
@@ -216,7 +216,7 @@ function VMDetails(): m.Component {
       return m('.vm-details', [
         m('.details-header', [
           m('.details-title', [
-            m('span.material-icons', vm.type === 'vm' ? 'computer' : 'inventory_2'),
+            m('span.material-symbols-outlined', vm.type === 'vm' ? 'computer' : 'inventory_2'),
             m('span', vm.name),
             m(
               Badge,

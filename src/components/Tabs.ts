@@ -1,14 +1,15 @@
 import m from 'mithril';
 import cx from 'classnames';
 import './Tabs.css';
+import { renderIcon, IconProp } from '../utils/icon';
 
 export interface TabItem {
   /** Unique identifier for the tab */
   id: string;
   /** Tab label text */
   label: string;
-  /** Optional Material Icon name */
-  icon?: string;
+  /** Optional Material Icon name. Use ":filled" suffix or object { name, filled } for filled icons */
+  icon?: IconProp;
   /** Tab content (rendered when active) */
   content?: m.Children;
 }
@@ -23,14 +24,14 @@ export interface TabsAttrs {
   /** Tab style variant */
   variant?: 'primary' | 'inline';
   /** Additional CSS classes for container */
-  class?: string;
+  className?: string;
 }
 
 export const Tabs: m.Component<TabsAttrs> = {
   view(vnode) {
     const { tabs, activeTab, onTabChange, variant = 'inline' } = vnode.attrs;
 
-    const containerClasses = cx('bl-tabs-container', vnode.attrs.class, {
+    const containerClasses = cx('bl-tabs-container', vnode.attrs.className, {
       'bl-tabs-primary': variant === 'primary',
     });
 
@@ -49,7 +50,7 @@ export const Tabs: m.Component<TabsAttrs> = {
 
           const content: m.Children[] = [];
           if (tab.icon) {
-            content.push(m('span.material-icons', tab.icon));
+            content.push(renderIcon(tab.icon));
           }
           content.push(tab.label);
 

@@ -13,12 +13,12 @@ export interface ProgressBarAttrs {
   /** Variant style */
   variant?: 'default' | 'success' | 'warning' | 'error';
   /** Additional class names */
-  class?: string;
+  className?: string;
 }
 
 const ProgressBar: m.Component<ProgressBarAttrs> = {
   view(vnode) {
-    const { value, max = 100, showLabel = false, label, variant, class: className } = vnode.attrs;
+    const { value, max = 100, showLabel = false, label, variant, className } = vnode.attrs;
 
     const percentage = Math.min(100, Math.max(0, (value / max) * 100));
 

@@ -17,10 +17,8 @@ import Anchor from '../components/Anchor';
 import NumberInput from '../components/NumberInput';
 import MenuBar from '../components/MenuBar';
 import Badge from '../components/Badge';
-
-// Create SplitPanel instances once to maintain state
-const HorizontalSplit = SplitPanel();
-const VerticalSplit = SplitPanel();
+import FilterChip, { FilterChipGroup, AddFilterChip } from '../components/FilterChip';
+import ReorderableList, { ReorderableItem } from '../components/ReorderableList';
 
 // Create Table instance
 interface ObjectData {
@@ -94,7 +92,7 @@ const WidgetsPage: m.Component = {
             m('.demo-label', 'Button Group'),
             m('.demo-row', [
               m(ButtonGroup, [
-                m(Button, { active: true }, 'Object'),
+                m(Button, {}, 'Object'),
                 m(Button, {}, 'Edit'),
                 m(Button, {}, 'Sculpt'),
               ]),
@@ -128,64 +126,24 @@ const WidgetsPage: m.Component = {
                 ),
               ]),
               m(SegmentedButtonGroup, [
-                m(
-                  SegmentedButton,
-                  {
-                    active: State.segmentedView === 'grid',
-                    title: 'Grid',
-                    onclick: () => (State.segmentedView = 'grid'),
-                  },
-                  m('span.material-icons', 'grid_view')
-                ),
-                m(
-                  SegmentedButton,
-                  {
-                    active: State.segmentedView === 'list',
-                    title: 'List',
-                    onclick: () => (State.segmentedView = 'list'),
-                  },
-                  m('span.material-icons', 'view_list')
-                ),
-                m(
-                  SegmentedButton,
-                  {
-                    active: State.segmentedView === 'details',
-                    title: 'Details',
-                    onclick: () => (State.segmentedView = 'details'),
-                  },
-                  m('span.material-icons', 'view_module')
-                ),
-              ]),
-            ]),
-            m('.demo-row', [
-              m(SegmentedButtonGroup, [
-                m(
-                  SegmentedButton,
-                  {
-                    active: State.segmentedAlign === 'left',
-                    title: 'Align Left',
-                    onclick: () => (State.segmentedAlign = 'left'),
-                  },
-                  m('span.material-icons', 'format_align_left')
-                ),
-                m(
-                  SegmentedButton,
-                  {
-                    active: State.segmentedAlign === 'center',
-                    title: 'Align Center',
-                    onclick: () => (State.segmentedAlign = 'center'),
-                  },
-                  m('span.material-icons', 'format_align_center')
-                ),
-                m(
-                  SegmentedButton,
-                  {
-                    active: State.segmentedAlign === 'right',
-                    title: 'Align Right',
-                    onclick: () => (State.segmentedAlign = 'right'),
-                  },
-                  m('span.material-icons', 'format_align_right')
-                ),
+                m(SegmentedButton, {
+                  active: State.segmentedAlign === 'left',
+                  title: 'Align Left',
+                  onclick: () => (State.segmentedAlign = 'left'),
+                  icon: 'format_align_left',
+                }),
+                m(SegmentedButton, {
+                  active: State.segmentedAlign === 'center',
+                  title: 'Align Center',
+                  onclick: () => (State.segmentedAlign = 'center'),
+                  icon: 'format_align_center',
+                }),
+                m(SegmentedButton, {
+                  active: State.segmentedAlign === 'right',
+                  title: 'Align Right',
+                  onclick: () => (State.segmentedAlign = 'right'),
+                  icon: 'format_align_right',
+                }),
               ]),
               m(SegmentedButtonGroup, [
                 m(
@@ -193,16 +151,18 @@ const WidgetsPage: m.Component = {
                   {
                     active: State.segmentedDisplay === 'solid',
                     onclick: () => (State.segmentedDisplay = 'solid'),
+                    icon: { name: 'deployed_code', filled: true },
                   },
-                  [m('span.material-icons', 'change_history'), 'Solid']
+                  'Solid'
                 ),
                 m(
                   SegmentedButton,
                   {
                     active: State.segmentedDisplay === 'wire',
                     onclick: () => (State.segmentedDisplay = 'wire'),
+                    icon: { name: 'deployed_code', filled: false },
                   },
-                  [m('span.material-icons', 'change_history_outlined'), 'Wire']
+                  'Wireframe'
                 ),
               ]),
             ]),
@@ -473,13 +433,13 @@ const WidgetsPage: m.Component = {
             ]),
             m('.demo-label.bl-mt-md', 'Progress Bars'),
             m('div', { style: { maxWidth: '400px' } }, [
-              m(ProgressBar, { value: 75, class: 'bl-mb-md' }),
+              m(ProgressBar, { value: 75, className: 'bl-mb-md' }),
               m(ProgressBar, { value: 45 }),
             ]),
             m('.demo-label.bl-mt-md', 'Progress Bar Variants'),
             m('div', { style: { maxWidth: '400px' } }, [
-              m(ProgressBar, { value: 90, variant: 'success', class: 'bl-mb-sm' }),
-              m(ProgressBar, { value: 60, variant: 'warning', class: 'bl-mb-sm' }),
+              m(ProgressBar, { value: 90, variant: 'success', className: 'bl-mb-sm' }),
+              m(ProgressBar, { value: 60, variant: 'warning', className: 'bl-mb-sm' }),
               m(ProgressBar, { value: 30, variant: 'error' }),
             ]),
           ]),
@@ -579,13 +539,84 @@ const WidgetsPage: m.Component = {
           // Table Section
           m('section.demo-section', [
             m('h2.demo-section-title', 'Table'),
+            m('.demo-label', 'With Column Actions (hover headers to see menu)'),
             m(ObjectTable, {
               columns: [
-                { header: 'Name', key: 'name' },
-                { header: 'Type', key: 'type' },
-                { header: 'Vertices', key: 'vertices' },
+                {
+                  header: 'Name',
+                  key: 'name',
+                  sort: 'asc',
+                  actions: [
+                    {
+                      label: 'Sort Ascending',
+                      icon: 'arrow_upward',
+                      onclick: () => console.log('Sort asc'),
+                    },
+                    {
+                      label: 'Sort Descending',
+                      icon: 'arrow_downward',
+                      onclick: () => console.log('Sort desc'),
+                    },
+                    { separator: true },
+                    {
+                      label: 'Filter...',
+                      icon: 'filter_list',
+                      onclick: () => console.log('Filter'),
+                    },
+                    {
+                      label: 'Hide Column',
+                      icon: 'visibility_off',
+                      onclick: () => console.log('Hide'),
+                    },
+                  ],
+                },
+                {
+                  header: 'Type',
+                  key: 'type',
+                  actions: [
+                    {
+                      label: 'Sort Ascending',
+                      icon: 'arrow_upward',
+                      onclick: () => console.log('Sort asc'),
+                    },
+                    {
+                      label: 'Sort Descending',
+                      icon: 'arrow_downward',
+                      onclick: () => console.log('Sort desc'),
+                    },
+                    { separator: true },
+                    {
+                      label: 'Group by Type',
+                      icon: 'workspaces',
+                      onclick: () => console.log('Group'),
+                    },
+                  ],
+                },
+                {
+                  header: 'Vertices',
+                  key: 'vertices',
+                  actions: [
+                    {
+                      label: 'Sort Ascending',
+                      icon: 'arrow_upward',
+                      onclick: () => console.log('Sort asc'),
+                    },
+                    {
+                      label: 'Sort Descending',
+                      icon: 'arrow_downward',
+                      onclick: () => console.log('Sort desc'),
+                    },
+                  ],
+                },
                 {
                   header: 'Status',
+                  actions: [
+                    {
+                      label: 'Filter...',
+                      icon: 'filter_list',
+                      onclick: () => console.log('Filter'),
+                    },
+                  ],
                   render: (row) => {
                     const variant =
                       row.status === 'active'
@@ -612,6 +643,110 @@ const WidgetsPage: m.Component = {
               m(Badge, { variant: 'warning' }, 'Warning'),
               m(Badge, { variant: 'error' }, 'Error'),
             ]),
+          ]),
+
+          // Filter Chips Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Filter Chips'),
+            m('.demo-label', 'Interactive Filters (for SQL results, tables, etc.)'),
+            m(FilterChipGroup, [
+              ...State.activeFilters.map((filter) =>
+                m(FilterChip, {
+                  label: filter.label,
+                  value: filter.value,
+                  active: true,
+                  variant: filter.variant as 'default' | 'success' | 'warning' | 'error',
+                  onremove: () => {
+                    State.activeFilters = State.activeFilters.filter((f) => f.id !== filter.id);
+                  },
+                })
+              ),
+              m(AddFilterChip, {
+                onclick: () => {
+                  const id = String(Date.now());
+                  State.activeFilters.push({ id, label: 'New Filter', value: 'Value' });
+                },
+              }),
+            ]),
+            m('.demo-label.bl-mt-md', 'Filter Chip States'),
+            m('.demo-row', [
+              m(FilterChip, { label: 'Default', removable: false }),
+              m(FilterChip, { label: 'Active', active: true, removable: false }),
+              m(FilterChip, { label: 'With Value', value: 'example', removable: false }),
+              m(FilterChip, { label: 'Disabled', disabled: true, removable: false }),
+            ]),
+            m('.demo-label.bl-mt-md', 'Outlined Variant'),
+            m('.demo-row', [
+              m(FilterChip, { label: 'Outlined', variant: 'outlined', removable: false }),
+              m(FilterChip, {
+                label: 'Active',
+                variant: 'outlined',
+                active: true,
+                removable: false,
+              }),
+            ]),
+            m('.demo-label.bl-mt-md', 'Status Variants'),
+            m('.demo-row', [
+              m(FilterChip, {
+                label: 'Success',
+                variant: 'success',
+                active: true,
+                removable: false,
+              }),
+              m(FilterChip, {
+                label: 'Warning',
+                variant: 'warning',
+                active: true,
+                removable: false,
+              }),
+              m(FilterChip, { label: 'Error', variant: 'error', active: true, removable: false }),
+            ]),
+            m('.demo-label.bl-mt-md', 'With Icons'),
+            m('.demo-row', [
+              m(FilterChip, {
+                label: 'Date',
+                value: 'Today',
+                icon: 'calendar_today',
+                removable: false,
+              }),
+              m(FilterChip, { label: 'User', value: 'Admin', icon: 'person', removable: false }),
+              m(FilterChip, {
+                label: 'Status',
+                value: 'Online',
+                icon: 'circle',
+                variant: 'success',
+                active: true,
+                removable: false,
+              }),
+            ]),
+          ]),
+
+          // Reorderable List Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Reorderable List'),
+            m('.demo-label', 'Flat List'),
+            m(
+              'div',
+              { style: { maxWidth: '300px' } },
+              m(ReorderableList, {
+                items: State.reorderableItems,
+                onreorder: (items: ReorderableItem[]) => {
+                  State.reorderableItems = items;
+                },
+              })
+            ),
+            m('.demo-label.bl-mt-md', 'Tree Mode (drag onto items to nest)'),
+            m(
+              'div',
+              { style: { maxWidth: '300px' } },
+              m(ReorderableList, {
+                items: State.reorderableTree,
+                tree: true,
+                onreorder: (items: ReorderableItem[]) => {
+                  State.reorderableTree = items;
+                },
+              })
+            ),
           ]),
 
           // Menu Section
@@ -645,7 +780,7 @@ const WidgetsPage: m.Component = {
                 },
               },
               [
-                m(HorizontalSplit, {
+                m(SplitPanel, {
                   direction: 'horizontal',
                   initialSplit: 40,
                   firstPanel: m('.split-panel-content', [
@@ -670,7 +805,7 @@ const WidgetsPage: m.Component = {
                 },
               },
               [
-                m(VerticalSplit, {
+                m(SplitPanel, {
                   direction: 'vertical',
                   initialSplit: 50,
                   firstPanel: m('.split-panel-content', [

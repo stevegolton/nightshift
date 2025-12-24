@@ -1,0 +1,223 @@
+/* Reorderable List */
+.bl-reorderable-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bl-spacing-xs);
+}
+
+.bl-reorderable-item {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-md);
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  background: var(--bl-surface-2);
+  border: 1px solid var(--bl-border-base);
+  border-radius: var(--bl-radius-md);
+  color: var(--bl-text-primary);
+  font-size: var(--bl-font-size-base);
+  cursor: grab;
+  transition: all 0.1s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  user-select: none;
+}
+
+.bl-reorderable-item:hover {
+  background: var(--bl-surface-hover);
+  border-color: var(--bl-border-light);
+}
+
+/* Drag handle grip pattern */
+.bl-reorderable-handle {
+  display: flex;
+  flex-shrink: 0;
+  width: 8px;
+  height: 16px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--bl-text-muted) 0px,
+    var(--bl-text-muted) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  opacity: 0.4;
+  transition: opacity 0.1s ease;
+}
+
+.bl-reorderable-item:hover .bl-reorderable-handle {
+  opacity: 0.8;
+}
+
+/* Item content */
+.bl-reorderable-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-sm);
+}
+
+.bl-reorderable-icon {
+  font-size: var(--bl-font-size-lg);
+  color: var(--bl-text-secondary);
+}
+
+.bl-reorderable-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Being dragged */
+.bl-reorderable-item.dragging {
+  cursor: grabbing;
+  background: var(--bl-surface-3);
+  border-color: var(--bl-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+  z-index: 100;
+}
+
+.bl-reorderable-item.dragging .bl-reorderable-handle {
+  opacity: 1;
+}
+
+/* Drop target indicator */
+.bl-reorderable-item.drop-before::before,
+.bl-reorderable-item.drop-after::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--bl-accent);
+  border-radius: 1px;
+}
+
+.bl-reorderable-item.drop-before::before {
+  top: -3px;
+}
+
+.bl-reorderable-item.drop-after::after {
+  bottom: -3px;
+}
+
+.bl-reorderable-item {
+  position: relative;
+}
+
+/* Placeholder for dragged item */
+.bl-reorderable-placeholder {
+  border: 1px dashed var(--bl-border-light);
+  background: var(--bl-surface-1);
+  border-radius: var(--bl-radius-md);
+  min-height: 32px;
+}
+
+/* Disabled state */
+.bl-reorderable-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Ghost element (follows cursor during drag) */
+.bl-reorderable-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.9;
+}
+
+/* ===== Tree Mode ===== */
+.bl-reorderable-list.tree-mode {
+  gap: 0;
+}
+
+.bl-reorderable-list.tree-mode .bl-reorderable-item {
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+.bl-reorderable-list.tree-mode .bl-reorderable-item:first-child {
+  border-top-left-radius: var(--bl-radius-md);
+  border-top-right-radius: var(--bl-radius-md);
+}
+
+.bl-reorderable-list.tree-mode .bl-reorderable-item:last-child,
+.bl-reorderable-list.tree-mode .bl-reorderable-placeholder:last-child {
+  border-bottom: 1px solid var(--bl-border-base);
+  border-bottom-left-radius: var(--bl-radius-md);
+  border-bottom-right-radius: var(--bl-radius-md);
+}
+
+/* Expand/collapse toggle */
+.bl-reorderable-expand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--bl-text-muted);
+  cursor: pointer;
+  border-radius: var(--bl-radius-sm);
+  transition: all 0.1s ease;
+}
+
+.bl-reorderable-expand:hover {
+  background: var(--bl-surface-3);
+  color: var(--bl-text-primary);
+}
+
+.bl-reorderable-expand .material-symbols-outlined {
+  font-size: 16px;
+  transition: transform 0.15s ease;
+}
+
+.bl-reorderable-expand.collapsed .material-symbols-outlined {
+  transform: rotate(-90deg);
+}
+
+/* Placeholder for expand toggle (leaf nodes) */
+.bl-reorderable-expand-placeholder {
+  width: 16px;
+  flex-shrink: 0;
+}
+
+/* Tree indentation */
+.bl-reorderable-indent {
+  flex-shrink: 0;
+}
+
+/* Children container */
+.bl-reorderable-children {
+  display: flex;
+  flex-direction: column;
+}
+
+.bl-reorderable-children.collapsed {
+  display: none;
+}
+
+/* Drop-onto indicator (for nesting) */
+.bl-reorderable-item.drop-onto {
+  background: var(--bl-accent-subtle);
+  border-color: var(--bl-accent);
+}
+
+.bl-reorderable-item.drop-onto .bl-reorderable-content {
+  color: var(--bl-accent);
+}
+
+/* Tree mode drop indicators need adjustment */
+.bl-reorderable-list.tree-mode .bl-reorderable-item.drop-before::before {
+  left: var(--indent-offset, 0px);
+}
+
+.bl-reorderable-list.tree-mode .bl-reorderable-item.drop-after::after {
+  left: var(--indent-offset, 0px);
+}

@@ -5,12 +5,12 @@ export interface BadgeAttrs {
   /** Badge variant */
   variant?: 'default' | 'success' | 'warning' | 'error';
   /** Additional class names */
-  class?: string;
+  className?: string;
 }
 
 const Badge: m.Component<BadgeAttrs> = {
   view(vnode) {
-    const { variant, class: className } = vnode.attrs;
+    const { variant, className } = vnode.attrs;
 
     const classes = cx('bl-badge', className, {
       'bl-badge-success': variant === 'success',

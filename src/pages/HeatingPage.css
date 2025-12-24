@@ -203,8 +203,8 @@
   gap: var(--bl-spacing-xs);
 }
 
-.zone-humidity .material-icons,
-.zone-schedule .material-icons {
+.zone-humidity .material-symbols-outlined,
+.zone-schedule .material-symbols-outlined {
   color: var(--bl-text-muted);
 }
 

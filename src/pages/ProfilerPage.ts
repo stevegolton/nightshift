@@ -86,7 +86,7 @@ const ProfilerPage: m.Component = {
         direction: 'vertical',
         initialSplit: 70,
         minSize: 100,
-        class: 'profiler-main',
+        className: 'profiler-main',
         firstPanel: m('.profiler-timeline-area', [
           m('.bl-timeline', [
             m('.bl-timeline-header', [
@@ -179,7 +179,7 @@ const ProfilerPage: m.Component = {
                         '.bl-track-group-header',
                         { onclick: () => toggleTrackGroup('main-thread') },
                         [
-                          m('span.bl-track-group-toggle.material-icons', 'chevron_right'),
+                          m('span.bl-track-group-toggle.material-symbols-outlined', 'chevron_right'),
                           m('span.bl-track-group-name', 'Main Thread'),
                           m('.bl-track-buttons', [
                             m(Button, {
@@ -207,7 +207,7 @@ const ProfilerPage: m.Component = {
                             onclick: () => toggleTrack('frame'),
                           },
                           [
-                            m('span.bl-track-toggle.material-icons', 'chevron_right'),
+                            m('span.bl-track-toggle.material-symbols-outlined', 'chevron_right'),
                             m('span.bl-track-name', 'Frame'),
                             m('.bl-track-buttons', [
                               m(Button, {
@@ -239,7 +239,7 @@ const ProfilerPage: m.Component = {
                                 },
                               },
                               [
-                                m('span.bl-track-toggle.material-icons', 'chevron_right'),
+                                m('span.bl-track-toggle.material-symbols-outlined', 'chevron_right'),
                                 m('span.bl-track-name', 'Scripts'),
                                 m('.bl-track-buttons', [
                                   m(Button, {
@@ -299,7 +299,7 @@ const ProfilerPage: m.Component = {
                                 },
                               },
                               [
-                                m('span.bl-track-toggle.material-icons', 'chevron_right'),
+                                m('span.bl-track-toggle.material-symbols-outlined', 'chevron_right'),
                                 m('span.bl-track-name', 'Paint'),
                                 m('.bl-track-buttons', [
                                   m(Button, {
@@ -338,7 +338,7 @@ const ProfilerPage: m.Component = {
                     },
                     [
                       m('.bl-track-group-header', { onclick: () => toggleTrackGroup('gpu') }, [
-                        m('span.bl-track-group-toggle.material-icons', 'chevron_right'),
+                        m('span.bl-track-group-toggle.material-symbols-outlined', 'chevron_right'),
                         m('span.bl-track-group-name', 'GPU'),
                         m('.bl-track-buttons', [
                           m(Button, {
@@ -385,7 +385,7 @@ const ProfilerPage: m.Component = {
                     },
                     [
                       m('.bl-track-group-header', { onclick: () => toggleTrackGroup('workers') }, [
-                        m('span.bl-track-group-toggle.material-icons', 'chevron_right'),
+                        m('span.bl-track-group-toggle.material-symbols-outlined', 'chevron_right'),
                         m('span.bl-track-group-name', 'Worker Threads'),
                         m('.bl-track-buttons', [
                           m(Button, {
@@ -588,7 +588,7 @@ const ProfilerPage: m.Component = {
         secondPanel: m('.profiler-details', [
           m(Tabs, {
             variant: 'primary',
-            class: 'profiler-primary-tabs',
+            className: 'profiler-primary-tabs',
             tabs: [
               {
                 id: 'selection',
@@ -597,7 +597,7 @@ const ProfilerPage: m.Component = {
                 content: m('.profiler-tab-content', [
                   m(Tabs, {
                     variant: 'inline',
-                    class: 'selection-subtabs',
+                    className: 'selection-subtabs',
                     tabs: [
                       {
                         id: 'summary',

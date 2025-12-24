@@ -123,12 +123,12 @@ const PluginsPage: m.Component = {
                   m(
                     'button.bl-btn.bl-btn-icon.bl-tooltip',
                     { 'data-tooltip': 'Settings' },
-                    m('span.material-icons', 'settings')
+                    m('span.material-symbols-outlined', 'settings')
                   ),
                   m(
                     'button.bl-btn.bl-btn-icon.bl-tooltip',
                     { 'data-tooltip': 'More' },
-                    m('span.material-icons', 'more_vert')
+                    m('span.material-symbols-outlined', 'more_vert')
                   ),
                 ]),
               ]),

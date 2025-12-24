@@ -10,14 +10,14 @@ export interface CheckboxAttrs {
   /** Checkbox label */
   label?: string;
   /** Additional class names */
-  class?: string;
+  className?: string;
   /** Change handler */
   onchange?: (checked: boolean, e: Event) => void;
 }
 
 const Checkbox: m.Component<CheckboxAttrs> = {
   view(vnode) {
-    const { checked, disabled, label, class: className, onchange } = vnode.attrs;
+    const { checked, disabled, label, className, onchange } = vnode.attrs;
 
     // Support children as label content
     const labelContent =

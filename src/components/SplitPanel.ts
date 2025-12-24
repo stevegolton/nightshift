@@ -6,7 +6,7 @@ export interface SplitPanelAttrs {
   direction?: 'horizontal' | 'vertical';
   initialSplit?: number; // percentage 0-100
   minSize?: number; // minimum size in pixels for each panel
-  class?: string;
+  className?: string;
   firstPanel: m.Children;
   secondPanel: m.Children;
   onResize?: (splitPercent: number) => void;
@@ -25,7 +25,7 @@ export function SplitPanel(): m.Component<SplitPanelAttrs> {
     view(vnode) {
       const { direction = 'horizontal', minSize = 50, firstPanel, secondPanel } = vnode.attrs;
 
-      const containerClasses = cx('bl-split-panel', `bl-split-${direction}`, vnode.attrs.class);
+      const containerClasses = cx('bl-split-panel', `bl-split-${direction}`, vnode.attrs.className);
 
       // Use flex-basis with calc to account for handle width (4px)
       const handleSize = 4;

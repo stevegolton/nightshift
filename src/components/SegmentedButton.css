@@ -1,0 +1,52 @@
+.bl-segmented {
+  display: inline-flex;
+  padding: 1px;
+  background: var(--bl-surface-1);
+  border-radius: var(--bl-radius-md);
+  border: 1px solid var(--bl-border-dark);
+  gap: var(--bl-spacing-xs);
+}
+
+.bl-segmented-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bl-spacing-sm);
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  font-family: var(--bl-font-family);
+  font-size: inherit;
+  color: var(--bl-text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: calc(var(--bl-radius-md) - 1px);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.bl-segmented-btn:focus {
+  outline: none;
+}
+
+.bl-segmented-btn:focus-visible {
+  outline: 2px solid var(--bl-accent);
+  outline-offset: -2px;
+}
+
+.bl-segmented-btn:hover:not(.active) {
+  color: var(--bl-text-primary);
+  background: var(--bl-surface-2);
+}
+
+.bl-segmented-btn.active {
+  color: #fff;
+  background: var(--bl-accent);
+}
+
+.bl-segmented-btn .material-symbols-outlined {
+  line-height: 1;
+}
+
+.bl-segmented-btn.icon-only {
+  padding: var(--bl-spacing-sm);
+}

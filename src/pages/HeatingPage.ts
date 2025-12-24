@@ -128,8 +128,8 @@ function ZoneCard(zone: Zone): m.Vnode {
       }),
     ]),
     m('.zone-footer', [
-      m('.zone-humidity', [m('span.material-icons', 'water_drop'), m('span', `${zone.humidity}%`)]),
-      m('.zone-schedule', [m('span.material-icons', 'schedule'), m('span', zone.schedule)]),
+      m('.zone-humidity', [m('span.material-symbols-outlined', 'water_drop'), m('span', `${zone.humidity}%`)]),
+      m('.zone-schedule', [m('span.material-symbols-outlined', 'schedule'), m('span', zone.schedule)]),
     ]),
     m('.zone-actions', [
       m(SegmentedButtonGroup, [
@@ -140,7 +140,7 @@ function ZoneCard(zone: Zone): m.Vnode {
             onclick: () => (zone.mode = 'heating'),
             title: 'Heating',
           },
-          m('span.material-icons', 'whatshot')
+          m('span.material-symbols-outlined', 'whatshot')
         ),
         m(
           SegmentedButton,
@@ -149,7 +149,7 @@ function ZoneCard(zone: Zone): m.Vnode {
             onclick: () => (zone.mode = 'cooling'),
             title: 'Cooling',
           },
-          m('span.material-icons', 'ac_unit')
+          m('span.material-symbols-outlined', 'ac_unit')
         ),
         m(
           SegmentedButton,
@@ -158,7 +158,7 @@ function ZoneCard(zone: Zone): m.Vnode {
             onclick: () => (zone.mode = 'auto'),
             title: 'Auto',
           },
-          m('span.material-icons', 'autorenew')
+          m('span.material-symbols-outlined', 'autorenew')
         ),
         m(
           SegmentedButton,
@@ -167,7 +167,7 @@ function ZoneCard(zone: Zone): m.Vnode {
             onclick: () => (zone.mode = 'off'),
             title: 'Off',
           },
-          m('span.material-icons', 'power_settings_new')
+          m('span.material-symbols-outlined', 'power_settings_new')
         ),
       ]),
     ]),

@@ -1,12 +1,13 @@
 import m from 'mithril';
 import cx from 'classnames';
 import './Input.css';
+import { parseIcon, IconProp } from '../utils/icon';
 
 export interface InputAttrs {
   /** Input type */
   type?: 'text' | 'password' | 'email' | 'number' | 'search';
-  /** Material Icon name (e.g., 'search', 'person', 'lock') */
-  icon?: string;
+  /** Material Icon name. Use ":filled" suffix or object { name, filled } for filled icons */
+  icon?: IconProp;
   /** Icon position */
   iconPosition?: 'left' | 'right';
   /** Placeholder text */
@@ -16,7 +17,7 @@ export interface InputAttrs {
   /** Input is disabled */
   disabled?: boolean;
   /** Additional class names */
-  class?: string;
+  className?: string;
   /** Input handler */
   oninput?: (e: Event) => void;
   /** Change handler */
@@ -38,7 +39,7 @@ const Input: m.Component<InputAttrs> = {
       placeholder,
       value,
       disabled,
-      class: className,
+      className,
       oninput,
       onchange,
       onfocus,
@@ -65,7 +66,7 @@ const Input: m.Component<InputAttrs> = {
         placeholder,
         value,
         disabled,
-        class: className,
+        className,
         oninput,
         onchange,
         onfocus,
@@ -79,7 +80,8 @@ const Input: m.Component<InputAttrs> = {
       'icon-right': iconPosition === 'right',
     });
 
-    const iconEl = m('.bl-input-icon', m('span.material-icons', icon));
+    const { name: iconName, filled } = parseIcon(icon);
+    const iconEl = m('.bl-input-icon', m('span.material-symbols-outlined', { class: filled ? 'filled' : '' }, iconName));
 
     return m('div', { class: wrapperClasses }, [
       iconPosition === 'left' ? iconEl : null,

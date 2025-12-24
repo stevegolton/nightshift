@@ -27,7 +27,7 @@
   cursor: pointer;
 }
 
-.bl-tab .material-icons {
+.bl-tab .material-symbols-outlined {
   line-height: 1;
 }
 
@@ -90,7 +90,7 @@
   cursor: pointer;
 }
 
-.bl-tab-primary .material-icons {
+.bl-tab-primary .material-symbols-outlined {
   line-height: 1;
 }
 

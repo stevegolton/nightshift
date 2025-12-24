@@ -1,5 +1,6 @@
 import m from 'mithril';
 import './Table.css';
+import RowActionsMenu, { RowActionItem } from './RowActionsMenu';
 
 export interface TableColumn<T = Record<string, unknown>> {
   /** Column header text */
@@ -14,6 +15,10 @@ export interface TableColumn<T = Record<string, unknown>> {
   headerClass?: string;
   /** Additional class for body cells */
   cellClass?: string;
+  /** Column header actions (shown on hover) */
+  actions?: RowActionItem[];
+  /** Sort direction indicator */
+  sort?: 'asc' | 'desc' | null;
 }
 
 export interface TableAttrs<T = Record<string, unknown>> {
@@ -28,7 +33,7 @@ export interface TableAttrs<T = Record<string, unknown>> {
   /** Row double-click handler */
   onRowDblClick?: (row: T, index: number, e: Event) => void;
   /** Additional class names */
-  class?: string;
+  className?: string;
   /** Remove outer border and radius (for embedding in containers) */
   borderless?: boolean;
   /** Empty state content when no data */
@@ -52,7 +57,7 @@ const Table = <T = Record<string, unknown>>(): m.Component<TableAttrs<T>> => ({
       rowKey = (_row: T, index: number) => index,
       onRowClick,
       onRowDblClick,
-      class: className,
+      className,
       borderless = false,
       emptyContent = 'No data',
     } = vnode.attrs;
@@ -66,16 +71,50 @@ const Table = <T = Record<string, unknown>>(): m.Component<TableAttrs<T>> => ({
         'thead',
         m(
           'tr',
-          columns.map((col) =>
-            m(
+          columns.map((col) => {
+            const hasActions = col.actions && col.actions.length > 0;
+            const hasSort = col.sort !== undefined;
+
+            // Simple header without actions
+            if (!hasActions && !hasSort) {
+              return m(
+                'th',
+                {
+                  class: col.headerClass,
+                  style: col.width ? { width: col.width } : undefined,
+                },
+                col.header
+              );
+            }
+
+            // Header with actions/sort
+            return m(
               'th',
               {
                 class: col.headerClass,
                 style: col.width ? { width: col.width } : undefined,
               },
-              col.header
-            )
-          )
+              m('.bl-table-header', [
+                m('span.bl-table-header-label', [
+                  col.header,
+                  hasSort &&
+                    col.sort &&
+                    m(
+                      'span.bl-table-sort.active',
+                      m(
+                        'span.material-symbols-outlined',
+                        col.sort === 'asc' ? 'arrow_upward' : 'arrow_downward'
+                      )
+                    ),
+                ]),
+                hasActions &&
+                  m(
+                    '.bl-table-header-actions',
+                    m(RowActionsMenu, { actions: col.actions!, menuLeft: true })
+                  ),
+              ])
+            );
+          })
         )
       ),
       m('tbody', [
@@ -96,7 +135,7 @@ const Table = <T = Record<string, unknown>>(): m.Component<TableAttrs<T>> => ({
                 columns.map((col) =>
                   m(
                     'td',
-                    { class: col.cellClass },
+                    { className: col.cellClass },
                     col.render
                       ? col.render(row, rowIndex)
                       : col.key

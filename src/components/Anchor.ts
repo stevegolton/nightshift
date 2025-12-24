@@ -1,11 +1,12 @@
 import m from 'mithril';
 import './Anchor.css';
+import { parseIcon, IconProp } from '../utils/icon';
 
 export interface AnchorAttrs {
   /** Link URL */
   href: string;
-  /** Material icon name */
-  icon?: string;
+  /** Material icon name. Use ":filled" suffix or object { name, filled } for filled icons */
+  icon?: IconProp;
   /** Icon position */
   iconPosition?: 'left' | 'right';
   /** Open in new tab */
@@ -13,7 +14,7 @@ export interface AnchorAttrs {
   /** Disabled state */
   disabled?: boolean;
   /** Additional class names */
-  class?: string;
+  className?: string;
   /** Click handler */
   onclick?: (e: Event) => void;
 }
@@ -26,7 +27,7 @@ const Anchor: m.Component<AnchorAttrs> = {
       iconPosition = 'left',
       external = false,
       disabled = false,
-      class: className,
+      className,
       onclick,
     } = vnode.attrs;
 
@@ -35,7 +36,12 @@ const Anchor: m.Component<AnchorAttrs> = {
     if (disabled) classes.push('bl-anchor-disabled');
     if (className) classes.push(className);
 
-    const iconEl = icon ? m('span.bl-anchor-icon.material-icons', icon) : null;
+    const iconEl = icon
+      ? (() => {
+          const { name, filled } = parseIcon(icon);
+          return m('span.bl-anchor-icon.material-symbols-outlined', { class: filled ? 'filled' : '' }, name);
+        })()
+      : null;
 
     return m(
       'a',

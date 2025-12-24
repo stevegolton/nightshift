@@ -201,7 +201,7 @@ function AccountsSidebar(): m.Component {
               onclick: () => (State.finances.selectedAccount = 'all'),
             },
             [
-              m('span.material-icons', 'account_balance_wallet'),
+              m('span.material-symbols-outlined', 'account_balance_wallet'),
               m('.account-info', [m('.account-name', 'All Accounts')]),
             ]
           ),
@@ -213,7 +213,7 @@ function AccountsSidebar(): m.Component {
                 onclick: () => (State.finances.selectedAccount = acc.id),
               },
               [
-                m('span.material-icons', acc.icon),
+                m('span.material-symbols-outlined', acc.icon),
                 m('.account-info', [
                   m('.account-name', acc.name),
                   m(
@@ -257,7 +257,7 @@ function TransactionsView(): m.Component {
                 header: 'Category',
                 render: (row) =>
                   m('.category-badge', [
-                    m('span.material-icons', getCategoryIcon(row.category)),
+                    m('span.material-symbols-outlined', getCategoryIcon(row.category)),
                     row.category,
                   ]),
               },
@@ -322,7 +322,7 @@ function BudgetsView(): m.Component {
 
             return m('.budget-card', [
               m('.budget-header', [
-                m('.budget-icon', m('span.material-icons', budget.icon)),
+                m('.budget-icon', m('span.material-symbols-outlined', budget.icon)),
                 m('.budget-info', [
                   m('.budget-category', budget.category),
                   m('.budget-amounts', [
@@ -365,21 +365,21 @@ function OverviewView(): m.Component {
       return m('.overview-view', [
         m('.overview-cards', [
           m('.overview-card.income', [
-            m('.card-icon', m('span.material-icons', 'arrow_downward')),
+            m('.card-icon', m('span.material-symbols-outlined', 'arrow_downward')),
             m('.card-content', [
               m('.card-label', 'Income'),
               m('.card-value', formatCurrency(thisMonthIncome)),
             ]),
           ]),
           m('.overview-card.expenses', [
-            m('.card-icon', m('span.material-icons', 'arrow_upward')),
+            m('.card-icon', m('span.material-symbols-outlined', 'arrow_upward')),
             m('.card-content', [
               m('.card-label', 'Expenses'),
               m('.card-value', formatCurrency(thisMonthExpenses)),
             ]),
           ]),
           m('.overview-card.savings', [
-            m('.card-icon', m('span.material-icons', 'savings')),
+            m('.card-icon', m('span.material-symbols-outlined', 'savings')),
             m('.card-content', [
               m('.card-label', 'Saved'),
               m('.card-value', formatCurrency(thisMonthIncome - thisMonthExpenses)),
@@ -394,7 +394,7 @@ function OverviewView(): m.Component {
                 .slice(0, 5)
                 .map((t: Transaction) =>
                   m('.recent-item', [
-                    m('.recent-icon', m('span.material-icons', getCategoryIcon(t.category))),
+                    m('.recent-icon', m('span.material-symbols-outlined', getCategoryIcon(t.category))),
                     m('.recent-info', [
                       m('.recent-desc', t.description),
                       m('.recent-date', t.date),
@@ -415,7 +415,7 @@ function OverviewView(): m.Component {
                 .slice(0, 4)
                 .map((b: Budget) =>
                   m('.spending-item', [
-                    m('.spending-label', [m('span.material-icons', b.icon), m('span', b.category)]),
+                    m('.spending-label', [m('span.material-symbols-outlined', b.icon), m('span', b.category)]),
                     m('.spending-bar-container', [
                       m('.spending-bar', { style: { width: `${(b.spent / b.allocated) * 100}%` } }),
                     ]),
@@ -520,10 +520,10 @@ function PivotView(): m.Component {
                   },
                   [
                     m('.pivot-cell.expand-cell', [
-                      m('span.pivot-toggle.material-icons', 'chevron_right'),
+                      m('span.pivot-toggle.material-symbols-outlined', 'chevron_right'),
                     ]),
                     m('.pivot-cell.category-cell', [
-                      m('span.material-icons.category-icon', getCategoryIcon(group.category)),
+                      m('span.material-symbols-outlined.category-icon', getCategoryIcon(group.category)),
                       m('span.category-name', group.category),
                     ]),
                     m('.pivot-cell.count-cell', m(Badge, group.count.toString())),
