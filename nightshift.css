@@ -447,35 +447,6 @@ body {
 }
 
 /* ============================================
-   Badges
-   ============================================ */
-.bl-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0 var(--bl-spacing-sm);
-  height: 16px;
-  font-weight: 500;
-  border-radius: var(--bl-radius-sm);
-  background-color: var(--bl-surface-4);
-  color: var(--bl-text-secondary);
-}
-
-.bl-badge-success {
-  background-color: var(--bl-success);
-  color: #fff;
-}
-
-.bl-badge-warning {
-  background-color: var(--bl-warning);
-  color: #1d1d1d;
-}
-
-.bl-badge-error {
-  background-color: var(--bl-error);
-  color: #fff;
-}
-
-/* ============================================
    Scrollbar Styling
    ============================================ */
 .bl-root ::-webkit-scrollbar {

@@ -1,5 +1,6 @@
 import m from 'mithril';
 import cx from 'classnames';
+import './Badge.css';
 
 export interface BadgeAttrs {
   /** Badge variant */
