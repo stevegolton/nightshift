@@ -8,7 +8,7 @@ import { SegmentedButtonGroup, SegmentedButton } from '../components/SegmentedBu
 import Input from '../components/Input';
 import Select from '../components/Select';
 import ProgressBar from '../components/ProgressBar';
-import Badge from '../components/Badge';
+import Tag from '../components/Tag';
 import MenuBar from '../components/MenuBar';
 import Table from '../components/Table';
 import NumberInput from '../components/NumberInput';
@@ -308,7 +308,7 @@ function BudgetsView(): m.Component {
           m('.budgets-summary', [
             m('span', `${formatCurrency(totalSpent)} of ${formatCurrency(totalAllocated)} spent`),
             m(
-              Badge,
+              Tag,
               { variant: totalSpent / totalAllocated > 0.9 ? 'warning' : 'success' },
               `${Math.round((totalSpent / totalAllocated) * 100)}%`
             ),
@@ -526,7 +526,7 @@ function PivotView(): m.Component {
                       m('span.material-symbols-outlined.category-icon', getCategoryIcon(group.category)),
                       m('span.category-name', group.category),
                     ]),
-                    m('.pivot-cell.count-cell', m(Badge, group.count.toString())),
+                    m('.pivot-cell.count-cell', m(Tag, group.count.toString())),
                     m(
                       '.pivot-cell.amount-cell',
                       { class: cx({ income: group.total > 0, expense: group.total < 0 }) },
@@ -560,7 +560,7 @@ function PivotView(): m.Component {
             m('.pivot-cell.category-cell', m('strong', 'Grand Total')),
             m(
               '.pivot-cell.count-cell',
-              m(Badge, groups.reduce((sum, g) => sum + g.count, 0).toString())
+              m(Tag, groups.reduce((sum, g) => sum + g.count, 0).toString())
             ),
             m(
               '.pivot-cell.amount-cell',

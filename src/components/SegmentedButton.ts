@@ -13,6 +13,8 @@ export interface SegmentedButtonAttrs {
   icon?: IconProp;
   /** Button is currently active */
   active?: boolean;
+  /** Button is disabled */
+  disabled?: boolean;
   /** Tooltip/title text */
   title?: string;
   /** Click handler */
@@ -29,7 +31,7 @@ export const SegmentedButtonGroup: m.Component<SegmentedButtonGroupAttrs> = {
 /** Individual button within a segmented group */
 export const SegmentedButton: m.Component<SegmentedButtonAttrs> = {
   view(vnode) {
-    const { icon, active, title, onclick } = vnode.attrs;
+    const { icon, active, disabled, title, onclick } = vnode.attrs;
 
     const hasChildren =
       vnode.children && (Array.isArray(vnode.children) ? vnode.children.length > 0 : true);
@@ -37,6 +39,7 @@ export const SegmentedButton: m.Component<SegmentedButtonAttrs> = {
     const classes = cx('bl-segmented-btn', {
       'icon-only': icon && !hasChildren,
       active,
+      disabled,
     });
 
     const content: m.Children[] = [];
@@ -57,6 +60,7 @@ export const SegmentedButton: m.Component<SegmentedButtonAttrs> = {
       {
         class: classes,
         title,
+        disabled,
         onclick,
       },
       content

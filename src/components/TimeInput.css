@@ -1,0 +1,71 @@
+/* Time/Date Input */
+.bl-time-input {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--bl-surface-1);
+  border: 1px solid var(--bl-border-dark);
+  border-radius: var(--bl-radius-md);
+  overflow: hidden;
+}
+
+.bl-time-input:hover {
+  border-color: var(--bl-border-light);
+}
+
+.bl-time-input:focus-within {
+  border-color: var(--bl-accent);
+  background-color: var(--bl-surface-0);
+}
+
+.bl-time-input-label {
+  padding: 0 var(--bl-spacing-md);
+  color: var(--bl-text-secondary);
+  background-color: var(--bl-surface-3);
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: ew-resize;
+  user-select: none;
+}
+
+.bl-time-input input {
+  box-sizing: border-box;
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  font-family: var(--bl-font-family);
+  font-size: inherit;
+  line-height: 1;
+  color: var(--bl-text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+/* Style the calendar/clock icons in webkit browsers */
+.bl-time-input input::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  opacity: 0.6;
+}
+
+.bl-time-input input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Firefox - hide default icons and use consistent styling */
+.bl-time-input input::-moz-calendar-picker-indicator {
+  filter: invert(0.7);
+}
+
+/* Disabled state */
+.bl-time-input-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.bl-time-input-disabled input {
+  cursor: not-allowed;
+}

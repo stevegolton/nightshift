@@ -33,12 +33,12 @@ const Nav: m.Component = {
         m('span.app-nav-title', 'NightShift Demo'),
       ]),
       m('.app-nav-items', [
-        NavItem('/widgets', 'widgets', 'Widgets'),
+        NavItem('/components', 'dashboard', 'Components'),
         NavItem('/profiler', 'bar_chart', 'Profiler'),
         NavItem('/plugins', 'extension', 'Plugins'),
         NavItem('/heating', 'thermostat', 'Heating'),
-        NavItem('/quadcopter', 'flight', 'Quadcopter'),
-        NavItem('/proxmox', 'dns', 'Proxmox'),
+        NavItem('/drone', 'flight', 'Drone'),
+        NavItem('/servers', 'dns', 'Servers'),
         NavItem('/finances', 'account_balance', 'Finances'),
       ]),
       m('.app-nav-footer', [

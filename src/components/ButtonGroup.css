@@ -1,0 +1,37 @@
+/* Button Group */
+.bl-btn-group {
+  display: inline-flex;
+}
+
+.bl-btn-group .bl-btn {
+  border-radius: 0;
+  margin-left: -1px;
+}
+
+.bl-btn-group .bl-btn:first-child {
+  border-radius: var(--bl-radius-md) 0 0 var(--bl-radius-md);
+  margin-left: 0;
+}
+
+.bl-btn-group .bl-btn:last-child {
+  border-radius: 0 var(--bl-radius-md) var(--bl-radius-md) 0;
+}
+
+/* Vertical Button Group */
+.bl-btn-group-vertical {
+  flex-direction: column;
+}
+
+.bl-btn-group-vertical .bl-btn {
+  margin-left: 0;
+  margin-top: -1px;
+}
+
+.bl-btn-group-vertical .bl-btn:first-child {
+  border-radius: var(--bl-radius-md) var(--bl-radius-md) 0 0;
+  margin-top: 0;
+}
+
+.bl-btn-group-vertical .bl-btn:last-child {
+  border-radius: 0 0 var(--bl-radius-md) var(--bl-radius-md);
+}

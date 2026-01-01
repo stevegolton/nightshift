@@ -1,11 +1,11 @@
 import m from 'mithril';
 import cx from 'classnames';
-import './ProxmoxPage.css';
+import './ServersPage.css';
 import { State } from '../state';
 import Button from '../components/Button';
 import ButtonGroup from '../components/ButtonGroup';
 import ProgressBar from '../components/ProgressBar';
-import Badge from '../components/Badge';
+import Tag from '../components/Tag';
 import MenuBar from '../components/MenuBar';
 import { SplitPanel } from '../components/SplitPanel';
 
@@ -22,7 +22,7 @@ interface VM {
 }
 
 // Initialize state
-State.proxmox = State.proxmox || {
+State.servers = State.servers || {
   selectedNode: 'pve1',
   selectedVM: null as number | null,
   vms: [
@@ -107,11 +107,11 @@ function formatBytes(gb: number): string {
 function NodeSummary(): m.Component {
   return {
     view() {
-      const stats = State.proxmox.nodeStats;
+      const stats = State.servers.nodeStats;
       return m('.node-summary', [
         m('.summary-header', [
-          m('span.node-name', State.proxmox.selectedNode),
-          m(Badge, { variant: 'success' }, 'Online'),
+          m('span.node-name', State.servers.selectedNode),
+          m(Tag, { variant: 'success' }, 'Online'),
         ]),
         m('.summary-stats', [
           m('.stat-item', [
@@ -149,7 +149,7 @@ function NodeSummary(): m.Component {
 function VMList(): m.Component {
   return {
     view() {
-      const vms = State.proxmox.vms;
+      const vms = State.servers.vms;
       const runningVMs = vms.filter((vm: VM) => vm.type === 'vm');
       const containers = vms.filter((vm: VM) => vm.type === 'lxc');
 
@@ -176,7 +176,7 @@ function VMList(): m.Component {
 const VMListItem: m.Component<{ vm: VM }> = {
   view(vnode) {
     const vm = vnode.attrs.vm;
-    const isSelected = State.proxmox.selectedVM === vm.id;
+    const isSelected = State.servers.selectedVM === vm.id;
     const statusIcon =
       vm.status === 'running'
         ? 'play_circle'
@@ -189,7 +189,7 @@ const VMListItem: m.Component<{ vm: VM }> = {
       '.vm-list-item',
       {
         class: cx({ selected: isSelected }),
-        onclick: () => (State.proxmox.selectedVM = vm.id),
+        onclick: () => (State.servers.selectedVM = vm.id),
       },
       [
         m('span.vm-status-icon.material-symbols-outlined', { class: statusClass }, statusIcon),
@@ -203,8 +203,8 @@ const VMListItem: m.Component<{ vm: VM }> = {
 function VMDetails(): m.Component {
   return {
     view() {
-      const selectedId = State.proxmox.selectedVM;
-      const vm = State.proxmox.vms.find((v: VM) => v.id === selectedId);
+      const selectedId = State.servers.selectedVM;
+      const vm = State.servers.vms.find((v: VM) => v.id === selectedId);
 
       if (!vm) {
         return m('.vm-details.empty', [
@@ -219,7 +219,7 @@ function VMDetails(): m.Component {
             m('span.material-symbols-outlined', vm.type === 'vm' ? 'computer' : 'inventory_2'),
             m('span', vm.name),
             m(
-              Badge,
+              Tag,
               {
                 variant:
                   vm.status === 'running'
@@ -313,9 +313,9 @@ function VMDetails(): m.Component {
   };
 }
 
-const ProxmoxPage: m.Component = {
+const ServersPage: m.Component = {
   view() {
-    return m('.page-proxmox', [
+    return m('.page-servers', [
       m(MenuBar, [
         m(Button, { variant: 'ghost' }, 'Datacenter'),
         m(Button, { variant: 'ghost' }, 'Create VM'),
@@ -323,7 +323,7 @@ const ProxmoxPage: m.Component = {
         m(Button, { variant: 'ghost' }, 'Backup'),
       ]),
 
-      m('.proxmox-main', [
+      m('.servers-main', [
         m(MainSplit, {
           direction: 'horizontal',
           initialSplit: 25,
@@ -334,19 +334,19 @@ const ProxmoxPage: m.Component = {
       ]),
 
       m('footer.bl-statusbar', [
-        m('span.bl-statusbar-item', `Node: ${State.proxmox.selectedNode}`),
+        m('span.bl-statusbar-item', `Node: ${State.servers.selectedNode}`),
         m(
           'span.bl-statusbar-item',
-          `VMs: ${State.proxmox.vms.filter((v: VM) => v.status === 'running').length}/${State.proxmox.vms.length} running`
+          `VMs: ${State.servers.vms.filter((v: VM) => v.status === 'running').length}/${State.servers.vms.length} running`
         ),
         m(
           'span.bl-statusbar-item',
           { style: { marginLeft: 'auto', borderRight: 'none' } },
-          'Proxmox Dashboard v1.0'
+          'Server Manager v1.0'
         ),
       ]),
     ]);
   },
 };
 
-export default ProxmoxPage;
+export default ServersPage;

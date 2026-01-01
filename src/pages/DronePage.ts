@@ -1,6 +1,6 @@
 import m from 'mithril';
 import cx from 'classnames';
-import './QuadcopterPage.css';
+import './DronePage.css';
 import { State } from '../state';
 import Button from '../components/Button';
 import ButtonGroup from '../components/ButtonGroup';
@@ -9,12 +9,12 @@ import NumberInput from '../components/NumberInput';
 import Checkbox from '../components/Checkbox';
 import Select from '../components/Select';
 import ProgressBar from '../components/ProgressBar';
-import Badge from '../components/Badge';
+import Tag from '../components/Tag';
 import MenuBar from '../components/MenuBar';
 import { SplitPanel } from '../components/SplitPanel';
 
 // Initialize state
-State.quad = State.quad || {
+State.drone = State.drone || {
   armed: false,
   flightMode: 'stabilize',
   batteryVoltage: 14.8,
@@ -46,8 +46,8 @@ const LeftSplit = SplitPanel();
 function AttitudeIndicator(): m.Component {
   return {
     view() {
-      const pitch = State.quad.pitch;
-      const roll = State.quad.roll;
+      const pitch = State.drone.pitch;
+      const roll = State.drone.roll;
       return m('.attitude-indicator', [
         m(
           '.attitude-sphere',
@@ -71,27 +71,27 @@ function AttitudeIndicator(): m.Component {
 function MotorOutputs(): m.Component {
   return {
     view() {
-      const motors = State.quad.motors;
+      const motors = State.drone.motors;
       return m('.motor-outputs', [
         m('.motor-diagram', [
           m('.motor-quad', [
             m('.motor-arm.front-left', [
-              m('.motor-circle', { class: cx({ spinning: State.quad.armed }) }, [
+              m('.motor-circle', { class: cx({ spinning: State.drone.armed }) }, [
                 m('.motor-value', `${motors[0]}%`),
               ]),
             ]),
             m('.motor-arm.front-right', [
-              m('.motor-circle', { class: cx({ spinning: State.quad.armed }) }, [
+              m('.motor-circle', { class: cx({ spinning: State.drone.armed }) }, [
                 m('.motor-value', `${motors[1]}%`),
               ]),
             ]),
             m('.motor-arm.rear-left', [
-              m('.motor-circle', { class: cx({ spinning: State.quad.armed }) }, [
+              m('.motor-circle', { class: cx({ spinning: State.drone.armed }) }, [
                 m('.motor-value', `${motors[2]}%`),
               ]),
             ]),
             m('.motor-arm.rear-right', [
-              m('.motor-circle', { class: cx({ spinning: State.quad.armed }) }, [
+              m('.motor-circle', { class: cx({ spinning: State.drone.armed }) }, [
                 m('.motor-value', `${motors[3]}%`),
               ]),
             ]),
@@ -110,38 +110,38 @@ function TelemetryPanel(): m.Component {
         m('.telemetry-grid', [
           m('.telemetry-item', [
             m('.telemetry-label', 'Altitude'),
-            m('.telemetry-value', `${State.quad.altitude.toFixed(1)} m`),
+            m('.telemetry-value', `${State.drone.altitude.toFixed(1)} m`),
           ]),
           m('.telemetry-item', [
             m('.telemetry-label', 'Speed'),
-            m('.telemetry-value', `${State.quad.speed.toFixed(1)} m/s`),
+            m('.telemetry-value', `${State.drone.speed.toFixed(1)} m/s`),
           ]),
           m('.telemetry-item', [
             m('.telemetry-label', 'Heading'),
-            m('.telemetry-value', `${State.quad.heading}°`),
+            m('.telemetry-value', `${State.drone.heading}°`),
           ]),
           m('.telemetry-item', [
             m('.telemetry-label', 'Throttle'),
-            m('.telemetry-value', `${State.quad.throttle}%`),
+            m('.telemetry-value', `${State.drone.throttle}%`),
           ]),
           m('.telemetry-item', [
             m('.telemetry-label', 'GPS'),
             m('.telemetry-value.small', [
-              `${State.quad.gpsLat.toFixed(4)}, ${State.quad.gpsLon.toFixed(4)}`,
-              m('span.telemetry-sub', ` (${State.quad.gpsSats} sats)`),
+              `${State.drone.gpsLat.toFixed(4)}, ${State.drone.gpsLon.toFixed(4)}`,
+              m('span.telemetry-sub', ` (${State.drone.gpsSats} sats)`),
             ]),
           ]),
           m('.telemetry-item', [
             m('.telemetry-label', 'RSSI'),
             m('.telemetry-value', [
-              `${State.quad.rssi}%`,
+              `${State.drone.rssi}%`,
               m(
                 'span.rssi-bar',
                 {
-                  style: { width: `${State.quad.rssi}%` },
+                  style: { width: `${State.drone.rssi}%` },
                   class: cx({
-                    low: State.quad.rssi < 30,
-                    medium: State.quad.rssi >= 30 && State.quad.rssi < 60,
+                    low: State.drone.rssi < 30,
+                    medium: State.drone.rssi >= 30 && State.drone.rssi < 60,
                   }),
                 },
                 ''
@@ -157,17 +157,17 @@ function TelemetryPanel(): m.Component {
 function BatteryStatus(): m.Component {
   return {
     view() {
-      const percent = State.quad.batteryPercent;
+      const percent = State.drone.batteryPercent;
       const variant = percent < 20 ? 'error' : percent < 40 ? 'warning' : 'success';
       return m('.battery-status', [
         m('.battery-header', [
           m('span.battery-title', 'Battery'),
-          m(Badge, { variant }, `${percent}%`),
+          m(Tag, { variant }, `${percent}%`),
         ]),
         m(ProgressBar, { value: percent, variant }),
         m('.battery-details', [
-          m('span', `${State.quad.batteryVoltage.toFixed(1)}V`),
-          m('span', `${State.quad.batteryCurrent.toFixed(1)}A`),
+          m('span', `${State.drone.batteryVoltage.toFixed(1)}V`),
+          m('span', `${State.drone.batteryCurrent.toFixed(1)}A`),
         ]),
       ]);
     },
@@ -192,30 +192,30 @@ function PIDTuning(): m.Component {
               m('span.pid-axis', axis.label),
               m(NumberInput, {
                 label: 'P',
-                value: State.quad[axis.key].p,
+                value: State.drone[axis.key].p,
                 precision: 2,
                 step: 0.1,
                 min: 0,
                 max: 20,
-                oninput: (v: number) => (State.quad[axis.key].p = v),
+                oninput: (v: number) => (State.drone[axis.key].p = v),
               }),
               m(NumberInput, {
                 label: 'I',
-                value: State.quad[axis.key].i,
+                value: State.drone[axis.key].i,
                 precision: 3,
                 step: 0.001,
                 min: 0,
                 max: 1,
-                oninput: (v: number) => (State.quad[axis.key].i = v),
+                oninput: (v: number) => (State.drone[axis.key].i = v),
               }),
               m(NumberInput, {
                 label: 'D',
-                value: State.quad[axis.key].d,
+                value: State.drone[axis.key].d,
                 precision: 3,
                 step: 0.001,
                 min: 0,
                 max: 0.5,
-                oninput: (v: number) => (State.quad[axis.key].d = v),
+                oninput: (v: number) => (State.drone[axis.key].d = v),
               }),
             ])
           ),
@@ -235,39 +235,39 @@ function RatesTuning(): m.Component {
             m('span.rates-label', 'Roll'),
             m(NumberInput, {
               label: 'Roll',
-              value: State.quad.ratesRoll,
+              value: State.drone.ratesRoll,
               precision: 0,
               step: 10,
               min: 100,
               max: 800,
               unit: '°/s',
-              oninput: (v: number) => (State.quad.ratesRoll = v),
+              oninput: (v: number) => (State.drone.ratesRoll = v),
             }),
           ]),
           m('.rates-row', [
             m('span.rates-label', 'Pitch'),
             m(NumberInput, {
               label: 'Pitch',
-              value: State.quad.ratesPitch,
+              value: State.drone.ratesPitch,
               precision: 0,
               step: 10,
               min: 100,
               max: 800,
               unit: '°/s',
-              oninput: (v: number) => (State.quad.ratesPitch = v),
+              oninput: (v: number) => (State.drone.ratesPitch = v),
             }),
           ]),
           m('.rates-row', [
             m('span.rates-label', 'Yaw'),
             m(NumberInput, {
               label: 'Yaw',
-              value: State.quad.ratesYaw,
+              value: State.drone.ratesYaw,
               precision: 0,
               step: 10,
               min: 50,
               max: 400,
               unit: '°/s',
-              oninput: (v: number) => (State.quad.ratesYaw = v),
+              oninput: (v: number) => (State.drone.ratesYaw = v),
             }),
           ]),
         ]),
@@ -276,9 +276,9 @@ function RatesTuning(): m.Component {
   };
 }
 
-const QuadcopterPage: m.Component = {
+const DronePage: m.Component = {
   view() {
-    return m('.page-quadcopter', [
+    return m('.page-drone', [
       m(MenuBar, [
         m(Button, { variant: 'ghost' }, 'File'),
         m(Button, { variant: 'ghost' }, 'Vehicle'),
@@ -286,19 +286,19 @@ const QuadcopterPage: m.Component = {
         m(Button, { variant: 'ghost' }, 'Logs'),
       ]),
 
-      m('.quad-toolbar', [
+      m('.drone-toolbar', [
         m('.toolbar-left', [
           m(
             Button,
             {
-              variant: State.quad.armed ? 'primary' : 'default',
-              icon: State.quad.armed ? 'lock_open' : 'lock',
-              onclick: () => (State.quad.armed = !State.quad.armed),
+              variant: State.drone.armed ? 'primary' : 'default',
+              icon: State.drone.armed ? 'lock_open' : 'lock',
+              onclick: () => (State.drone.armed = !State.drone.armed),
             },
-            State.quad.armed ? 'ARMED' : 'DISARMED'
+            State.drone.armed ? 'ARMED' : 'DISARMED'
           ),
           m(Select, {
-            value: State.quad.flightMode,
+            value: State.drone.flightMode,
             options: [
               { value: 'stabilize', label: 'Stabilize' },
               { value: 'acro', label: 'Acro' },
@@ -307,7 +307,7 @@ const QuadcopterPage: m.Component = {
               { value: 'rtl', label: 'RTL' },
               { value: 'land', label: 'Land' },
             ],
-            onchange: (v: string) => (State.quad.flightMode = v),
+            onchange: (v: string) => (State.drone.flightMode = v),
           }),
         ]),
         m('.toolbar-right', [
@@ -319,26 +319,26 @@ const QuadcopterPage: m.Component = {
         ]),
       ]),
 
-      m('.quad-main', [
+      m('.drone-main', [
         m(MainSplit, {
           direction: 'horizontal',
           initialSplit: 65,
           firstPanel: m(LeftSplit, {
             direction: 'vertical',
             initialSplit: 55,
-            firstPanel: m('.quad-panel.monitor-panel', [
+            firstPanel: m('.drone-panel.monitor-panel', [
               m('.panel-header', 'Flight Monitor'),
               m('.monitor-content', [
                 m('.monitor-left', [m(AttitudeIndicator()), m(MotorOutputs())]),
                 m('.monitor-right', [m(BatteryStatus()), m(TelemetryPanel())]),
               ]),
             ]),
-            secondPanel: m('.quad-panel.tuning-panel', [
+            secondPanel: m('.drone-panel.tuning-panel', [
               m('.panel-header', 'Tuning'),
               m('.tuning-content', [m(PIDTuning()), m(RatesTuning())]),
             ]),
           }),
-          secondPanel: m('.quad-panel.params-panel', [
+          secondPanel: m('.drone-panel.params-panel', [
             m('.panel-header', 'Parameters'),
             m('.params-content', [
               m('.param-group', [
@@ -419,21 +419,21 @@ const QuadcopterPage: m.Component = {
           m(
             'span',
             {
-              class: cx({ 'status-armed': State.quad.armed, 'status-disarmed': !State.quad.armed }),
+              class: cx({ 'status-armed': State.drone.armed, 'status-disarmed': !State.drone.armed }),
             },
-            State.quad.armed ? 'ARMED' : 'DISARMED'
+            State.drone.armed ? 'ARMED' : 'DISARMED'
           ),
         ]),
-        m('span.bl-statusbar-item', `Mode: ${State.quad.flightMode.toUpperCase()}`),
-        m('span.bl-statusbar-item', `Alt: ${State.quad.altitude.toFixed(1)}m`),
+        m('span.bl-statusbar-item', `Mode: ${State.drone.flightMode.toUpperCase()}`),
+        m('span.bl-statusbar-item', `Alt: ${State.drone.altitude.toFixed(1)}m`),
         m(
           'span.bl-statusbar-item',
           { style: { marginLeft: 'auto', borderRight: 'none' } },
-          'Quadcopter Tuner v1.0'
+          'Drone Tuner v1.0'
         ),
       ]),
     ]);
   },
 };
 
-export default QuadcopterPage;
+export default DronePage;

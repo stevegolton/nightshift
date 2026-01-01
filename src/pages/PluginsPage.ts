@@ -1,7 +1,7 @@
 import m from 'mithril';
 import './PluginsPage.css';
 import MenuBar from '../components/MenuBar';
-import Badge, { BadgeAttrs } from '../components/Badge';
+import Tag, { TagAttrs } from '../components/Tag';
 import Button from '../components/Button';
 
 interface Plugin {
@@ -10,7 +10,7 @@ interface Plugin {
   author: string;
   enabled: boolean;
   status: string;
-  statusVariant?: BadgeAttrs['variant'];
+  statusVariant?: TagAttrs['variant'];
   description: string;
 }
 
@@ -134,7 +134,7 @@ const PluginsPage: m.Component = {
               ]),
               m('.plugin-description', plugin.description),
               m('.plugin-meta', [
-                m(Badge, { variant: plugin.statusVariant }, plugin.status),
+                m(Tag, { variant: plugin.statusVariant }, plugin.status),
                 m('span.plugin-author', 'by ' + plugin.author),
               ]),
             ]);

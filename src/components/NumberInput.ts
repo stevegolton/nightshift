@@ -3,8 +3,10 @@ import cx from 'classnames';
 import './NumberInput.css';
 
 export interface NumberInputAttrs {
-  /** Current value */
-  value: number;
+  /** Current value (optional - component is uncontrolled if not provided) */
+  value?: number;
+  /** Initial value for uncontrolled mode */
+  defaultValue?: number;
   /** Label text (e.g., 'X', 'Y', 'Z') */
   label?: string;
   /** Unit suffix (e.g., 'm', 'kg', '°/s') */
@@ -33,11 +35,13 @@ export default function NumberInput(): m.Component<NumberInputAttrs> {
   let isDragging = false;
   let startX = 0;
   let startValue = 0;
+  let internalValue: number | undefined;
 
   return {
     view(vnode) {
       const {
         value,
+        defaultValue = 0,
         label,
         unit,
         min,
@@ -51,11 +55,24 @@ export default function NumberInput(): m.Component<NumberInputAttrs> {
         oninput,
       } = vnode.attrs;
 
+      // Controlled vs uncontrolled mode
+      const isControlled = value !== undefined;
+      if (!isControlled && internalValue === undefined) {
+        internalValue = defaultValue;
+      }
+      const currentValue = isControlled ? value : internalValue!;
+
+      function updateValue(newValue: number): void {
+        if (!isControlled) {
+          internalValue = newValue;
+        }
+      }
+
       const classes = cx('bl-number-input', className, {
         'bl-number-input-disabled': disabled,
       });
 
-      const displayValue = (value ?? 0).toFixed(precision);
+      const displayValue = currentValue.toFixed(precision);
 
       function handlePointerDown(e: PointerEvent): void {
         if (disabled) return;
@@ -65,7 +82,7 @@ export default function NumberInput(): m.Component<NumberInputAttrs> {
 
         isDragging = true;
         startX = e.clientX;
-        startValue = value ?? 0;
+        startValue = currentValue;
 
         document.body.style.cursor = 'ew-resize';
         document.body.style.userSelect = 'none';
@@ -81,6 +98,7 @@ export default function NumberInput(): m.Component<NumberInputAttrs> {
         if (min !== undefined) newValue = Math.max(min, newValue);
         if (max !== undefined) newValue = Math.min(max, newValue);
 
+        updateValue(newValue);
         if (oninput) oninput(newValue, e);
         m.redraw();
       }
@@ -119,16 +137,18 @@ export default function NumberInput(): m.Component<NumberInputAttrs> {
             if (isNaN(newValue)) newValue = 0;
             if (min !== undefined) newValue = Math.max(min, newValue);
             if (max !== undefined) newValue = Math.min(max, newValue);
+            updateValue(newValue);
             if (onchange) onchange(newValue, e);
           },
           oninput: (e: Event) => {
             const target = e.target as HTMLInputElement;
             const newValue = parseFloat(target.value);
-            if (!isNaN(newValue) && oninput) {
+            if (!isNaN(newValue)) {
               let clampedValue = newValue;
               if (min !== undefined) clampedValue = Math.max(min, clampedValue);
               if (max !== undefined) clampedValue = Math.min(max, clampedValue);
-              oninput(clampedValue, e);
+              updateValue(clampedValue);
+              if (oninput) oninput(clampedValue, e);
             }
           },
         }),

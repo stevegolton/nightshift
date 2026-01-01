@@ -1,5 +1,6 @@
 /* Text Input */
 .bl-input {
+  box-sizing: border-box;
   padding: var(--bl-spacing-sm) var(--bl-spacing-md);
   font-family: var(--bl-font-family);
   font-size: inherit;
@@ -52,7 +53,7 @@
   border-radius: 0 var(--bl-radius-md) var(--bl-radius-md) 0;
 }
 
-/* Input with icon */
+/* Input wrapper for icons and right elements */
 .bl-input-wrapper {
   display: inline-flex;
   align-items: center;
@@ -60,6 +61,12 @@
 }
 
 .bl-input-wrapper .bl-input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Left icon */
+.bl-input-wrapper.has-icon .bl-input {
   padding-left: calc(var(--bl-spacing-md) + 20px);
 }
 
@@ -74,21 +81,48 @@
 }
 
 .bl-input-wrapper .bl-input-icon .material-symbols-outlined {
-  line-height: 1;
+  line-height: 1.2;
 }
 
-.bl-input-wrapper .bl-input:focus + .bl-input-icon,
-.bl-input-wrapper .bl-input-icon:has(+ .bl-input:focus) {
+.bl-input-wrapper .bl-input:focus ~ .bl-input-icon,
+.bl-input-wrapper .bl-input-icon:has(~ .bl-input:focus) {
   color: var(--bl-text-secondary);
 }
 
-/* Icon on the right side */
-.bl-input-wrapper.icon-right .bl-input {
-  padding-left: var(--bl-spacing-md);
-  padding-right: calc(var(--bl-spacing-md) + 20px);
+/* Right element slot (for buttons, etc.) */
+.bl-input-wrapper.has-right-element .bl-input {
+  padding-right: calc(var(--bl-spacing-xs) + 28px);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
 }
 
-.bl-input-wrapper.icon-right .bl-input-icon {
-  left: auto;
-  right: var(--bl-spacing-md);
+.bl-input-wrapper .bl-input-right {
+  display: flex;
+  align-items: center;
+  background-color: var(--bl-surface-1);
+  border: 1px solid var(--bl-border-dark);
+  border-left: none;
+  border-radius: 0 var(--bl-radius-md) var(--bl-radius-md) 0;
+  padding-right: var(--bl-spacing-xs);
+}
+
+.bl-input-wrapper:hover .bl-input-right {
+  border-color: var(--bl-border-light);
+}
+
+.bl-input-wrapper:focus-within .bl-input-right {
+  border-color: var(--bl-accent);
+  background-color: var(--bl-surface-0);
+}
+
+/* Compact buttons inside right slot */
+.bl-input-wrapper .bl-input-right .bl-btn {
+  padding: var(--bl-spacing-xs);
+  min-width: 0;
+  border-radius: var(--bl-radius-sm);
+}
+
+.bl-input-wrapper .bl-input-right .bl-btn .material-symbols-outlined {
+  font-size: 18px;
 }

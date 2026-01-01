@@ -1,0 +1,105 @@
+.bl-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bl-spacing-xs);
+  padding: 3px 8px;
+  background-color: var(--bl-surface-3);
+  border-radius: var(--bl-radius-sm);
+  font-size: 12px;
+  color: var(--bl-text-primary);
+  line-height: 1;
+}
+
+/* Clickable */
+.bl-tag-clickable {
+  cursor: pointer;
+}
+
+.bl-tag-clickable:hover {
+  background-color: var(--bl-surface-4);
+}
+
+/* Disabled */
+.bl-tag-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Translucent variants (default) */
+.bl-tag-success {
+  background-color: color-mix(in srgb, var(--bl-success) 20%, transparent);
+  color: var(--bl-success);
+}
+
+.bl-tag-warning {
+  background-color: color-mix(in srgb, var(--bl-warning) 20%, transparent);
+  color: var(--bl-warning);
+}
+
+.bl-tag-error {
+  background-color: color-mix(in srgb, var(--bl-error) 20%, transparent);
+  color: var(--bl-error);
+}
+
+/* Solid variants */
+.bl-tag-solid.bl-tag-success {
+  background-color: var(--bl-success);
+  color: #fff;
+}
+
+.bl-tag-solid.bl-tag-warning {
+  background-color: var(--bl-warning);
+  color: #1a1a1a;
+}
+
+.bl-tag-solid.bl-tag-error {
+  background-color: var(--bl-error);
+  color: #fff;
+}
+
+.bl-tag-solid {
+  background-color: var(--bl-surface-4);
+  color: var(--bl-text-secondary);
+}
+
+/* Icon */
+.bl-tag-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.bl-tag-compact .bl-tag-icon {
+  font-size: 12px;
+}
+
+/* Content */
+.bl-tag-content {
+  line-height: 1;
+}
+
+/* Remove button */
+.bl-tag-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--bl-text-muted);
+  background: none;
+  border: none;
+  border-radius: var(--bl-radius-sm);
+  cursor: pointer;
+}
+
+.bl-tag-remove:hover {
+  color: var(--bl-text-primary);
+  background-color: var(--bl-surface-4);
+}
+
+.bl-tag-remove:disabled {
+  cursor: not-allowed;
+}
+

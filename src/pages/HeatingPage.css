@@ -6,13 +6,6 @@
   height: 100%;
 }
 
-.heating-header-right {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: var(--bl-spacing-md);
-}
-
 .heating-main {
   display: flex;
   flex: 1;
@@ -87,6 +80,17 @@
   gap: var(--bl-spacing-sm);
 }
 
+.sidebar-nav {
+  margin-top: auto;
+  padding-top: var(--bl-spacing-md);
+  border-top: 1px solid var(--bl-border-dark);
+}
+
+.sidebar-nav .bl-btn {
+  width: 100%;
+  justify-content: flex-start;
+}
+
 /* Main Content */
 .heating-content {
   flex: 1;
@@ -122,101 +126,116 @@
 .zone-card {
   background-color: var(--bl-surface-2);
   border: 1px solid var(--bl-border-dark);
-  border-radius: var(--bl-radius-md);
-  padding: var(--bl-spacing-md);
+  border-radius: var(--bl-radius-sm);
   display: flex;
   flex-direction: column;
-  gap: var(--bl-spacing-md);
 }
 
 .zone-card.active {
   border-color: var(--bl-accent);
-  box-shadow: 0 0 0 1px var(--bl-accent-subtle);
 }
 
 .zone-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: var(--bl-spacing-sm) var(--bl-spacing-sm);
+  background-color: var(--bl-surface-3);
+  border-bottom: 1px solid var(--bl-border-dark);
 }
 
 .zone-name {
   font-weight: 500;
+  font-size: 12px;
   color: var(--bl-text-primary);
 }
 
-.zone-temps {
+/* Temperature display area */
+.zone-body {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  padding: var(--bl-spacing-sm);
+  gap: var(--bl-spacing-sm);
 }
 
-.zone-current {
+.zone-current,
+.zone-target {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.zone-body > .bl-btn-group {
+  margin-left: auto;
+}
+
+.zone-current-label,
+.zone-target-label {
+  font-size: 10px;
+  color: var(--bl-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.zone-current-temp {
   display: flex;
   align-items: baseline;
 }
 
 .zone-current-value {
-  font-size: 32px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 500;
   color: var(--bl-text-primary);
   font-family: var(--bl-font-mono);
   line-height: 1;
 }
 
 .zone-current-unit {
-  color: var(--bl-text-secondary);
-  margin-left: var(--bl-spacing-xs);
-}
-
-.zone-target {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--bl-spacing-xs);
-}
-
-.zone-target-label {
+  font-size: 11px;
   color: var(--bl-text-muted);
+  margin-left: 1px;
 }
 
 .zone-target-value {
+  font-size: 16px;
   font-weight: 500;
-  color: var(--bl-text-secondary);
   font-family: var(--bl-font-mono);
+  color: var(--bl-text-secondary);
+  min-width: 55px;
+  text-align: center;
 }
 
-.zone-controls {
-  padding: var(--bl-spacing-sm) 0;
-}
-
-.zone-footer {
+/* Meta info row */
+.zone-meta {
   display: flex;
   justify-content: space-between;
-  color: var(--bl-text-secondary);
-}
-
-.zone-humidity,
-.zone-schedule {
-  display: flex;
-  align-items: center;
-  gap: var(--bl-spacing-xs);
-}
-
-.zone-humidity .material-symbols-outlined,
-.zone-schedule .material-symbols-outlined {
+  padding: var(--bl-spacing-xs) var(--bl-spacing-sm);
+  border-top: 1px solid var(--bl-border-dark);
+  font-size: 11px;
   color: var(--bl-text-muted);
 }
 
-.zone-actions {
-  padding-top: var(--bl-spacing-sm);
+.zone-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.zone-meta-item .material-symbols-outlined {
+  font-size: 14px;
+}
+
+/* Mode selector */
+.zone-mode {
+  padding: var(--bl-spacing-xs) var(--bl-spacing-sm);
   border-top: 1px solid var(--bl-border-dark);
 }
 
-.zone-actions .bl-segmented {
+.zone-mode .bl-segmented {
   width: 100%;
 }
 
-.zone-actions .bl-segmented-btn {
+.zone-mode .bl-segmented-btn {
   flex: 1;
 }

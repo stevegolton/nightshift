@@ -1,0 +1,110 @@
+/* Popup Menu */
+.bl-popup-menu.bl-popover {
+  padding: var(--bl-spacing-xs) 0;
+  min-width: 160px;
+  background-color: var(--bl-surface-2);
+  border-color: var(--bl-border-dark);
+}
+
+/* Menu Item */
+.bl-popup-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-sm);
+  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  color: var(--bl-text-primary);
+  font-size: var(--bl-font-size-sm);
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.bl-popup-menu-item:hover {
+  background-color: var(--bl-accent);
+  color: #fff;
+}
+
+.bl-popup-menu-item:hover .bl-popup-menu-icon {
+  color: inherit;
+}
+
+.bl-popup-menu-item:hover .bl-popup-menu-shortcut {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Icon */
+.bl-popup-menu-icon {
+  font-size: 16px;
+  color: var(--bl-text-secondary);
+}
+
+/* Label */
+.bl-popup-menu-label {
+  flex: 1;
+}
+
+/* Shortcut hint */
+.bl-popup-menu-shortcut {
+  font-size: var(--bl-font-size-xs);
+  color: var(--bl-text-muted);
+  margin-left: var(--bl-spacing-lg);
+}
+
+/* Danger item */
+.bl-popup-menu-item.danger {
+  color: var(--bl-error);
+}
+
+.bl-popup-menu-item.danger .bl-popup-menu-icon {
+  color: var(--bl-error);
+}
+
+.bl-popup-menu-item.danger:hover {
+  background-color: var(--bl-error);
+  color: #fff;
+}
+
+.bl-popup-menu-item.danger:hover .bl-popup-menu-icon {
+  color: #fff;
+}
+
+/* Disabled item */
+.bl-popup-menu-item.disabled {
+  color: var(--bl-text-disabled);
+  cursor: not-allowed;
+}
+
+.bl-popup-menu-item.disabled .bl-popup-menu-icon {
+  color: var(--bl-text-disabled);
+}
+
+.bl-popup-menu-item.disabled:hover {
+  background-color: transparent;
+  color: var(--bl-text-disabled);
+}
+
+.bl-popup-menu-item.disabled:hover .bl-popup-menu-icon {
+  color: var(--bl-text-disabled);
+}
+
+/* Separator */
+.bl-popup-menu-separator {
+  height: 1px;
+  margin: var(--bl-spacing-xs) 0;
+  background-color: var(--bl-border-dark);
+}
+
+/* Header */
+.bl-popup-menu-header {
+  padding: var(--bl-spacing-xs) var(--bl-spacing-md);
+  font-size: var(--bl-font-size-xs);
+  font-weight: 500;
+  color: var(--bl-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bl-popup-menu-header:not(:first-child) {
+  margin-top: var(--bl-spacing-xs);
+  border-top: 1px solid var(--bl-border-dark);
+  padding-top: var(--bl-spacing-sm);
+}

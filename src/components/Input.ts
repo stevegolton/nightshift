@@ -5,23 +5,25 @@ import { parseIcon, IconProp } from '../utils/icon';
 
 export interface InputAttrs {
   /** Input type */
-  type?: 'text' | 'password' | 'email' | 'number' | 'search';
-  /** Material Icon name. Use ":filled" suffix or object { name, filled } for filled icons */
+  type?: 'text' | 'password' | 'email' | 'number' | 'search' | 'time';
+  /** Material Icon name for left side. Use ":filled" suffix or object { name, filled } for filled icons */
   icon?: IconProp;
-  /** Icon position */
-  iconPosition?: 'left' | 'right';
+  /** Element to render on the right side (e.g., a ghost Button) */
+  rightElement?: m.Children;
   /** Placeholder text */
   placeholder?: string;
-  /** Current value */
+  /** Current value (optional - component is uncontrolled if not provided) */
   value?: string;
+  /** Default value for uncontrolled mode */
+  defaultValue?: string;
   /** Input is disabled */
   disabled?: boolean;
   /** Additional class names */
   className?: string;
   /** Input handler */
-  oninput?: (e: Event) => void;
+  oninput?: (value: string, e: Event) => void;
   /** Change handler */
-  onchange?: (e: Event) => void;
+  onchange?: (value: string, e: Event) => void;
   /** Focus handler */
   onfocus?: (e: Event) => void;
   /** Blur handler */
@@ -30,41 +32,18 @@ export interface InputAttrs {
   onkeydown?: (e: KeyboardEvent) => void;
 }
 
-const Input: m.Component<InputAttrs> = {
-  view(vnode) {
-    const {
-      type = 'text',
-      icon,
-      iconPosition = 'left',
-      placeholder,
-      value,
-      disabled,
-      className,
-      oninput,
-      onchange,
-      onfocus,
-      onblur,
-      onkeydown,
-    } = vnode.attrs;
+export default function Input(): m.Component<InputAttrs> {
+  let internalValue: string | undefined;
 
-    const inputEl = m('input.bl-input', {
-      type,
-      placeholder,
-      value,
-      disabled,
-      oninput,
-      onchange,
-      onfocus,
-      onblur,
-      onkeydown,
-    });
-
-    // If no icon, just return the input
-    if (!icon) {
-      return m('input.bl-input', {
-        type,
+  return {
+    view(vnode) {
+      const {
+        type = 'text',
+        icon,
+        rightElement,
         placeholder,
         value,
+        defaultValue = '',
         disabled,
         className,
         oninput,
@@ -72,23 +51,82 @@ const Input: m.Component<InputAttrs> = {
         onfocus,
         onblur,
         onkeydown,
+      } = vnode.attrs;
+
+      // Controlled vs uncontrolled mode
+      const isControlled = value !== undefined;
+      if (!isControlled && internalValue === undefined) {
+        internalValue = defaultValue;
+      }
+      const currentValue = isControlled ? value : internalValue!;
+
+      function updateValue(newValue: string): void {
+        if (!isControlled) {
+          internalValue = newValue;
+        }
+      }
+
+      function handleInput(e: Event): void {
+        const target = e.target as HTMLInputElement;
+        updateValue(target.value);
+        if (oninput) oninput(target.value, e);
+      }
+
+      function handleChange(e: Event): void {
+        const target = e.target as HTMLInputElement;
+        updateValue(target.value);
+        if (onchange) onchange(target.value, e);
+      }
+
+      const hasIcon = !!icon;
+      const hasRightElement = !!rightElement;
+      const needsWrapper = hasIcon || hasRightElement;
+
+      // If no decorations, just return the input
+      if (!needsWrapper) {
+        return m('input.bl-input', {
+          type,
+          placeholder,
+          value: currentValue,
+          disabled,
+          className,
+          oninput: handleInput,
+          onchange: handleChange,
+          onfocus,
+          onblur,
+          onkeydown,
+        });
+      }
+
+      // With decorations, wrap in container
+      const wrapperClasses = cx('bl-input-wrapper', className, {
+        'has-icon': hasIcon,
+        'has-right-element': hasRightElement,
       });
-    }
 
-    // With icon, wrap in container
-    const wrapperClasses = cx('bl-input-wrapper', className, {
-      'icon-right': iconPosition === 'right',
-    });
+      const inputEl = m('input.bl-input', {
+        type,
+        placeholder,
+        value: currentValue,
+        disabled,
+        oninput: handleInput,
+        onchange: handleChange,
+        onfocus,
+        onblur,
+        onkeydown,
+      });
 
-    const { name: iconName, filled } = parseIcon(icon);
-    const iconEl = m('.bl-input-icon', m('span.material-symbols-outlined', { class: filled ? 'filled' : '' }, iconName));
+      let iconEl: m.Children = null;
+      if (hasIcon) {
+        const { name: iconName, filled } = parseIcon(icon);
+        iconEl = m('.bl-input-icon', m('span.material-symbols-outlined', { class: filled ? 'filled' : '' }, iconName));
+      }
 
-    return m('div', { class: wrapperClasses }, [
-      iconPosition === 'left' ? iconEl : null,
-      inputEl,
-      iconPosition === 'right' ? iconEl : null,
-    ]);
-  },
-};
-
-export default Input;
+      return m('div', { class: wrapperClasses }, [
+        iconEl,
+        inputEl,
+        hasRightElement && m('.bl-input-right', rightElement),
+      ]);
+    },
+  };
+}

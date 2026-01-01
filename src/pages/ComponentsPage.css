@@ -1,25 +1,25 @@
-/* Widgets Page Styles */
+/* Components Page Styles */
 
-.page-widgets {
+.page-components {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.page-widgets .demo-main {
+.page-components .demo-main {
   display: flex;
   flex: 1;
   overflow: hidden;
 }
 
-.page-widgets .demo-sidebar {
+.page-components .demo-sidebar {
   width: 280px;
   background-color: var(--bl-surface-2);
   border-right: 1px solid var(--bl-border-dark);
   overflow-y: auto;
 }
 
-.page-widgets .demo-content {
+.page-components .demo-content {
   flex: 1;
   overflow-y: auto;
   padding: var(--bl-spacing-lg);
@@ -48,6 +48,23 @@
   flex-wrap: wrap;
   gap: var(--bl-spacing-md);
   margin-bottom: var(--bl-spacing-md);
+}
+
+/* Alignment test - shows baseline alignment issues */
+.alignment-test {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--bl-spacing-sm);
+  padding: var(--bl-spacing-md);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 7px,
+    var(--bl-border-dark) 7px,
+    var(--bl-border-dark) 8px
+  );
+  border: 1px solid var(--bl-border-dark);
+  border-radius: var(--bl-radius-md);
 }
 
 .demo-label {

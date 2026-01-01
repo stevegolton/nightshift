@@ -1,6 +1,5 @@
 import m from 'mithril';
-import './WidgetsPage.css';
-import { State } from '../state';
+import './ComponentsPage.css';
 import Button from '../components/Button';
 import ButtonGroup from '../components/ButtonGroup';
 import { SegmentedButtonGroup, SegmentedButton } from '../components/SegmentedButton';
@@ -15,10 +14,40 @@ import ProgressBar from '../components/ProgressBar';
 import Table from '../components/Table';
 import Anchor from '../components/Anchor';
 import NumberInput from '../components/NumberInput';
+import TimeInput from '../components/TimeInput';
+import Tag from '../components/Tag';
 import MenuBar from '../components/MenuBar';
-import Badge from '../components/Badge';
-import FilterChip, { FilterChipGroup, AddFilterChip } from '../components/FilterChip';
-import ReorderableList, { ReorderableItem } from '../components/ReorderableList';
+import Portal from '../components/Portal';
+import Popover, { PopoverPlacement } from '../components/Popover';
+import PopupMenu from '../components/PopupMenu';
+
+// Page-local state
+const state = {
+  // Popover demos
+  popoverOpen: false,
+  popoverPlacement: 'bottom' as PopoverPlacement,
+  // Portal demos
+  portalVisible: false,
+  // Select demos
+  selectMode: 'object',
+  selectView: 'solid',
+  // Checkbox demos
+  checkOverlays: true,
+  checkFloor: true,
+  checkAxes: false,
+  // Radio demos
+  radioPivot: 'median',
+  // Slider demos
+  slider1: 75,
+  slider2: 25,
+  // Segmented button demos
+  segmentedMode: 'vertex',
+  segmentedAlign: 'center',
+  segmentedDisplay: 'wire',
+  // Tab demos
+  activeTab: 'scene',
+  activeSecondaryTab: 'summary',
+};
 
 // Create Table instance
 interface ObjectData {
@@ -37,9 +66,9 @@ const tableData: ObjectData[] = [
   { id: 'sphere', name: 'Sphere', type: 'Mesh', vertices: 482, status: 'modified' },
 ];
 
-const WidgetsPage: m.Component = {
+const ComponentsPage: m.Component = {
   view(): m.Vnode {
-    return m('.page-widgets', [
+    return m('.page-components', [
       m(MenuBar, [
         m(Button, { variant: 'ghost' }, 'File'),
         m(Button, { variant: 'ghost' }, 'Edit'),
@@ -97,75 +126,6 @@ const WidgetsPage: m.Component = {
                 m(Button, {}, 'Sculpt'),
               ]),
             ]),
-            m('.demo-label', 'Segmented Buttons'),
-            m('.demo-row', [
-              m(SegmentedButtonGroup, [
-                m(
-                  SegmentedButton,
-                  {
-                    active: State.segmentedMode === 'vertex',
-                    onclick: () => (State.segmentedMode = 'vertex'),
-                  },
-                  'Vertex'
-                ),
-                m(
-                  SegmentedButton,
-                  {
-                    active: State.segmentedMode === 'edge',
-                    onclick: () => (State.segmentedMode = 'edge'),
-                  },
-                  'Edge'
-                ),
-                m(
-                  SegmentedButton,
-                  {
-                    active: State.segmentedMode === 'face',
-                    onclick: () => (State.segmentedMode = 'face'),
-                  },
-                  'Face'
-                ),
-              ]),
-              m(SegmentedButtonGroup, [
-                m(SegmentedButton, {
-                  active: State.segmentedAlign === 'left',
-                  title: 'Align Left',
-                  onclick: () => (State.segmentedAlign = 'left'),
-                  icon: 'format_align_left',
-                }),
-                m(SegmentedButton, {
-                  active: State.segmentedAlign === 'center',
-                  title: 'Align Center',
-                  onclick: () => (State.segmentedAlign = 'center'),
-                  icon: 'format_align_center',
-                }),
-                m(SegmentedButton, {
-                  active: State.segmentedAlign === 'right',
-                  title: 'Align Right',
-                  onclick: () => (State.segmentedAlign = 'right'),
-                  icon: 'format_align_right',
-                }),
-              ]),
-              m(SegmentedButtonGroup, [
-                m(
-                  SegmentedButton,
-                  {
-                    active: State.segmentedDisplay === 'solid',
-                    onclick: () => (State.segmentedDisplay = 'solid'),
-                    icon: { name: 'deployed_code', filled: true },
-                  },
-                  'Solid'
-                ),
-                m(
-                  SegmentedButton,
-                  {
-                    active: State.segmentedDisplay === 'wire',
-                    onclick: () => (State.segmentedDisplay = 'wire'),
-                    icon: { name: 'deployed_code', filled: false },
-                  },
-                  'Wireframe'
-                ),
-              ]),
-            ]),
           ]),
 
           // Anchors Section
@@ -199,66 +159,34 @@ const WidgetsPage: m.Component = {
               m(Input, { icon: 'person', placeholder: 'Username' }),
               m(Input, { icon: 'lock', type: 'password', placeholder: 'Password' }),
             ]),
-            m('.demo-label', 'Icon on Right'),
+            m('.demo-label', 'With Right Element (interactive buttons)'),
             m('.demo-row', [
               m(Input, {
-                icon: 'visibility',
-                iconPosition: 'right',
                 type: 'password',
                 placeholder: 'Password',
+                rightElement: m(Button, { variant: 'ghost', icon: 'visibility' }),
               }),
-              m(Input, { icon: 'clear', iconPosition: 'right', placeholder: 'Clearable input' }),
-            ]),
-            m('.demo-label', 'Number Inputs'),
-            m('.demo-row', [
-              m(NumberInput, {
-                label: 'X',
-                value: State.numberX ?? 0,
-                oninput: (v: number) => {
-                  State.numberX = v;
-                },
-              }),
-              m(NumberInput, {
-                label: 'Y',
-                value: State.numberY ?? 0,
-                oninput: (v: number) => {
-                  State.numberY = v;
-                },
-              }),
-              m(NumberInput, {
-                label: 'Z',
-                value: State.numberZ ?? 0,
-                oninput: (v: number) => {
-                  State.numberZ = v;
-                },
+              m(Input, {
+                placeholder: 'Clearable input',
+                rightElement: m(Button, { variant: 'ghost', icon: 'clear' }),
               }),
             ]),
-            m('.demo-label', 'Number Inputs with units'),
+          ]),
+
+          // Number Inputs Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Number Inputs'),
+            m('.demo-label', 'Standard'),
             m('.demo-row', [
-              m(NumberInput, {
-                label: 'Roll',
-                unit: 'rad/s',
-                value: State.numberX ?? 0,
-                oninput: (v: number) => {
-                  State.numberX = v;
-                },
-              }),
-              m(NumberInput, {
-                label: 'Pitch',
-                unit: 'rad/s',
-                value: State.numberY ?? 0,
-                oninput: (v: number) => {
-                  State.numberY = v;
-                },
-              }),
-              m(NumberInput, {
-                label: 'Yaw',
-                unit: 'rad/s',
-                value: State.numberZ ?? 0,
-                oninput: (v: number) => {
-                  State.numberZ = v;
-                },
-              }),
+              m(NumberInput, { label: 'X' }),
+              m(NumberInput, { label: 'Y' }),
+              m(NumberInput, { label: 'Z' }),
+            ]),
+            m('.demo-label', 'With Units'),
+            m('.demo-row', [
+              m(NumberInput, { label: 'Roll', unit: 'rad/s' }),
+              m(NumberInput, { label: 'Pitch', unit: 'rad/s' }),
+              m(NumberInput, { label: 'Yaw', unit: 'rad/s' }),
             ]),
           ]),
 
@@ -267,25 +195,21 @@ const WidgetsPage: m.Component = {
             m('h2.demo-section-title', 'Select Inputs'),
             m('.demo-row', [
               m(Select, {
-                value: State.selectMode || 'object',
                 options: [
                   { value: 'object', label: 'Object Mode' },
                   { value: 'edit', label: 'Edit Mode' },
                   { value: 'sculpt', label: 'Sculpt Mode' },
                 ],
-                onchange: (val: string) => {
-                  State.selectMode = val;
-                },
               }),
               m(Select, {
-                value: State.selectView || 'solid',
+                value: state.selectView || 'solid',
                 options: [
                   { value: 'solid', label: 'Solid' },
                   { value: 'wireframe', label: 'Wireframe' },
                   { value: 'material', label: 'Material Preview' },
                 ],
                 onchange: (val: string) => {
-                  State.selectView = val;
+                  state.selectView = val;
                 },
               }),
             ]),
@@ -307,6 +231,46 @@ const WidgetsPage: m.Component = {
             ]),
           ]),
 
+          // Time/Date Inputs Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Time & Date Inputs'),
+            m('.demo-label', 'Time Input'),
+            m('.demo-row', [
+              m(TimeInput, {
+                type: 'time',
+                label: 'Start',
+              }),
+              m(TimeInput, {
+                type: 'time',
+                label: 'End',
+              }),
+              m(TimeInput, {
+                type: 'time',
+                value: '12:30',
+                disabled: true,
+              }),
+            ]),
+            m('.demo-label', 'Date Input'),
+            m('.demo-row', [
+              m(TimeInput, {
+                type: 'date',
+                label: 'Date',
+              }),
+              m(TimeInput, {
+                type: 'date',
+                value: '2025-12-25',
+                disabled: true,
+              }),
+            ]),
+            m('.demo-label', 'DateTime Input'),
+            m('.demo-row', [
+              m(TimeInput, {
+                type: 'datetime-local',
+                label: 'Event',
+              }),
+            ]),
+          ]),
+
           // Checkboxes & Radio Section
           m('section.demo-section', [
             m('h2.demo-section-title', 'Checkboxes & Radio Buttons'),
@@ -315,9 +279,9 @@ const WidgetsPage: m.Component = {
               m(
                 Checkbox,
                 {
-                  checked: State.checkOverlays,
+                  checked: state.checkOverlays,
                   onchange: (v: boolean) => {
-                    State.checkOverlays = v;
+                    state.checkOverlays = v;
                   },
                 },
                 'Show Overlays'
@@ -325,9 +289,9 @@ const WidgetsPage: m.Component = {
               m(
                 Checkbox,
                 {
-                  checked: State.checkFloor,
+                  checked: state.checkFloor,
                   onchange: (v: boolean) => {
-                    State.checkFloor = v;
+                    state.checkFloor = v;
                   },
                 },
                 'Show Floor'
@@ -335,9 +299,9 @@ const WidgetsPage: m.Component = {
               m(
                 Checkbox,
                 {
-                  checked: State.checkAxes,
+                  checked: state.checkAxes,
                   onchange: (v: boolean) => {
-                    State.checkAxes = v;
+                    state.checkAxes = v;
                   },
                 },
                 'Show Axes'
@@ -355,9 +319,9 @@ const WidgetsPage: m.Component = {
                 {
                   name: 'pivot',
                   value: 'median',
-                  checked: State.radioPivot === 'median',
+                  checked: state.radioPivot === 'median',
                   onchange: (v: string) => {
-                    State.radioPivot = v;
+                    state.radioPivot = v;
                   },
                 },
                 'Median Point'
@@ -367,9 +331,9 @@ const WidgetsPage: m.Component = {
                 {
                   name: 'pivot',
                   value: 'cursor',
-                  checked: State.radioPivot === 'cursor',
+                  checked: state.radioPivot === 'cursor',
                   onchange: (v: string) => {
-                    State.radioPivot = v;
+                    state.radioPivot = v;
                   },
                 },
                 '3D Cursor'
@@ -379,9 +343,9 @@ const WidgetsPage: m.Component = {
                 {
                   name: 'pivot',
                   value: 'active',
-                  checked: State.radioPivot === 'active',
+                  checked: state.radioPivot === 'active',
                   onchange: (v: string) => {
-                    State.radioPivot = v;
+                    state.radioPivot = v;
                   },
                 },
                 'Active Element'
@@ -400,6 +364,75 @@ const WidgetsPage: m.Component = {
                 'Unselected Disabled'
               ),
             ]),
+            m('.demo-label', 'Segmented Buttons'),
+            m('.demo-row', [
+              m(SegmentedButtonGroup, [
+                m(
+                  SegmentedButton,
+                  {
+                    active: state.segmentedMode === 'vertex',
+                    onclick: () => (state.segmentedMode = 'vertex'),
+                  },
+                  'Vertex'
+                ),
+                m(
+                  SegmentedButton,
+                  {
+                    active: state.segmentedMode === 'edge',
+                    onclick: () => (state.segmentedMode = 'edge'),
+                  },
+                  'Edge'
+                ),
+                m(
+                  SegmentedButton,
+                  {
+                    active: state.segmentedMode === 'face',
+                    onclick: () => (state.segmentedMode = 'face'),
+                  },
+                  'Face'
+                ),
+              ]),
+              m(SegmentedButtonGroup, [
+                m(SegmentedButton, {
+                  active: state.segmentedAlign === 'left',
+                  title: 'Align Left',
+                  onclick: () => (state.segmentedAlign = 'left'),
+                  icon: 'format_align_left',
+                }),
+                m(SegmentedButton, {
+                  active: state.segmentedAlign === 'center',
+                  title: 'Align Center',
+                  onclick: () => (state.segmentedAlign = 'center'),
+                  icon: 'format_align_center',
+                }),
+                m(SegmentedButton, {
+                  active: state.segmentedAlign === 'right',
+                  title: 'Align Right',
+                  onclick: () => (state.segmentedAlign = 'right'),
+                  icon: 'format_align_right',
+                }),
+              ]),
+              m(SegmentedButtonGroup, [
+                m(
+                  SegmentedButton,
+                  {
+                    active: state.segmentedDisplay === 'solid',
+                    onclick: () => (state.segmentedDisplay = 'solid'),
+                    icon: { name: 'deployed_code', filled: true },
+                  },
+                  'Solid'
+                ),
+                m(
+                  SegmentedButton,
+                  {
+                    active: state.segmentedDisplay === 'wire',
+                    onclick: () => (state.segmentedDisplay = 'wire'),
+                    icon: { name: 'deployed_code', filled: false },
+                  },
+                  'Wireframe'
+                ),
+              ]),
+            ]),
           ]),
 
           // Sliders Section
@@ -408,15 +441,15 @@ const WidgetsPage: m.Component = {
             m('.demo-label', 'Sliders'),
             m('.demo-grid', [
               m(Slider, {
-                value: State.slider1,
+                value: state.slider1,
                 oninput: (v: number) => {
-                  State.slider1 = v;
+                  state.slider1 = v;
                 },
               }),
               m(Slider, {
-                value: State.slider2,
+                value: state.slider2,
                 oninput: (v: number) => {
-                  State.slider2 = v;
+                  state.slider2 = v;
                 },
               }),
             ]),
@@ -492,9 +525,9 @@ const WidgetsPage: m.Component = {
                   ),
                 },
               ],
-              activeTab: State.activeTab,
+              activeTab: state.activeTab,
               onTabChange: (tabId: string) => {
-                State.activeTab = tabId;
+                state.activeTab = tabId;
               },
             }),
             m('.demo-label.bl-mt-md', 'Inline Tabs (Pill Style)'),
@@ -529,9 +562,9 @@ const WidgetsPage: m.Component = {
                   ),
                 },
               ],
-              activeTab: State.activeSecondaryTab || 'summary',
+              activeTab: state.activeSecondaryTab || 'summary',
               onTabChange: (tabId: string) => {
-                State.activeSecondaryTab = tabId;
+                state.activeSecondaryTab = tabId;
               },
             }),
           ]),
@@ -625,7 +658,7 @@ const WidgetsPage: m.Component = {
                           ? 'warning'
                           : undefined;
                     const label = row.status.charAt(0).toUpperCase() + row.status.slice(1);
-                    return m(Badge, { variant }, label);
+                    return m(Tag, { variant, solid: true }, label);
                   },
                 },
               ],
@@ -634,119 +667,82 @@ const WidgetsPage: m.Component = {
             }),
           ]),
 
-          // Badges Section
+          // Tags Section
           m('section.demo-section', [
-            m('h2.demo-section-title', 'Badges'),
+            m('h2.demo-section-title', 'Tags'),
+            m('.demo-label', 'Standard'),
             m('.demo-row', [
-              m(Badge, 'Default'),
-              m(Badge, { variant: 'success' }, 'Success'),
-              m(Badge, { variant: 'warning' }, 'Warning'),
-              m(Badge, { variant: 'error' }, 'Error'),
+              m(Tag, 'Default'),
+              m(Tag, { variant: 'success' }, 'Success'),
+              m(Tag, { variant: 'warning' }, 'Warning'),
+              m(Tag, { variant: 'error' }, 'Error'),
             ]),
-          ]),
-
-          // Filter Chips Section
-          m('section.demo-section', [
-            m('h2.demo-section-title', 'Filter Chips'),
-            m('.demo-label', 'Interactive Filters (for SQL results, tables, etc.)'),
-            m(FilterChipGroup, [
-              ...State.activeFilters.map((filter) =>
-                m(FilterChip, {
-                  label: filter.label,
-                  value: filter.value,
-                  active: true,
-                  variant: filter.variant as 'default' | 'success' | 'warning' | 'error',
-                  onremove: () => {
-                    State.activeFilters = State.activeFilters.filter((f) => f.id !== filter.id);
-                  },
-                })
+            m('.demo-label', 'Solid (badge style)'),
+            m('.demo-row', [
+              m(Tag, { solid: true }, 'Default'),
+              m(Tag, { solid: true, variant: 'success' }, 'Success'),
+              m(Tag, { solid: true, variant: 'warning' }, 'Warning'),
+              m(Tag, { solid: true, variant: 'error' }, 'Error'),
+            ]),
+            m('.demo-label', 'With Icons'),
+            m('.demo-row', [
+              m(Tag, { icon: 'schedule' }, 'Schedule'),
+              m(Tag, { icon: 'thermostat', variant: 'success' }, 'Heating'),
+              m(Tag, { icon: 'warning', variant: 'warning' }, 'Alert'),
+              m(Tag, { icon: 'error', variant: 'error' }, 'Error'),
+            ]),
+            m('.demo-label', 'Removable'),
+            m('.demo-row', [
+              m(
+                Tag,
+                {
+                  removable: true,
+                  onremove: () => console.log('Remove clicked'),
+                },
+                'Removable'
               ),
-              m(AddFilterChip, {
-                onclick: () => {
-                  const id = String(Date.now());
-                  State.activeFilters.push({ id, label: 'New Filter', value: 'Value' });
+              m(
+                Tag,
+                {
+                  icon: 'person',
+                  removable: true,
+                  onremove: () => console.log('Remove clicked'),
                 },
-              }),
-            ]),
-            m('.demo-label.bl-mt-md', 'Filter Chip States'),
-            m('.demo-row', [
-              m(FilterChip, { label: 'Default', removable: false }),
-              m(FilterChip, { label: 'Active', active: true, removable: false }),
-              m(FilterChip, { label: 'With Value', value: 'example', removable: false }),
-              m(FilterChip, { label: 'Disabled', disabled: true, removable: false }),
-            ]),
-            m('.demo-label.bl-mt-md', 'Outlined Variant'),
-            m('.demo-row', [
-              m(FilterChip, { label: 'Outlined', variant: 'outlined', removable: false }),
-              m(FilterChip, {
-                label: 'Active',
-                variant: 'outlined',
-                active: true,
-                removable: false,
-              }),
-            ]),
-            m('.demo-label.bl-mt-md', 'Status Variants'),
-            m('.demo-row', [
-              m(FilterChip, {
-                label: 'Success',
-                variant: 'success',
-                active: true,
-                removable: false,
-              }),
-              m(FilterChip, {
-                label: 'Warning',
-                variant: 'warning',
-                active: true,
-                removable: false,
-              }),
-              m(FilterChip, { label: 'Error', variant: 'error', active: true, removable: false }),
-            ]),
-            m('.demo-label.bl-mt-md', 'With Icons'),
-            m('.demo-row', [
-              m(FilterChip, {
-                label: 'Date',
-                value: 'Today',
-                icon: 'calendar_today',
-                removable: false,
-              }),
-              m(FilterChip, { label: 'User', value: 'Admin', icon: 'person', removable: false }),
-              m(FilterChip, {
-                label: 'Status',
-                value: 'Online',
-                icon: 'circle',
-                variant: 'success',
-                active: true,
-                removable: false,
-              }),
-            ]),
-          ]),
-
-          // Reorderable List Section
-          m('section.demo-section', [
-            m('h2.demo-section-title', 'Reorderable List'),
-            m('.demo-label', 'Flat List'),
-            m(
-              'div',
-              { style: { maxWidth: '300px' } },
-              m(ReorderableList, {
-                items: State.reorderableItems,
-                onreorder: (items: ReorderableItem[]) => {
-                  State.reorderableItems = items;
+                'User Tag'
+              ),
+              m(
+                Tag,
+                {
+                  variant: 'success',
+                  removable: true,
+                  onremove: () => console.log('Remove clicked'),
                 },
-              })
-            ),
-            m('.demo-label.bl-mt-md', 'Tree Mode (drag onto items to nest)'),
-            m(
-              'div',
-              { style: { maxWidth: '300px' } },
-              m(ReorderableList, {
-                items: State.reorderableTree,
-                tree: true,
-                onreorder: (items: ReorderableItem[]) => {
-                  State.reorderableTree = items;
+                'Active'
+              ),
+            ]),
+            m('.demo-label', 'Clickable'),
+            m('.demo-row', [
+              m(
+                Tag,
+                {
+                  onclick: () => console.log('Clicked'),
                 },
-              })
-            ),
+                'Click me'
+              ),
+              m(
+                Tag,
+                {
+                  icon: 'add',
+                  onclick: () => console.log('Add clicked'),
+                },
+                'Add Item'
+              ),
+            ]),
+            m('.demo-label', 'Disabled'),
+            m('.demo-row', [
+              m(Tag, { disabled: true }, 'Disabled'),
+              m(Tag, { disabled: true, icon: 'lock' }, 'Locked'),
+            ]),
           ]),
 
           // Menu Section
@@ -763,6 +759,156 @@ const WidgetsPage: m.Component = {
                 m('.bl-menu-separator'),
                 m('.bl-menu-item.disabled', m('span', 'Recover Last Session')),
               ]),
+            ]),
+          ]),
+
+          // Portal Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Portal'),
+            m('.demo-label', 'Renders content outside the normal DOM hierarchy'),
+            m('.demo-row', [
+              m(
+                Button,
+                {
+                  variant: state.portalVisible ? 'primary' : 'default',
+                  onclick: () => {
+                    state.portalVisible = !state.portalVisible;
+                  },
+                },
+                state.portalVisible ? 'Hide Portal' : 'Show Portal'
+              ),
+            ]),
+            state.portalVisible &&
+              m(
+                Portal,
+                m(
+                  '.portal-demo-overlay',
+                  {
+                    style: {
+                      position: 'fixed',
+                      bottom: '80px',
+                      right: '20px',
+                      padding: '16px 20px',
+                      background: 'var(--bl-surface-3)',
+                      border: '1px solid var(--bl-border)',
+                      borderRadius: 'var(--bl-radius-lg)',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                      zIndex: 1000,
+                    },
+                  },
+                  [
+                    m('div', { style: { fontWeight: 500, marginBottom: '8px' } }, 'Portal Content'),
+                    m(
+                      'div',
+                      { style: { color: 'var(--bl-text-secondary)', fontSize: '13px' } },
+                      'This is rendered at document.body'
+                    ),
+                  ]
+                )
+              ),
+          ]),
+
+          // Popover Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Popover'),
+            m('.demo-label', 'Anchored popover that follows its trigger element'),
+            m('.demo-row', { style: { gap: '12px', flexWrap: 'wrap' } }, [
+              m(
+                Popover,
+                {
+                  trigger: m(
+                    Button,
+                    {
+                      variant: state.popoverOpen ? 'primary' : 'default',
+                      onclick: () => {
+                        state.popoverOpen = !state.popoverOpen;
+                      },
+                    },
+                    'Toggle Popover'
+                  ),
+                  placement: state.popoverPlacement,
+                  open: state.popoverOpen,
+                  onclose: () => {
+                    state.popoverOpen = false;
+                  },
+                },
+                [
+                  m('div', { style: { fontWeight: 500, marginBottom: '8px' } }, 'Popover Content'),
+                  m(
+                    'div',
+                    { style: { color: 'var(--bl-text-secondary)', fontSize: '13px' } },
+                    'Click outside to close'
+                  ),
+                ]
+              ),
+              m(Select, {
+                value: state.popoverPlacement,
+                options: [
+                  { value: 'top', label: 'Top' },
+                  { value: 'top-start', label: 'Top Start' },
+                  { value: 'top-end', label: 'Top End' },
+                  { value: 'bottom', label: 'Bottom' },
+                  { value: 'bottom-start', label: 'Bottom Start' },
+                  { value: 'bottom-end', label: 'Bottom End' },
+                  { value: 'left', label: 'Left' },
+                  { value: 'left-start', label: 'Left Start' },
+                  { value: 'left-end', label: 'Left End' },
+                  { value: 'right', label: 'Right' },
+                  { value: 'right-start', label: 'Right Start' },
+                  { value: 'right-end', label: 'Right End' },
+                ],
+                onchange: (val: string) => {
+                  state.popoverPlacement = val as PopoverPlacement;
+                },
+              }),
+            ]),
+          ]),
+
+          // Popup Menu Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Popup Menu'),
+            m('.demo-label', 'Menu triggered by button'),
+            m('.demo-row', { style: { gap: '12px' } }, [
+              m(PopupMenu, {
+                trigger: m(Button, { icon: 'more_vert' }),
+                items: [
+                  { label: 'Cut', icon: 'content_cut', shortcut: 'Ctrl+X' },
+                  { label: 'Copy', icon: 'content_copy', shortcut: 'Ctrl+C' },
+                  { label: 'Paste', icon: 'content_paste', shortcut: 'Ctrl+V' },
+                  { separator: true },
+                  { label: 'Select All', icon: 'select_all', shortcut: 'Ctrl+A' },
+                  { separator: true },
+                  { label: 'Delete', icon: 'delete', danger: true },
+                ],
+              }),
+              m(PopupMenu, {
+                trigger: m(Button, 'File Menu'),
+                items: [
+                  { header: 'File' },
+                  { label: 'New', icon: 'add', shortcut: 'Ctrl+N' },
+                  { label: 'Open...', icon: 'folder_open', shortcut: 'Ctrl+O' },
+                  { label: 'Save', icon: 'save', shortcut: 'Ctrl+S' },
+                  { label: 'Save As...', icon: 'save_as', shortcut: 'Ctrl+Shift+S' },
+                  { separator: true },
+                  { header: 'Export' },
+                  { label: 'Export as PNG', icon: 'image' },
+                  { label: 'Export as PDF', icon: 'picture_as_pdf' },
+                  { separator: true },
+                  { label: 'Close', icon: 'close', shortcut: 'Ctrl+W' },
+                ],
+              }),
+              m(PopupMenu, {
+                trigger: m(Button, { icon: 'settings' }, 'Options'),
+                placement: 'bottom-end',
+                items: [
+                  { label: 'Settings', icon: 'settings' },
+                  { label: 'Preferences', icon: 'tune' },
+                  { separator: true },
+                  { label: 'Disabled Item', icon: 'block', disabled: true },
+                  { separator: true },
+                  { label: 'Log Out', icon: 'logout', danger: true },
+                ],
+              }),
             ]),
           ]),
 
@@ -820,6 +966,24 @@ const WidgetsPage: m.Component = {
               ]
             ),
           ]),
+
+          // Split Panel Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Text alignment'),
+            m('', [
+              m(Button, 'Foo'),
+              m(Select, {
+                options: [
+                  { value: 'a', label: 'Option A' },
+                  { value: 'b', label: 'Option B' },
+                  { value: 'c', label: 'Option C' },
+                ],
+              }),
+              'Some text here',
+              m(Input, { placeholder: 'Enter text...' }),
+              m(Button, { icon: 'download' }),
+            ]),
+          ]),
         ]),
       ]),
 
@@ -838,4 +1002,4 @@ const WidgetsPage: m.Component = {
   },
 };
 
-export default WidgetsPage;
+export default ComponentsPage;

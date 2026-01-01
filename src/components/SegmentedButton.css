@@ -39,8 +39,8 @@
 }
 
 .bl-segmented-btn.active {
-  color: #fff;
-  background: var(--bl-accent);
+  color: var(--bl-text-primary);
+  background: var(--bl-surface-3);
 }
 
 .bl-segmented-btn .material-symbols-outlined {

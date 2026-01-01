@@ -1,12 +1,12 @@
-/* Proxmox Page Styles */
+/* Servers Page Styles */
 
-.page-proxmox {
+.page-servers {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.proxmox-main {
+.servers-main {
   flex: 1;
   overflow: hidden;
 }

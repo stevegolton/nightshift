@@ -59,9 +59,9 @@ body {
   --bl-info: #5588cc;
 
   /* Sizing */
-  --bl-radius-sm: 3px;
-  --bl-radius-md: 4px;
-  --bl-radius-lg: 6px;
+  --bl-radius-sm: 2px;
+  --bl-radius-md: 2px;
+  --bl-radius-lg: 4px;
   --bl-spacing-xs: 2px;
   --bl-spacing-sm: 4px;
   --bl-spacing-md: 8px;
@@ -386,23 +386,6 @@ body {
 .bl-color-value {
   font-family: var(--bl-font-mono);
   color: var(--bl-text-secondary);
-}
-
-/* ============================================
-   Header Bar
-   ============================================ */
-.bl-header {
-  display: flex;
-  align-items: center;
-  height: 28px;
-  padding: 0 var(--bl-spacing-md);
-  background-color: var(--bl-surface-3);
-  border-bottom: 1px solid var(--bl-border-dark);
-}
-
-.bl-header-menu {
-  display: flex;
-  gap: var(--bl-spacing-xs);
 }
 
 /* ============================================

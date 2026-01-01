@@ -7,6 +7,7 @@
   padding: var(--bl-spacing-sm) var(--bl-spacing-md);
   font-family: var(--bl-font-family);
   font-size: inherit;
+  line-height: 1.2;
   color: var(--bl-text-primary);
   background-color: var(--bl-surface-3);
   border: 1px solid var(--bl-border-button);
@@ -55,32 +56,19 @@
   background-color: var(--bl-accent-active);
 }
 
-/* Icon Button */
+/* Icon Button - ensure same height and baseline alignment as text buttons */
 .bl-btn-icon {
   padding: var(--bl-spacing-sm);
+  gap: 0;
+}
+
+.bl-btn-icon::before {
+  /* Zero-width space for baseline alignment with text buttons */
+  content: '\200B';
 }
 
 .bl-btn .material-symbols-outlined {
   line-height: 1;
-}
-
-/* Button Group */
-.bl-btn-group {
-  display: inline-flex;
-}
-
-.bl-btn-group .bl-btn {
-  border-radius: 0;
-  margin-left: -1px;
-}
-
-.bl-btn-group .bl-btn:first-child {
-  border-radius: var(--bl-radius-md) 0 0 var(--bl-radius-md);
-  margin-left: 0;
-}
-
-.bl-btn-group .bl-btn:last-child {
-  border-radius: 0 var(--bl-radius-md) var(--bl-radius-md) 0;
 }
 
 /* Toggle Button */

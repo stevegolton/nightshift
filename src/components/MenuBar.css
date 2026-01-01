@@ -1,0 +1,14 @@
+/* Menu Bar / Header */
+.bl-header {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 var(--bl-spacing-md);
+  background-color: var(--bl-surface-3);
+  border-bottom: 1px solid var(--bl-border-dark);
+}
+
+.bl-header-menu {
+  display: flex;
+  gap: var(--bl-spacing-xs);
+}

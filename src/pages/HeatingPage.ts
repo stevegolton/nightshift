@@ -1,9 +1,8 @@
 import m from 'mithril';
 import './HeatingPage.css';
-import MenuBar from '../components/MenuBar';
 import Button from '../components/Button';
-import Badge from '../components/Badge';
-import Slider from '../components/Slider';
+import ButtonGroup from '../components/ButtonGroup';
+import Tag from '../components/Tag';
 import { SegmentedButtonGroup, SegmentedButton } from '../components/SegmentedButton';
 import Checkbox from '../components/Checkbox';
 
@@ -13,9 +12,11 @@ interface Zone {
   currentTemp: number;
   targetTemp: number;
   humidity: number;
-  mode: 'heating' | 'cooling' | 'off' | 'auto';
-  schedule: string;
-  isActive: boolean;
+  mode: 'schedule' | 'manual' | 'off';
+}
+
+function isZoneHeating(zone: Zone): boolean {
+  return zone.mode !== 'off' && zone.currentTemp < zone.targetTemp;
 }
 
 interface HeatingState {
@@ -32,9 +33,7 @@ const state: HeatingState = {
       currentTemp: 21.5,
       targetTemp: 22,
       humidity: 45,
-      mode: 'heating',
-      schedule: 'Weekday Schedule',
-      isActive: true,
+      mode: 'manual',
     },
     {
       id: 'bedroom',
@@ -42,9 +41,7 @@ const state: HeatingState = {
       currentTemp: 19.2,
       targetTemp: 19,
       humidity: 52,
-      mode: 'auto',
-      schedule: 'Night Schedule',
-      isActive: false,
+      mode: 'schedule',
     },
     {
       id: 'kitchen',
@@ -52,9 +49,7 @@ const state: HeatingState = {
       currentTemp: 20.8,
       targetTemp: 21,
       humidity: 48,
-      mode: 'heating',
-      schedule: 'Weekday Schedule',
-      isActive: true,
+      mode: 'manual',
     },
     {
       id: 'bathroom',
@@ -62,9 +57,7 @@ const state: HeatingState = {
       currentTemp: 23.1,
       targetTemp: 24,
       humidity: 65,
-      mode: 'heating',
-      schedule: 'Morning Boost',
-      isActive: true,
+      mode: 'manual',
     },
     {
       id: 'office',
@@ -73,8 +66,6 @@ const state: HeatingState = {
       targetTemp: 21,
       humidity: 42,
       mode: 'off',
-      schedule: 'Work Hours',
-      isActive: false,
     },
     {
       id: 'guest',
@@ -83,91 +74,80 @@ const state: HeatingState = {
       targetTemp: 18,
       humidity: 50,
       mode: 'off',
-      schedule: 'Eco Mode',
-      isActive: false,
     },
   ],
   systemMode: 'home',
   boilerStatus: 'heating',
 };
 
-function getStatusBadge(zone: Zone): m.Vnode {
+function getStatusTag(zone: Zone): m.Vnode {
   if (zone.mode === 'off') {
-    return m(Badge, 'Off');
+    return m(Tag, 'Off');
   }
-  if (zone.isActive) {
-    return m(Badge, { variant: 'success' }, 'Heating');
+  if (isZoneHeating(zone)) {
+    return m(Tag, { variant: 'success' }, 'Heating');
   }
-  if (zone.currentTemp >= zone.targetTemp) {
-    return m(Badge, { variant: 'warning' }, 'At Target');
-  }
-  return m(Badge, 'Idle');
+  return m(Tag, 'At Target');
 }
 
 function ZoneCard(zone: Zone): m.Vnode {
-  return m('.zone-card', { class: zone.isActive ? 'active' : '' }, [
-    m('.zone-header', [m('.zone-name', zone.name), getStatusBadge(zone)]),
-    m('.zone-temps', [
+  return m('.zone-card', { class: isZoneHeating(zone) ? 'active' : '' }, [
+    m('.zone-header', [m('.zone-name', zone.name), getStatusTag(zone)]),
+    m('.zone-body', [
       m('.zone-current', [
-        m('.zone-current-value', zone.currentTemp.toFixed(1)),
-        m('.zone-current-unit', '\u00B0C'),
+        m('.zone-current-label', 'Current'),
+        m('.zone-current-temp', [
+          m('.zone-current-value', zone.currentTemp.toFixed(1)),
+          m('.zone-current-unit', '°C'),
+        ]),
       ]),
       m('.zone-target', [
-        m('span.zone-target-label', 'Target'),
-        m('span.zone-target-value', `${zone.targetTemp}\u00B0C`),
+        m('.zone-target-label', 'Target'),
+        m('.zone-target-value', `${zone.targetTemp.toFixed(1)}°C`),
+      ]),
+      m(ButtonGroup, { vertical: true }, [
+        m(Button, {
+          icon: 'add',
+          onclick: () => {
+            zone.targetTemp = Math.min(28, zone.targetTemp + 0.5);
+          },
+        }),
+        m(Button, {
+          icon: 'remove',
+          onclick: () => {
+            zone.targetTemp = Math.max(15, zone.targetTemp - 0.5);
+          },
+        }),
       ]),
     ]),
-    m('.zone-controls', [
-      m(Slider, {
-        min: 15,
-        max: 28,
-        value: zone.targetTemp,
-        onchange: (val: number) => {
-          zone.targetTemp = val;
-        },
-      }),
+    m('.zone-meta', [
+      m('.zone-meta-item', [m('span.material-symbols-outlined', 'water_drop'), m('span', `${zone.humidity}%`)]),
     ]),
-    m('.zone-footer', [
-      m('.zone-humidity', [m('span.material-symbols-outlined', 'water_drop'), m('span', `${zone.humidity}%`)]),
-      m('.zone-schedule', [m('span.material-symbols-outlined', 'schedule'), m('span', zone.schedule)]),
-    ]),
-    m('.zone-actions', [
+    m('.zone-mode', [
       m(SegmentedButtonGroup, [
         m(
           SegmentedButton,
           {
-            active: zone.mode === 'heating',
-            onclick: () => (zone.mode = 'heating'),
-            title: 'Heating',
+            active: zone.mode === 'schedule',
+            onclick: () => (zone.mode = 'schedule'),
           },
-          m('span.material-symbols-outlined', 'whatshot')
+          'Schedule'
         ),
         m(
           SegmentedButton,
           {
-            active: zone.mode === 'cooling',
-            onclick: () => (zone.mode = 'cooling'),
-            title: 'Cooling',
+            active: zone.mode === 'manual',
+            onclick: () => (zone.mode = 'manual'),
           },
-          m('span.material-symbols-outlined', 'ac_unit')
-        ),
-        m(
-          SegmentedButton,
-          {
-            active: zone.mode === 'auto',
-            onclick: () => (zone.mode = 'auto'),
-            title: 'Auto',
-          },
-          m('span.material-symbols-outlined', 'autorenew')
+          'Manual'
         ),
         m(
           SegmentedButton,
           {
             active: zone.mode === 'off',
             onclick: () => (zone.mode = 'off'),
-            title: 'Off',
           },
-          m('span.material-symbols-outlined', 'power_settings_new')
+          'Off'
         ),
       ]),
     ]),
@@ -176,30 +156,10 @@ function ZoneCard(zone: Zone): m.Vnode {
 
 const HeatingPage: m.Component = {
   view(): m.Vnode {
-    const activeZones = state.zones.filter((z) => z.isActive).length;
+    const activeZones = state.zones.filter((z) => isZoneHeating(z)).length;
     const avgTemp = state.zones.reduce((sum, z) => sum + z.currentTemp, 0) / state.zones.length;
 
     return m('.page-heating', [
-      m(
-        MenuBar,
-        {
-          rightContent: m('.heating-header-right', [
-            m(
-              Badge,
-              { variant: state.boilerStatus === 'heating' ? 'success' : undefined },
-              state.boilerStatus === 'heating' ? 'Boiler Active' : 'Boiler Idle'
-            ),
-            m(Button, { icon: 'settings', variant: 'ghost' }),
-          ]),
-        },
-        [
-          m(Button, { variant: 'ghost' }, 'Dashboard'),
-          m(Button, { variant: 'ghost' }, 'Schedules'),
-          m(Button, { variant: 'ghost' }, 'History'),
-          m(Button, { variant: 'ghost' }, 'Settings'),
-        ]
-      ),
-
       m('.heating-main', [
         m('.heating-sidebar', [
           m('.sidebar-section', [
@@ -263,6 +223,13 @@ const HeatingPage: m.Component = {
               m(Checkbox, { checked: false }, 'Eco mode'),
               m(Checkbox, { checked: true }, 'Smart scheduling'),
             ]),
+          ]),
+
+          m('.sidebar-section.sidebar-nav', [
+            m(Button, { variant: 'ghost', active: true }, 'Dashboard'),
+            m(Button, { variant: 'ghost', onclick: () => m.route.set('/schedules') }, 'Schedules'),
+            m(Button, { variant: 'ghost' }, 'History'),
+            m(Button, { variant: 'ghost' }, 'Settings'),
           ]),
         ]),
 

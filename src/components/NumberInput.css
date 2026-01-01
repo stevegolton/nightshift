@@ -13,35 +13,37 @@
 }
 
 .bl-number-input input {
+  box-sizing: border-box;
   width: 60px;
   padding: var(--bl-spacing-sm) var(--bl-spacing-md);
-  font-family: var(--bl-font-mono);
+  font-family: inherit;
   color: var(--bl-text-primary);
   background: transparent;
   border: none;
   outline: none;
   text-align: right;
   font-size: inherit;
-  line-height: 1.2;
+  line-height: 1;
 }
 
 .bl-number-input .bl-number-label {
-  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  padding: 0 var(--bl-spacing-md);
   color: var(--bl-text-secondary);
   background-color: var(--bl-surface-3);
   display: flex;
   align-items: center;
+  align-self: stretch;
   cursor: ew-resize;
   user-select: none;
   touch-action: none;
-  line-height: 1.2;
+  line-height: 1;
 }
 
 .bl-number-input .bl-number-unit {
   padding: var(--bl-spacing-sm) var(--bl-spacing-sm);
   color: var(--bl-text-muted);
   font-size: var(--bl-font-size-xs);
-  line-height: 1.2;
+  line-height: 1;
   white-space: nowrap;
 }
 

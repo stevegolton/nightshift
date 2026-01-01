@@ -5,10 +5,12 @@
 }
 
 .bl-select select {
+  box-sizing: border-box;
   appearance: none;
   padding: var(--bl-spacing-sm) 24px var(--bl-spacing-sm) var(--bl-spacing-md);
   font-family: var(--bl-font-family);
   font-size: inherit;
+  line-height: 1.2;
   color: var(--bl-text-primary);
   background-color: var(--bl-surface-3);
   border: 1px solid var(--bl-border-dark);

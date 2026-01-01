@@ -11,12 +11,13 @@ loadTheme();
 import Layout from './components/Layout';
 
 // Import pages
-import WidgetsPage from './pages/WidgetsPage';
+import ComponentsPage from './pages/ComponentsPage';
 import ProfilerPage from './pages/ProfilerPage';
 import PluginsPage from './pages/PluginsPage';
 import HeatingPage from './pages/HeatingPage';
-import QuadcopterPage from './pages/QuadcopterPage';
-import ProxmoxPage from './pages/ProxmoxPage';
+import SchedulesPage from './pages/SchedulesPage';
+import DronePage from './pages/DronePage';
+import ServersPage from './pages/ServersPage';
 import FinancesPage from './pages/FinancesPage';
 
 // Route configuration
@@ -24,9 +25,9 @@ m.route.prefix = '#';
 
 const root = document.getElementById('app');
 if (root) {
-  m.route(root, '/widgets', {
-    '/widgets': {
-      render: () => m(Layout, m(WidgetsPage)),
+  m.route(root, '/components', {
+    '/components': {
+      render: () => m(Layout, m(ComponentsPage)),
     },
     '/profiler': {
       render: () => m(Layout, m(ProfilerPage)),
@@ -37,11 +38,14 @@ if (root) {
     '/heating': {
       render: () => m(Layout, m(HeatingPage)),
     },
-    '/quadcopter': {
-      render: () => m(Layout, m(QuadcopterPage)),
+    '/schedules': {
+      render: () => m(Layout, m(SchedulesPage)),
     },
-    '/proxmox': {
-      render: () => m(Layout, m(ProxmoxPage)),
+    '/drone': {
+      render: () => m(Layout, m(DronePage)),
+    },
+    '/servers': {
+      render: () => m(Layout, m(ServersPage)),
     },
     '/finances': {
       render: () => m(Layout, m(FinancesPage)),

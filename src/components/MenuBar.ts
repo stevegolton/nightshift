@@ -1,5 +1,6 @@
 import m from 'mithril';
 import cx from 'classnames';
+import './MenuBar.css';
 
 export interface MenuBarAttrs {
   /** Optional content for the right side of the menu bar */

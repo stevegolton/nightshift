@@ -1,13 +1,13 @@
-/* Quadcopter Page Styles */
+/* Drone Page Styles */
 
-.page-quadcopter {
+.page-drone {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
 /* Toolbar */
-.quad-toolbar {
+.drone-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,12 +25,12 @@
 }
 
 /* Main content */
-.quad-main {
+.drone-main {
   flex: 1;
   overflow: hidden;
 }
 
-.quad-panel {
+.drone-panel {
   display: flex;
   flex-direction: column;
   height: 100%;

@@ -1,14 +1,21 @@
 import m from 'mithril';
 import './ProfilerPage.css';
-import { State } from '../state';
 import { Tabs } from '../components/Tabs';
 import Button from '../components/Button';
 import { SplitPanel } from '../components/SplitPanel';
 import Table from '../components/Table';
 import MenuBar from '../components/MenuBar';
-import Badge from '../components/Badge';
+import Tag from '../components/Tag';
 import Input from '../components/Input';
 import Select from '../components/Select';
+
+// Page-local state
+const state = {
+  collapsedTrackGroups: {} as Record<string, boolean>,
+  collapsedTracks: {} as Record<string, boolean>,
+  profilerPrimaryTab: 'selection',
+  profilerSecondaryTab: 'summary',
+};
 
 // Create SplitPanel instance at module level
 const ProfilerSplit = SplitPanel();
@@ -36,21 +43,21 @@ const bottomUpData: BottomUpEntry[] = [
 const ProfilerPage: m.Component = {
   view(): m.Vnode {
     function toggleTrackGroup(groupId: string): void {
-      State.collapsedTrackGroups[groupId] = !State.collapsedTrackGroups[groupId];
+      state.collapsedTrackGroups[groupId] = !state.collapsedTrackGroups[groupId];
     }
 
     function toggleTrack(trackId: string): void {
-      State.collapsedTracks[trackId] = !State.collapsedTracks[trackId];
+      state.collapsedTracks[trackId] = !state.collapsedTracks[trackId];
     }
 
     function expandAllTracks(): void {
-      State.collapsedTrackGroups = {};
-      State.collapsedTracks = {};
+      state.collapsedTrackGroups = {};
+      state.collapsedTracks = {};
     }
 
     function collapseAllTracks(): void {
-      State.collapsedTrackGroups = { 'main-thread': true, gpu: true, workers: true };
-      State.collapsedTracks = { frame: true, scripts: true, paint: true };
+      state.collapsedTrackGroups = { 'main-thread': true, gpu: true, workers: true };
+      state.collapsedTracks = { frame: true, scripts: true, paint: true };
     }
 
     return m('.page-profiler', [
@@ -68,7 +75,7 @@ const ProfilerPage: m.Component = {
               },
             },
             [
-              m(Badge, { variant: 'success' }, 'Recording'),
+              m(Tag, { variant: 'success' }, 'Recording'),
               m(Button, { variant: 'primary' }, 'Stop'),
             ]
           ),
@@ -172,7 +179,7 @@ const ProfilerPage: m.Component = {
                     '.bl-track-group',
                     {
                       'data-group': 'main-thread',
-                      class: State.collapsedTrackGroups['main-thread'] ? 'collapsed' : '',
+                      class: state.collapsedTrackGroups['main-thread'] ? 'collapsed' : '',
                     },
                     [
                       m(
@@ -203,7 +210,7 @@ const ProfilerPage: m.Component = {
                           {
                             'data-track': 'frame',
                             'data-depth': '1',
-                            class: State.collapsedTracks['frame'] ? 'collapsed' : '',
+                            class: state.collapsedTracks['frame'] ? 'collapsed' : '',
                             onclick: () => toggleTrack('frame'),
                           },
                           [
@@ -225,14 +232,14 @@ const ProfilerPage: m.Component = {
                             ]),
                           ]
                         ),
-                        !State.collapsedTracks['frame'] &&
+                        !state.collapsedTracks['frame'] &&
                           m('.bl-track-children', { 'data-track': 'frame' }, [
                             m(
                               '.bl-track.expandable',
                               {
                                 'data-track': 'scripts',
                                 'data-depth': '2',
-                                class: State.collapsedTracks['scripts'] ? 'collapsed' : '',
+                                class: state.collapsedTracks['scripts'] ? 'collapsed' : '',
                                 onclick: (e: Event) => {
                                   e.stopPropagation();
                                   toggleTrack('scripts');
@@ -251,7 +258,7 @@ const ProfilerPage: m.Component = {
                                 ]),
                               ]
                             ),
-                            !State.collapsedTracks['scripts'] &&
+                            !state.collapsedTracks['scripts'] &&
                               m('.bl-track-children', { 'data-track': 'scripts' }, [
                                 m('.bl-track', { 'data-depth': '3' }, [
                                   m('span.bl-track-name', 'updateScene()'),
@@ -292,7 +299,7 @@ const ProfilerPage: m.Component = {
                               {
                                 'data-track': 'paint',
                                 'data-depth': '2',
-                                class: State.collapsedTracks['paint'] ? 'collapsed' : '',
+                                class: state.collapsedTracks['paint'] ? 'collapsed' : '',
                                 onclick: (e: Event) => {
                                   e.stopPropagation();
                                   toggleTrack('paint');
@@ -311,7 +318,7 @@ const ProfilerPage: m.Component = {
                                 ]),
                               ]
                             ),
-                            !State.collapsedTracks['paint'] &&
+                            !state.collapsedTracks['paint'] &&
                               m('.bl-track-children', { 'data-track': 'paint' }, [
                                 m(
                                   '.bl-track',
@@ -334,7 +341,7 @@ const ProfilerPage: m.Component = {
                     '.bl-track-group',
                     {
                       'data-group': 'gpu',
-                      class: State.collapsedTrackGroups['gpu'] ? 'collapsed' : '',
+                      class: state.collapsedTrackGroups['gpu'] ? 'collapsed' : '',
                     },
                     [
                       m('.bl-track-group-header', { onclick: () => toggleTrackGroup('gpu') }, [
@@ -381,7 +388,7 @@ const ProfilerPage: m.Component = {
                     '.bl-track-group',
                     {
                       'data-group': 'workers',
-                      class: State.collapsedTrackGroups['workers'] ? 'collapsed' : '',
+                      class: state.collapsedTrackGroups['workers'] ? 'collapsed' : '',
                     },
                     [
                       m('.bl-track-group-header', { onclick: () => toggleTrackGroup('workers') }, [
@@ -444,7 +451,7 @@ const ProfilerPage: m.Component = {
                       '.bl-lane-group',
                       {
                         'data-group': 'main-thread',
-                        class: State.collapsedTrackGroups['main-thread'] ? 'collapsed' : '',
+                        class: state.collapsedTrackGroups['main-thread'] ? 'collapsed' : '',
                       },
                       [
                         m('.bl-lane-group-header'),
@@ -455,7 +462,7 @@ const ProfilerPage: m.Component = {
                               m('span.bl-slice-duration', '16.4ms'),
                             ]),
                           ]),
-                          !State.collapsedTracks['frame'] &&
+                          !state.collapsedTracks['frame'] &&
                             m('.bl-lane-children', { 'data-track': 'frame' }, [
                               m('.bl-timeline-lane', [
                                 m(
@@ -467,7 +474,7 @@ const ProfilerPage: m.Component = {
                                   ]
                                 ),
                               ]),
-                              !State.collapsedTracks['scripts'] &&
+                              !state.collapsedTracks['scripts'] &&
                                 m('.bl-lane-children', { 'data-track': 'scripts' }, [
                                   m('.bl-timeline-lane', [
                                     m(
@@ -504,7 +511,7 @@ const ProfilerPage: m.Component = {
                                   ]
                                 ),
                               ]),
-                              !State.collapsedTracks['paint'] &&
+                              !state.collapsedTracks['paint'] &&
                                 m('.bl-lane-children', { 'data-track': 'paint' }, [
                                   m('.bl-timeline-lane', [
                                     m(
@@ -531,7 +538,7 @@ const ProfilerPage: m.Component = {
                       '.bl-lane-group',
                       {
                         'data-group': 'gpu',
-                        class: State.collapsedTrackGroups['gpu'] ? 'collapsed' : '',
+                        class: state.collapsedTrackGroups['gpu'] ? 'collapsed' : '',
                       },
                       [
                         m('.bl-lane-group-header'),
@@ -557,7 +564,7 @@ const ProfilerPage: m.Component = {
                       '.bl-lane-group',
                       {
                         'data-group': 'workers',
-                        class: State.collapsedTrackGroups['workers'] ? 'collapsed' : '',
+                        class: state.collapsedTrackGroups['workers'] ? 'collapsed' : '',
                       },
                       [
                         m('.bl-lane-group-header'),
@@ -737,9 +744,9 @@ const ProfilerPage: m.Component = {
                         ]),
                       },
                     ],
-                    activeTab: State.profilerSecondaryTab,
+                    activeTab: state.profilerSecondaryTab,
                     onTabChange: (tabId: string) => {
-                      State.profilerSecondaryTab = tabId;
+                      state.profilerSecondaryTab = tabId;
                     },
                   }),
                 ]),
@@ -833,9 +840,9 @@ const ProfilerPage: m.Component = {
                 ]),
               },
             ],
-            activeTab: State.profilerPrimaryTab,
+            activeTab: state.profilerPrimaryTab,
             onTabChange: (tabId: string) => {
-              State.profilerPrimaryTab = tabId;
+              state.profilerPrimaryTab = tabId;
             },
           }),
         ]),
