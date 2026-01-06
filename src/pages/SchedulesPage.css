@@ -65,7 +65,6 @@
   background-color: var(--bl-surface-3);
   border-radius: var(--bl-radius-md);
   cursor: pointer;
-  transition: background-color 0.1s;
 }
 
 .schedule-list-item:hover {
@@ -129,7 +128,7 @@
 }
 
 .schedule-detail-title .bl-input {
-  font-size: var(--bl-font-size-lg);
+  font-size: var(--bl-font-size-base);
   font-weight: 500;
   background: transparent;
   border-color: transparent;

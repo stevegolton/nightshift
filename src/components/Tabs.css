@@ -60,7 +60,7 @@
 .bl-tab.active {
   color: var(--bl-text-primary);
   background-color: var(--bl-surface-3);
-  box-shadow: var(--bl-button-highlight);
+  box-shadow: var(--bl-highlight-top);
 }
 
 /* Primary Tabs (browser style) */
@@ -112,7 +112,7 @@
   color: var(--bl-text-primary);
   background-color: var(--bl-surface-2);
   border-color: var(--bl-border-button);
-  box-shadow: var(--bl-button-highlight);
+  box-shadow: var(--bl-highlight-top);
   position: relative;
   z-index: 1;
   margin-bottom: -1px;

@@ -47,7 +47,6 @@
   align-items: center;
   gap: var(--bl-spacing-xs);
   opacity: 0;
-  transition: opacity 0.1s ease;
 }
 
 .bl-table th:hover .bl-table-header-actions {

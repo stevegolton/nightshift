@@ -16,7 +16,6 @@
   border: none;
   border-radius: var(--bl-radius-sm);
   cursor: pointer;
-  transition: all 0.1s ease;
 }
 
 .bl-row-actions-trigger:hover {
@@ -50,7 +49,6 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(-4px);
-  transition: all 0.15s ease;
 }
 
 .bl-row-actions.open .bl-row-actions-menu {
@@ -81,7 +79,6 @@
   color: var(--bl-text-primary);
   font-size: var(--bl-font-size-sm);
   cursor: pointer;
-  transition: background-color 0.1s ease;
 }
 
 .bl-row-actions-item:hover {

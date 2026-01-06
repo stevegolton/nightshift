@@ -1093,3 +1093,35 @@
   border-radius: 1px;
   opacity: 0.6;
 }
+
+/* Bulk Actions Bar */
+.bulk-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bl-spacing-md);
+  padding: 2px var(--bl-spacing-md);
+  background: var(--bl-surface-2);
+  border-bottom: 1px solid var(--bl-border-dark);
+  border-left: 2px solid var(--bl-accent);
+}
+
+.bulk-actions-info {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-xs);
+}
+
+.bulk-actions-count {
+  color: var(--bl-accent);
+}
+
+.bulk-actions-buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--bl-spacing-xs);
+}
+
+.bulk-actions-bar .bl-btn.bulk-action-danger:hover {
+  color: var(--bl-error);
+}

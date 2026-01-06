@@ -19,6 +19,7 @@ import SchedulesPage from './pages/SchedulesPage';
 import DronePage from './pages/DronePage';
 import ServersPage from './pages/ServersPage';
 import FinancesPage from './pages/FinancesPage';
+import QueryPage from './pages/QueryPage';
 
 // Route configuration
 m.route.prefix = '#';
@@ -49,6 +50,9 @@ if (root) {
     },
     '/finances': {
       render: () => m(Layout, m(FinancesPage)),
+    },
+    '/query': {
+      render: () => m(Layout, m(QueryPage)),
     },
   });
 }

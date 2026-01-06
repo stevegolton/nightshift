@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--bl-spacing-sm);
-  padding: var(--bl-spacing-sm) var(--bl-spacing-md);
+  padding: var(--bl-spacing-xs) var(--bl-spacing-md);
   font-family: var(--bl-font-family);
   font-size: inherit;
   line-height: 1.2;
@@ -58,7 +58,7 @@
 
 /* Icon Button - ensure same height and baseline alignment as text buttons */
 .bl-btn-icon {
-  padding: var(--bl-spacing-sm);
+  padding: var(--bl-spacing-xs);
   gap: 0;
 }
 

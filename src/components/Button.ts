@@ -16,16 +16,18 @@ export interface ButtonAttrs {
   tooltip?: string;
   /** Click handler */
   onclick?: (e: Event) => void;
+  /** Additional class names */
+  className?: string;
 }
 
 const Button: m.Component<ButtonAttrs> = {
   view(vnode) {
-    const { variant, icon, active, disabled, tooltip, onclick } = vnode.attrs;
+    const { variant, icon, active, disabled, tooltip, onclick, className } = vnode.attrs;
 
     const hasChildren =
       vnode.children && (Array.isArray(vnode.children) ? vnode.children.length > 0 : true);
 
-    const classes = cx('bl-btn', {
+    const classes = cx('bl-btn', className, {
       'bl-btn-primary': variant === 'primary',
       'bl-btn-toggle': variant === 'toggle',
       'bl-btn-ghost': variant === 'ghost',

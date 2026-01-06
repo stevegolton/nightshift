@@ -13,6 +13,7 @@ import Select from '../components/Select';
 const state = {
   collapsedTrackGroups: {} as Record<string, boolean>,
   collapsedTracks: {} as Record<string, boolean>,
+  selectedTracks: new Set<string>(['scripts', 'layout', 'paint']), // Demo: pre-select some tracks
   profilerPrimaryTab: 'selection',
   profilerSecondaryTab: 'summary',
 };
@@ -60,6 +61,25 @@ const ProfilerPage: m.Component = {
       state.collapsedTracks = { frame: true, scripts: true, paint: true };
     }
 
+    function toggleTrackSelection(trackId: string, e: Event): void {
+      e.stopPropagation();
+      if (state.selectedTracks.has(trackId)) {
+        state.selectedTracks.delete(trackId);
+      } else {
+        state.selectedTracks.add(trackId);
+      }
+    }
+
+    function clearSelection(): void {
+      state.selectedTracks.clear();
+    }
+
+    function bulkAction(action: string): void {
+      console.log(`Bulk action: ${action} on tracks:`, Array.from(state.selectedTracks));
+      // In a real app, perform the action here
+      clearSelection();
+    }
+
     return m('.page-profiler', [
       m(
         MenuBar,
@@ -88,6 +108,31 @@ const ProfilerPage: m.Component = {
           m(Button, { variant: 'ghost' }, 'Help'),
         ]
       ),
+
+      // Bulk actions bar - shown when multiple tracks are selected
+      state.selectedTracks.size > 1 &&
+        m('.bulk-actions-bar', [
+          m('.bulk-actions-info', [
+            m('span.bulk-actions-count', `${state.selectedTracks.size} tracks selected`),
+            m(Button, {
+              variant: 'ghost',
+              icon: 'close',
+              onclick: clearSelection,
+              tooltip: 'Clear selection',
+            }),
+          ]),
+          m('.bulk-actions-buttons', [
+            m(Button, { icon: 'visibility_off', onclick: () => bulkAction('hide') }, 'Hide'),
+            m(Button, { icon: 'push_pin', onclick: () => bulkAction('pin') }, 'Pin'),
+            m(Button, { icon: 'folder', onclick: () => bulkAction('group') }, 'Group'),
+            m(Button, { icon: 'palette', onclick: () => bulkAction('color') }, 'Color'),
+            m(Button, {
+              icon: 'delete',
+              onclick: () => bulkAction('remove'),
+              className: 'bulk-action-danger',
+            }, 'Remove'),
+          ]),
+        ]),
 
       m(ProfilerSplit, {
         direction: 'vertical',

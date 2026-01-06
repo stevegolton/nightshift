@@ -127,7 +127,7 @@
 }
 
 .transactions-title {
-  font-size: var(--bl-font-size-lg);
+  font-size: var(--bl-font-size-base);
   font-weight: 500;
   color: var(--bl-text-primary);
 }
@@ -182,7 +182,7 @@
 }
 
 .budgets-title {
-  font-size: var(--bl-font-size-lg);
+  font-size: var(--bl-font-size-base);
   font-weight: 500;
   color: var(--bl-text-primary);
 }
@@ -341,7 +341,7 @@
 }
 
 .card-value {
-  font-size: var(--bl-font-size-lg);
+  font-size: var(--bl-font-size-base);
   font-weight: 600;
   color: var(--bl-text-primary);
   font-family: var(--bl-font-mono);
@@ -498,7 +498,7 @@
 }
 
 .pivot-title {
-  font-size: var(--bl-font-size-lg);
+  font-size: var(--bl-font-size-base);
   font-weight: 500;
   color: var(--bl-text-primary);
 }

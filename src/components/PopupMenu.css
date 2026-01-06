@@ -15,7 +15,6 @@
   color: var(--bl-text-primary);
   font-size: var(--bl-font-size-sm);
   cursor: pointer;
-  transition: background-color 0.1s ease;
 }
 
 .bl-popup-menu-item:hover {

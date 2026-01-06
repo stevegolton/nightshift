@@ -40,6 +40,7 @@ const Nav: m.Component = {
         NavItem('/drone', 'flight', 'Drone'),
         NavItem('/servers', 'dns', 'Servers'),
         NavItem('/finances', 'account_balance', 'Finances'),
+        NavItem('/query', 'database', 'Query'),
       ]),
       m('.app-nav-footer', [
         m('.app-nav-item', { onclick: toggleTheme }, [

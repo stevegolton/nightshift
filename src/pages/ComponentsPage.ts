@@ -1,5 +1,6 @@
 import m from 'mithril';
 import './ComponentsPage.css';
+import Accordion from '../components/Accordion';
 import Button from '../components/Button';
 import ButtonGroup from '../components/ButtonGroup';
 import { SegmentedButtonGroup, SegmentedButton } from '../components/SegmentedButton';
@@ -23,6 +24,8 @@ import PopupMenu from '../components/PopupMenu';
 
 // Page-local state
 const state = {
+  // Accordion demos
+  expandedAccordion: 'item1' as string | null,
   // Popover demos
   popoverOpen: false,
   popoverPlacement: 'bottom' as PopoverPlacement,
@@ -566,6 +569,48 @@ const ComponentsPage: m.Component = {
               onTabChange: (tabId: string) => {
                 state.activeSecondaryTab = tabId;
               },
+            }),
+          ]),
+
+          // Accordion Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Accordion'),
+            m('.demo-label', 'Expandable content panels'),
+            m(Accordion, {
+              expanded: state.expandedAccordion,
+              onToggle: (id) => { state.expandedAccordion = id; },
+              items: [
+                {
+                  id: 'item1',
+                  header: [
+                    m('span.material-symbols-outlined', { style: { fontSize: '16px', marginRight: '8px' } }, 'settings'),
+                    m('span', 'General Settings'),
+                  ],
+                  content: m('div', { style: { color: 'var(--bl-text-secondary)' } }, [
+                    m('p', { style: { margin: 0 } }, 'Configure general application settings and preferences.'),
+                  ]),
+                },
+                {
+                  id: 'item2',
+                  header: [
+                    m('span.material-symbols-outlined', { style: { fontSize: '16px', marginRight: '8px' } }, 'palette'),
+                    m('span', 'Appearance'),
+                  ],
+                  content: m('div', { style: { color: 'var(--bl-text-secondary)' } }, [
+                    m('p', { style: { margin: 0 } }, 'Customize the look and feel of the interface.'),
+                  ]),
+                },
+                {
+                  id: 'item3',
+                  header: [
+                    m('span.material-symbols-outlined', { style: { fontSize: '16px', marginRight: '8px' } }, 'keyboard'),
+                    m('span', 'Keyboard Shortcuts'),
+                  ],
+                  content: m('div', { style: { color: 'var(--bl-text-secondary)' } }, [
+                    m('p', { style: { margin: 0 } }, 'View and customize keyboard shortcuts.'),
+                  ]),
+                },
+              ],
             }),
           ]),
 
