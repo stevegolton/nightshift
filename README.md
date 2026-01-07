@@ -6,9 +6,7 @@ A Mithril.js component library is a love letter to the dense, utilitarian interf
 
 ![Screenshot](nightshift-light-and-dark.png)
 
-I've always had a soft spot for the gray, dense, skeuomorphic aesthetic of 'pro' apps from the mid-2000s -> early 2010s - before the web became obsessed with whitespace and ease-in-ease-out transitions.
-
-NightShift aims to revive that look.
+I've always had a soft spot for the gray, dense, skeuomorphic aesthetic of 'pro' apps from the mid-2000s -> early 2010s - before the web became obsessed with whitespace and ease-in-ease-out transitions. NightShift aims to revive that look.
 
 The name comes from the fact that this is the kind of UI you'll be staring at late into the night.
 
@@ -41,17 +39,3 @@ Output goes to `dist/`.
 ```bash
 npm run format
 ```
-
-## Notes
-
-### I like...
-
-- Slightly skeumorphic design of the buttons/selects with the subtle shadow and highilight - makes them look and feel interactive, precise.
-- Compact whitespace / padding / margins - makes it possible to cram in a lot.
-- Definitily not material inspired - material is getting a little tired!
-- The instant tooltips that pop up above icon-only buttons telling you what they do - as a replacement for the missing label.
-
-### What needs improvement
-
-- Need to formalize the menu component.
--
