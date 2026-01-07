@@ -136,7 +136,7 @@ const ProfilerPage: m.Component = {
 
       m(ProfilerSplit, {
         direction: 'vertical',
-        initialSplit: 70,
+        split: { percent: 70 },
         minSize: 100,
         className: 'profiler-main',
         firstPanel: m('.profiler-timeline-area', [

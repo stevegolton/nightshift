@@ -41,6 +41,7 @@ const Nav: m.Component = {
         NavItem('/servers', 'dns', 'Servers'),
         NavItem('/finances', 'account_balance', 'Finances'),
         NavItem('/query', 'database', 'Query'),
+        NavItem('/graph-builder', 'account_tree', 'Graph Builder'),
       ]),
       m('.app-nav-footer', [
         m('.app-nav-item', { onclick: toggleTheme }, [

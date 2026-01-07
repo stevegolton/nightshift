@@ -20,6 +20,7 @@ import DronePage from './pages/DronePage';
 import ServersPage from './pages/ServersPage';
 import FinancesPage from './pages/FinancesPage';
 import QueryPage from './pages/QueryPage';
+import GraphBuilderPage from './pages/GraphBuilderPage';
 
 // Route configuration
 m.route.prefix = '#';
@@ -53,6 +54,9 @@ if (root) {
     },
     '/query': {
       render: () => m(Layout, m(QueryPage)),
+    },
+    '/graph-builder': {
+      render: () => m(Layout, m(GraphBuilderPage)),
     },
   });
 }

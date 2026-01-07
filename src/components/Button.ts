@@ -2,6 +2,7 @@ import m from 'mithril';
 import cx from 'classnames';
 import './Button.css';
 import { renderIcon, IconProp } from '../utils/icon';
+import Tooltip from './Tooltip';
 
 export interface ButtonAttrs {
   /** Button variant */
@@ -14,6 +15,8 @@ export interface ButtonAttrs {
   disabled?: boolean;
   /** Tooltip text */
   tooltip?: string;
+  /** Keyboard shortcut to display */
+  shortcut?: string;
   /** Click handler */
   onclick?: (e: Event) => void;
   /** Additional class names */
@@ -22,7 +25,7 @@ export interface ButtonAttrs {
 
 const Button: m.Component<ButtonAttrs> = {
   view(vnode) {
-    const { variant, icon, active, disabled, tooltip, onclick, className } = vnode.attrs;
+    const { variant, icon, active, disabled, tooltip, shortcut, onclick, className } = vnode.attrs;
 
     const hasChildren =
       vnode.children && (Array.isArray(vnode.children) ? vnode.children.length > 0 : true);
@@ -31,9 +34,8 @@ const Button: m.Component<ButtonAttrs> = {
       'bl-btn-primary': variant === 'primary',
       'bl-btn-toggle': variant === 'toggle',
       'bl-btn-ghost': variant === 'ghost',
-      'bl-btn-icon': icon && !hasChildren,
+      'bl-btn-icon': icon && !hasChildren && !shortcut,
       active,
-      'bl-tooltip': tooltip,
     });
 
     const content: m.Children[] = [];
@@ -49,16 +51,25 @@ const Button: m.Component<ButtonAttrs> = {
       content.push(children);
     }
 
-    return m(
+    if (shortcut) {
+      content.push(m('kbd.bl-btn-shortcut', shortcut));
+    }
+
+    const button = m(
       'button',
       {
         class: classes,
         disabled,
         onclick,
-        'data-tooltip': tooltip,
       },
       content
     );
+
+    if (tooltip) {
+      return m(Tooltip, { content: tooltip }, button);
+    }
+
+    return button;
   },
 };
 

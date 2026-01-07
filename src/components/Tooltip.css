@@ -1,0 +1,17 @@
+/* Tooltip */
+.bl-tooltip-anchor {
+  display: contents;
+}
+
+.bl-tooltip-popup {
+  position: fixed;
+  z-index: 1100;
+  padding: var(--bl-spacing-xs) var(--bl-spacing-sm);
+  color: var(--bl-text-primary);
+  background-color: var(--bl-surface-0);
+  border: 1px solid var(--bl-border-light);
+  border-radius: var(--bl-radius-sm);
+  font-size: var(--bl-font-size-base);
+  white-space: nowrap;
+  pointer-events: none;
+}

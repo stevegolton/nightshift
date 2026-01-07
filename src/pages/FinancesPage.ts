@@ -637,7 +637,7 @@ const FinancesPage: m.Component = {
       m('.finances-main', [
         m(MainSplit, {
           direction: 'horizontal',
-          initialSplit: 22,
+          split: { percent: 22 },
           minSize: 180,
           firstPanel: m(AccountsSidebar()),
           secondPanel: m('.content-panel', [

@@ -25,6 +25,7 @@ interface QueryHistoryItem {
   duration: string;
   rows: number;
   status: 'success' | 'error';
+  favorite?: boolean;
 }
 
 interface TableColumn {
@@ -143,6 +144,7 @@ ORDER BY created_at DESC`,
       duration: '0.23s',
       rows: 8,
       status: 'success',
+      favorite: true,
     },
     {
       id: 2,
@@ -157,6 +159,7 @@ ORDER BY date DESC`,
       duration: '0.34s',
       rows: 30,
       status: 'success',
+      favorite: true,
     },
     {
       id: 3,
@@ -205,6 +208,7 @@ HAVING COUNT(o.id) > 5`,
       duration: '0.52s',
       rows: 89,
       status: 'success',
+      favorite: true,
     },
   ] as QueryHistoryItem[],
   selectedHistory: null as number | null,
@@ -231,6 +235,11 @@ function loadHistoryItem(item: QueryHistoryItem): void {
   state.selectedHistory = item.id;
 }
 
+function toggleFavorite(item: QueryHistoryItem, e: Event): void {
+  e.stopPropagation();
+  item.favorite = !item.favorite;
+}
+
 function QueryEditor(): m.Component {
   return {
     view() {
@@ -241,6 +250,7 @@ function QueryEditor(): m.Component {
             icon: state.isRunning ? 'hourglass_empty' : 'play_arrow',
             onclick: runQuery,
             disabled: state.isRunning,
+            tooltip: 'Run Query (⌘↵)',
           }, state.isRunning ? 'Running...' : 'Run'),
           m(Button, { icon: 'format_align_left', tooltip: 'Format SQL' }),
           m(Button, { icon: 'content_copy', tooltip: 'Copy' }),
@@ -303,13 +313,30 @@ function QueryResults(): m.Component {
 function HistoryList(): m.Component {
   return {
     view() {
+      // Sort favorites to top
+      const sortedHistory = [...state.history].sort((a, b) => {
+        if (a.favorite && !b.favorite) return -1;
+        if (!a.favorite && b.favorite) return 1;
+        return 0;
+      });
+
       return m('.history-list', [
-        ...state.history.map((item) =>
+        ...sortedHistory.map((item) =>
           m('.history-item', {
-            class: state.selectedHistory === item.id ? 'selected' : '',
+            class: [
+              state.selectedHistory === item.id ? 'selected' : '',
+              item.favorite ? 'favorite' : '',
+            ].filter(Boolean).join(' '),
             onclick: () => loadHistoryItem(item),
           }, [
             m('.history-item-header', [
+              m(Button, {
+                variant: 'ghost',
+                icon: item.favorite ? 'star' : 'star_outline',
+                className: 'history-favorite' + (item.favorite ? ' active' : ''),
+                onclick: (e: Event) => toggleFavorite(item, e),
+                tooltip: item.favorite ? 'Remove from favorites' : 'Add to favorites',
+              }),
               m('span.history-time', item.timestamp),
               m(Tag, {
                 variant: item.status === 'success' ? 'success' : 'error',
@@ -419,11 +446,11 @@ const QueryPage: m.Component = {
 
       m(MainSplit, {
         direction: 'horizontal',
-        initialSplit: 80,
+        split: { percent: 80 },
         minSize: 200,
         firstPanel: m(EditorSplit, {
           direction: 'vertical',
-          initialSplit: 40,
+          split: { percent: 40 },
           minSize: 100,
           firstPanel: m(QueryEditor()),
           secondPanel: m(QueryResults()),

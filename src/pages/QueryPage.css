@@ -153,8 +153,20 @@
 .history-item-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--bl-spacing-xs);
   margin-bottom: var(--bl-spacing-xs);
+}
+
+.history-favorite.active {
+  color: var(--bl-warning);
+}
+
+.history-favorite:hover {
+  color: var(--bl-warning);
+}
+
+.history-item-header .bl-tag {
+  margin-left: auto;
 }
 
 .history-time {

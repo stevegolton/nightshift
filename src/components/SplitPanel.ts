@@ -2,35 +2,74 @@ import m from 'mithril';
 import cx from 'classnames';
 import './SplitPanel.css';
 
+/** Split configuration - either percentage or fixed pixel mode */
+export type SplitConfig =
+  | { readonly percent: number }
+  | { readonly fixed: { readonly panel: 'first' | 'second'; readonly size?: number } };
+
 export interface SplitPanelAttrs {
-  direction?: 'horizontal' | 'vertical';
-  initialSplit?: number; // percentage 0-100
-  minSize?: number; // minimum size in pixels for each panel
-  className?: string;
-  firstPanel: m.Children;
-  secondPanel: m.Children;
-  onResize?: (splitPercent: number) => void;
+  readonly direction?: 'horizontal' | 'vertical';
+  /** Split configuration - defaults to { percent: 50 } */
+  readonly split?: SplitConfig;
+  /** Minimum size in pixels for each panel */
+  readonly minSize?: number;
+  readonly className?: string;
+  readonly firstPanel: m.Children;
+  readonly secondPanel: m.Children;
+  readonly onResize?: (size: number) => void;
+}
+
+// Type guard for fixed mode
+function isFixedConfig(
+  split: SplitConfig
+): split is { fixed: { panel: 'first' | 'second'; size?: number } } {
+  return 'fixed' in split;
 }
 
 // Factory function to create SplitPanel instances with their own state
 export function SplitPanel(): m.Component<SplitPanelAttrs> {
   let splitPercent = 50;
+  let fixedSizePx = 200;
   let isResizing = false;
 
   return {
     oninit(vnode) {
-      splitPercent = vnode.attrs.initialSplit ?? 50;
+      const split = vnode.attrs.split ?? { percent: 50 };
+      if (isFixedConfig(split)) {
+        fixedSizePx = split.fixed.size ?? 200;
+      } else if ('percent' in split) {
+        splitPercent = split.percent;
+      }
     },
 
     view(vnode) {
-      const { direction = 'horizontal', minSize = 50, firstPanel, secondPanel } = vnode.attrs;
+      const {
+        direction = 'horizontal',
+        minSize = 50,
+        split = { percent: 50 },
+        firstPanel,
+        secondPanel,
+      } = vnode.attrs;
+
+      const fixedPanel = isFixedConfig(split) ? split.fixed.panel : null;
 
       const containerClasses = cx('bl-split-panel', `bl-split-${direction}`, vnode.attrs.className);
-
-      // Use flex-basis with calc to account for handle width (4px)
       const handleSize = 4;
-      const firstStyle = { flex: `0 0 calc(${splitPercent}% - ${handleSize / 2}px)` };
-      const secondStyle = { flex: `0 0 calc(${100 - splitPercent}% - ${handleSize / 2}px)` };
+
+      let firstStyle: Record<string, string>;
+      let secondStyle: Record<string, string>;
+
+      if (fixedPanel === 'first') {
+        firstStyle = { flex: `0 0 ${fixedSizePx}px` };
+        secondStyle = { flex: '1 1 0' };
+      } else if (fixedPanel === 'second') {
+        firstStyle = { flex: '1 1 0' };
+        secondStyle = { flex: `0 0 ${fixedSizePx}px` };
+      } else {
+        // Percentage mode
+        firstStyle = { flex: `0 0 calc(${splitPercent}% - ${handleSize / 2}px)` };
+        secondStyle = { flex: `0 0 calc(${100 - splitPercent}% - ${handleSize / 2}px)` };
+      }
 
       const onPointerDown = (e: PointerEvent) => {
         e.preventDefault();
@@ -48,29 +87,51 @@ export function SplitPanel(): m.Component<SplitPanelAttrs> {
         const handle = e.currentTarget as HTMLElement;
         const container = handle.parentElement!;
         const rect = container.getBoundingClientRect();
-        let newPercent: number;
-
-        if (direction === 'horizontal') {
-          const x = e.clientX - rect.left;
-          newPercent = (x / rect.width) * 100;
-        } else {
-          const y = e.clientY - rect.top;
-          newPercent = (y / rect.height) * 100;
-        }
-
-        // Apply min size constraints
         const containerSize = direction === 'horizontal' ? rect.width : rect.height;
-        const minPercent = (minSize / containerSize) * 100;
-        const maxPercent = 100 - minPercent;
 
-        newPercent = Math.max(minPercent, Math.min(maxPercent, newPercent));
-        splitPercent = newPercent;
+        if (fixedPanel) {
+          // Fixed pixel mode
+          let pos: number;
+          if (direction === 'horizontal') {
+            pos = e.clientX - rect.left;
+          } else {
+            pos = e.clientY - rect.top;
+          }
 
-        if (vnode.attrs.onResize) {
-          vnode.attrs.onResize(newPercent);
+          let newSize: number;
+          if (fixedPanel === 'first') {
+            newSize = pos;
+          } else {
+            newSize = containerSize - pos;
+          }
+
+          // Clamp to min/max
+          newSize = Math.max(minSize, Math.min(containerSize - minSize - handleSize, newSize));
+          fixedSizePx = newSize;
+
+          if (vnode.attrs.onResize) {
+            vnode.attrs.onResize(newSize);
+          }
+        } else {
+          // Percentage mode
+          let newPercent: number;
+          if (direction === 'horizontal') {
+            const x = e.clientX - rect.left;
+            newPercent = (x / rect.width) * 100;
+          } else {
+            const y = e.clientY - rect.top;
+            newPercent = (y / rect.height) * 100;
+          }
+
+          const minPercent = (minSize / containerSize) * 100;
+          const maxPercent = 100 - minPercent;
+          newPercent = Math.max(minPercent, Math.min(maxPercent, newPercent));
+          splitPercent = newPercent;
+
+          if (vnode.attrs.onResize) {
+            vnode.attrs.onResize(newPercent);
+          }
         }
-
-        m.redraw();
       };
 
       const onPointerUp = (e: PointerEvent) => {

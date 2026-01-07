@@ -326,7 +326,7 @@ const ServersPage: m.Component = {
       m('.servers-main', [
         m(MainSplit, {
           direction: 'horizontal',
-          initialSplit: 25,
+          split: { percent: 25 },
           minSize: 200,
           firstPanel: m('.sidebar-panel', [m(NodeSummary()), m(VMList())]),
           secondPanel: m(VMDetails()),

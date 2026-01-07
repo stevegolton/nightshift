@@ -322,10 +322,10 @@ const DronePage: m.Component = {
       m('.drone-main', [
         m(MainSplit, {
           direction: 'horizontal',
-          initialSplit: 65,
+          split: { percent: 65 },
           firstPanel: m(LeftSplit, {
             direction: 'vertical',
-            initialSplit: 55,
+            split: { percent: 55 },
             firstPanel: m('.drone-panel.monitor-panel', [
               m('.panel-header', 'Flight Monitor'),
               m('.monitor-content', [

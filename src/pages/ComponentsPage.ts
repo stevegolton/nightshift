@@ -21,6 +21,7 @@ import MenuBar from '../components/MenuBar';
 import Portal from '../components/Portal';
 import Popover, { PopoverPlacement } from '../components/Popover';
 import PopupMenu from '../components/PopupMenu';
+import Tooltip from '../components/Tooltip';
 
 // Page-local state
 const state = {
@@ -50,6 +51,8 @@ const state = {
   // Tab demos
   activeTab: 'scene',
   activeSecondaryTab: 'summary',
+  // Split panel demos
+  sidebarSize: 150,
 };
 
 // Create Table instance
@@ -127,6 +130,15 @@ const ComponentsPage: m.Component = {
                 m(Button, {}, 'Object'),
                 m(Button, {}, 'Edit'),
                 m(Button, {}, 'Sculpt'),
+              ]),
+              m(ButtonGroup, [
+                m(Button, { icon: 'open_with', tooltip: 'Move' }),
+                m(Button, { icon: 'rotate_right', tooltip: 'Rotate' }),
+                m(Button, { icon: 'zoom_out_map', tooltip: 'Scale' }),
+              ]),
+              m(ButtonGroup, [
+                m(Button, { icon: 'undo', tooltip: 'Undo' }),
+                m(Button, { icon: 'redo', tooltip: 'Redo' }),
               ]),
             ]),
           ]),
@@ -909,6 +921,32 @@ const ComponentsPage: m.Component = {
             ]),
           ]),
 
+          // Tooltip Section
+          m('section.demo-section', [
+            m('h2.demo-section-title', 'Tooltip'),
+            m('.demo-label', 'Hover tooltips with portal-based positioning'),
+            m('.demo-row', { style: { gap: '16px' } }, [
+              m(Tooltip, { content: 'Default tooltip (bottom)' },
+                m(Button, 'Hover me')
+              ),
+              m(Tooltip, { content: 'Top placement', placement: 'top' },
+                m(Button, 'Top')
+              ),
+              m(Tooltip, { content: 'Left placement', placement: 'left' },
+                m(Button, 'Left')
+              ),
+              m(Tooltip, { content: 'Right placement', placement: 'right' },
+                m(Button, 'Right')
+              ),
+            ]),
+            m('.demo-label', { style: { marginTop: '16px' } }, 'Via Button tooltip prop'),
+            m('.demo-row', { style: { gap: '16px' } }, [
+              m(Button, { tooltip: 'Save changes', icon: 'save' }),
+              m(Button, { tooltip: 'Delete item', icon: 'delete' }),
+              m(Button, { tooltip: 'Settings', icon: 'settings' }),
+            ]),
+          ]),
+
           // Popup Menu Section
           m('section.demo-section', [
             m('h2.demo-section-title', 'Popup Menu'),
@@ -973,7 +1011,7 @@ const ComponentsPage: m.Component = {
               [
                 m(SplitPanel, {
                   direction: 'horizontal',
-                  initialSplit: 40,
+                  split: { percent: 40 },
                   firstPanel: m('.split-panel-content', [
                     m('h4', 'Left Panel'),
                     m('p', 'Drag the handle to resize'),
@@ -998,7 +1036,7 @@ const ComponentsPage: m.Component = {
               [
                 m(SplitPanel, {
                   direction: 'vertical',
-                  initialSplit: 50,
+                  split: { percent: 50 },
                   firstPanel: m('.split-panel-content', [
                     m('h4', 'Top Panel'),
                     m('p', 'Vertical split with top/bottom layout'),
@@ -1006,6 +1044,33 @@ const ComponentsPage: m.Component = {
                   secondPanel: m('.split-panel-content', [
                     m('h4', 'Bottom Panel'),
                     m('p', 'Useful for editors and consoles'),
+                  ]),
+                }),
+              ]
+            ),
+            m('.demo-label.bl-mt-md', 'Fixed Pixel Sidebar'),
+            m(
+              '.split-demo',
+              {
+                style: {
+                  height: '150px',
+                  border: '1px solid var(--bl-border-dark)',
+                  borderRadius: 'var(--bl-radius-md)',
+                },
+              },
+              [
+                m(SplitPanel, {
+                  direction: 'horizontal',
+                  split: { fixed: { panel: 'second', size: state.sidebarSize } },
+                  minSize: 80,
+                  onResize: (size) => { state.sidebarSize = size; },
+                  firstPanel: m('.split-panel-content', [
+                    m('h4', 'Main Content'),
+                    m('p', 'Flexes to fill available space'),
+                  ]),
+                  secondPanel: m('.split-panel-content', [
+                    m('h4', 'Sidebar'),
+                    m('p', `Fixed ${Math.round(state.sidebarSize)}px`),
                   ]),
                 }),
               ]

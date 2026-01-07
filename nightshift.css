@@ -228,7 +228,7 @@ body {
 .bl-tooltip::after {
   content: attr(data-tooltip);
   position: absolute;
-  bottom: calc(100% + 6px);
+  top: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%);
   padding: var(--bl-spacing-sm) var(--bl-spacing-md);
